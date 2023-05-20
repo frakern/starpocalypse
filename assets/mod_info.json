@@ -1,11 +1,11 @@
 {
     "id": "starpocalypse",
     "name": " Starpocalypse",
-    "author": "Jaghaimo",
+    "author": "Frakern",
     "utility": true,
-    "version": "2.3.2",
+    "version": "3.0.0",
     "description": "More apocalyptic settings",
-    "gameVersion": "0.95.1a-RC6",
+    "gameVersion": "0.96a-RC7",
     "modPlugin": "starpocalypse.StarpocalypseMod",
     "jars": [
         "starpocalypse.jar"

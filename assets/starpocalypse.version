@@ -1,11 +1,11 @@
 {
-    "masterVersionFile": "https://raw.githubusercontent.com/jaghaimo/starpocalypse/master/assets/starpocalypse.version",
+    "masterVersionFile": "https://raw.githubusercontent.com/frakern/starpocalypse/master/assets/starpocalypse.version",
     "modName": "Starpocalypse",
     "modThreadId": 21812,
     "modVersion": {
-        "major": 2,
-        "minor": 3,
-        "patch": 2
+        "major": 3,
+        "minor": 0,
+        "patch": 0
     },
-    "directDownloadURL": "https://github.com/jaghaimo/starpocalypse/releases/download/2.3.2/starpocalypse-2.3.2.zip"
+    "directDownloadURL": "https://github.com/frakern/starpocalypse/releases/download/3.0.0/starpocalypse-3.0.0.zip"
 }
