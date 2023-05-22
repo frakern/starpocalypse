@@ -48,6 +48,7 @@ public class StarpocalypseMod extends BaseModPlugin {
         combatAdjustedReputation();
         hostilityForSpecialItemRaid();
         stingyRecoveries();
+        salvageMultiplier();
     }
 
     @Override
@@ -150,6 +151,10 @@ public class StarpocalypseMod extends BaseModPlugin {
             log.info("Enabling stingy recoveries");
             DropTableUtils.makeRecoveryRequireStoryPoint();
         }
+    }
+
+    private void salvageMultiplier() {
+        DropTableUtils.applySalvageMultiplier((float) settings.optDouble("salvageMultiplier", -0.5));
     }
 
     private void showUninstalledDialog() {

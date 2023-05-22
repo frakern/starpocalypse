@@ -56,4 +56,7 @@
     # ships found across the sector, and post battle recoveries - including own ships).
     # Also remove all cryopods with officers, and other "items" (like survey data).
     "stingyRecoveries": true,
+
+    # Reduce quantity of salvaged items.
+    "salvageMultiplier": -0.5, # vanilla: 0
 }
