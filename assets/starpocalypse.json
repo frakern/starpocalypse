@@ -28,7 +28,7 @@
     "transparentMarketMult": 0.5,# vanilla: 0
     # Accessing Black Market is only possible with transponder turned off.
     "shyBlackMarket": true,
-    # Black Market handling fee as a fraction of Open Market tariff. If tariff is 30%, Black Market tariff will be 15%.
+    # Black Market handling fee (bribe) as a fraction of the Open Market tariff. If tariff is 30%, Black Market bribe will be 15%.
     "blackMarketFenceCut": 0.5,# vanilla: 0
 
     ## BETTER MARKET DEFENCES
