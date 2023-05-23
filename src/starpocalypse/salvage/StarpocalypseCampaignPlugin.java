@@ -5,6 +5,7 @@ import com.fs.starfarer.api.campaign.BaseCampaignPlugin;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.InteractionDialogPlugin;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
+import starpocalypse.helper.ConfigHelper;
 
 public class StarpocalypseCampaignPlugin extends BaseCampaignPlugin {
 
@@ -21,10 +22,18 @@ public class StarpocalypseCampaignPlugin extends BaseCampaignPlugin {
     @Override
     public PluginPick<InteractionDialogPlugin> pickInteractionDialogPlugin(SectorEntityToken interactionTarget) {
         if (interactionTarget instanceof CampaignFleetAPI) {
-            return new PluginPick<InteractionDialogPlugin>(
-                new StarpocalypseFleetInteractionDialogPlugin(),
-                PickPriority.MOD_GENERAL
-            );
+            if (ConfigHelper.hasNexerelin()) {
+                return new PluginPick<InteractionDialogPlugin>(
+                        new StarpocalypseNexFleetInteractionDialogPlugin(),
+                        PickPriority.MOD_SET
+                );
+            }
+            else {
+                return new PluginPick<InteractionDialogPlugin>(
+                        new StarpocalypseFleetInteractionDialogPlugin(),
+                        PickPriority.MOD_SET
+                );
+            }
         }
         return super.pickInteractionDialogPlugin(interactionTarget);
     }
