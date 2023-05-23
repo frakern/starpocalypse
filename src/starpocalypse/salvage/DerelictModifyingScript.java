@@ -6,6 +6,8 @@ import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
+import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.special.ShipRecoverySpecial;
+
 import java.util.List;
 
 public class DerelictModifyingScript implements EveryFrameScript {
@@ -22,11 +24,10 @@ public class DerelictModifyingScript implements EveryFrameScript {
 
     @Override
     public void advance(float amount) {
-        // Debris fields: ships no longer "hide" in plain sight (debris field)
+        // Check for nearby salvageable derelicts
         for (SectorEntityToken entity : getEntities(Tags.DEBRIS_FIELD)) {
             clearSpecialData(entity);
         }
-        // Salvageable derelicts: always require a story point
         for (SectorEntityToken entity : getEntities(Tags.SALVAGEABLE)) {
             clearSpecialData(entity);
         }
@@ -39,7 +40,11 @@ public class DerelictModifyingScript implements EveryFrameScript {
     private void clearSpecialData(SectorEntityToken entity) {
         MemoryAPI memory = entity.getMemoryWithoutUpdate();
         if (memory.contains(MemFlags.SALVAGE_SPECIAL_DATA)) {
-            memory.unset(MemFlags.SALVAGE_SPECIAL_DATA);
+            Object specialData = memory.get(MemFlags.SALVAGE_SPECIAL_DATA);
+            if (specialData instanceof ShipRecoverySpecial.ShipRecoverySpecialData) {
+                // Salvageable derelicts: always require a story point
+                ((ShipRecoverySpecial.ShipRecoverySpecialData) specialData).storyPointRecovery = true;
+            }
         }
     }
 }

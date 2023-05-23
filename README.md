@@ -75,4 +75,3 @@ On top of that, bribes equal half of the market tariff will be required to compl
 On game load, all blueprint packages are given "no drop" tag.
 Quantity of salvaged basic items is reduced by 50%. Special items (weapons, AI cores, etc) are unaffected.
 On recovery (salvage or post battle) all recoverable ships are made into story-recoverable (even own lost ships).
-Finally, all other findable "items" are removed from salvageable debris (cryopod officers or survey data).
