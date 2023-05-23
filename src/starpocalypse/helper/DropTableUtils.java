@@ -15,6 +15,8 @@ import starpocalypse.salvage.StarpocalypseCampaignPlugin;
 @Log4j
 public class DropTableUtils {
 
+    static final String id = "starpocalypse";
+
     public static void removeBlueprintPackages() {
         for (SpecialItemSpecAPI specialItemSpec : Global.getSettings().getAllSpecialItemSpecs()) {
             SpecialItemPlugin plugin = specialItemSpec.getNewPluginInstance(null);
@@ -34,7 +36,12 @@ public class DropTableUtils {
         CampaignFleetAPI fleet = Global.getSector().getPlayerFleet();
         MutableFleetStatsAPI stats = fleet.getStats();
         String desc = "Leakage";
-        String id = "starpocalypse";
         stats.getDynamic().getStat(Stats.SALVAGE_VALUE_MULT_FLEET_NOT_RARE).modifyFlat(id, multiplier, desc);
+    }
+
+    public static void removeSalvageMultiplier() {
+        CampaignFleetAPI fleet = Global.getSector().getPlayerFleet();
+        MutableFleetStatsAPI stats = fleet.getStats();
+        stats.getDynamic().getStat(Stats.SALVAGE_VALUE_MULT_FLEET_NOT_RARE).unmodifyFlat(id);
     }
 }

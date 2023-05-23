@@ -52,10 +52,18 @@ public class StarpocalypseMod extends BaseModPlugin {
     }
 
     @Override
+    public void beforeGameSave() {
+        DropTableUtils.removeSalvageMultiplier();
+    }
+
+    @Override
     public void afterGameSave() {
         if (ConfigHelper.isUninstall()) {
             SharedData.getData().getPlayerActivityTracker().advance(0);
             showUninstalledDialog();
+        }
+        else {
+            salvageMultiplier();
         }
     }
 
