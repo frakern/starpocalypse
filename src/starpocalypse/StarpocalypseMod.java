@@ -12,6 +12,7 @@ import lombok.extern.log4j.Log4j;
 import org.json.JSONObject;
 import starpocalypse.helper.ConfigHelper;
 import starpocalypse.helper.DropTableUtils;
+import starpocalypse.market.GroundDefenseAdder;
 import starpocalypse.market.IndustryAdder;
 import starpocalypse.market.MarketListener;
 import starpocalypse.market.StationAdder;
@@ -94,7 +95,7 @@ public class StarpocalypseMod extends BaseModPlugin {
         if (settings.optBoolean("addGroundDefenses", true)) {
             log.info("Enabling ground defenses adder");
             listener.add(
-                new IndustryAdder(Industries.GROUNDDEFENSES, true, Industries.GROUNDDEFENSES, Industries.HEAVYBATTERIES)
+                new GroundDefenseAdder(settings.optInt("sizeHeavyBatteries", 5))
             );
         }
     }
@@ -117,7 +118,11 @@ public class StarpocalypseMod extends BaseModPlugin {
     private void addStations(MarketListener listener) {
         if (settings.optBoolean("addStations", true)) {
             log.info("Enabling station adder");
-            listener.add(new StationAdder());
+            listener.add(new StationAdder(
+                settings.optInt("sizeForOrbitalStation", 5),
+                settings.optInt("sizeForBattleStation", 6),
+                settings.optInt("sizeForStarFortress", 7)
+            ));
         }
     }
 

@@ -28,6 +28,6 @@ public class IndustryAdder extends MarketChanger {
 
     @Override
     protected void changeImpl(MarketAPI market) {
-        helper.addMissing(market, industryId, blockingIndustries);
+        helper.addMissing(market, industryId, false, blockingIndustries);
     }
 }
