@@ -5,10 +5,9 @@ import com.fs.starfarer.api.campaign.BattleAPI;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.FleetEncounterContext;
-import starpocalypse.helper.ConfigHelper;
-
 import java.util.LinkedList;
 import java.util.List;
+import starpocalypse.helper.ConfigHelper;
 
 public class StarpocalypseFleetEncounterContext extends FleetEncounterContext {
 
@@ -31,7 +30,7 @@ public class StarpocalypseFleetEncounterContext extends FleetEncounterContext {
         if (!ConfigHelper.isStingyRecoveriesIncludePlayerShips()) {
             // Fleet snapshot before battle.
             List<FleetMemberAPI> playerFleet = Global.getSector().getPlayerFleet().getFleetData().getSnapshot();
-            for (FleetMemberAPI ship: recoverableShips) {
+            for (FleetMemberAPI ship : recoverableShips) {
                 if (playerFleet.contains(ship)) {
                     playerShips.add(ship);
                     recoverableShips.remove(ship);

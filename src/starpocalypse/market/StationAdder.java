@@ -39,7 +39,7 @@ public class StationAdder extends MarketChanger {
     protected void changeImpl(MarketAPI market) {
         String factionId = market.getFactionId();
         String stationType = factionStations.get(factionId);
-        switch(stationType) {
+        switch (stationType) {
             case "high":
                 stationType = "_high";
                 break;
@@ -53,11 +53,9 @@ public class StationAdder extends MarketChanger {
         }
         if (market.getSize() >= this.sizeForStarFortress) {
             helper.addMissing(market, "starfortress" + stationType, false, stationDatabase.getAll());
-        }
-        else if (market.getSize() >= this.sizeForBattleStation) {
+        } else if (market.getSize() >= this.sizeForBattleStation) {
             helper.addMissing(market, "battlestation" + stationType, false, stationDatabase.getAll());
-        }
-        else if (market.getSize() >= this.sizeForOrbitalStation) {
+        } else if (market.getSize() >= this.sizeForOrbitalStation) {
             helper.addMissing(market, "orbitalstation" + stationType, false, stationDatabase.getAll());
         }
     }

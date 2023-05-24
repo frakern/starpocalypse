@@ -24,14 +24,13 @@ public class StarpocalypseCampaignPlugin extends BaseCampaignPlugin {
         if (interactionTarget instanceof CampaignFleetAPI) {
             if (ConfigHelper.hasNexerelin()) {
                 return new PluginPick<InteractionDialogPlugin>(
-                        new StarpocalypseNexFleetInteractionDialogPlugin(),
-                        PickPriority.MOD_SET
+                    new StarpocalypseNexFleetInteractionDialogPlugin(),
+                    PickPriority.MOD_SET
                 );
-            }
-            else {
+            } else {
                 return new PluginPick<InteractionDialogPlugin>(
-                        new StarpocalypseFleetInteractionDialogPlugin(),
-                        PickPriority.MOD_SET
+                    new StarpocalypseFleetInteractionDialogPlugin(),
+                    PickPriority.MOD_SET
                 );
             }
         }

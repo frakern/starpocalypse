@@ -14,12 +14,11 @@ import com.fs.starfarer.api.impl.campaign.ids.Commodities;
 import com.fs.starfarer.api.impl.campaign.ids.HullMods;
 import com.fs.starfarer.api.impl.campaign.submarkets.BlackMarketPlugin;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import java.util.Objects;
 import starpocalypse.config.SimpleMap;
 import starpocalypse.helper.CargoUtils;
 import starpocalypse.helper.ConfigHelper;
 import starpocalypse.helper.SubmarketUtils;
-
-import java.util.Objects;
 
 public class RegulatedBlackMarket extends BlackMarketPlugin {
 
@@ -145,7 +144,6 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
         }
     }
 
-
     private String getHullName(FleetMemberAPI ship) {
         ShipHullSpecAPI hullSpec = ship.getHullSpec().getBaseHull();
         if (hullSpec == null) {
@@ -159,7 +157,9 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
     }
 
     private boolean isCivilian(ShipVariantAPI variant) {
-        return variant.hasHullMod(HullMods.CIVGRADE) || variant.getHints().contains(ShipHullSpecAPI.ShipTypeHints.CIVILIAN);
+        return (
+            variant.hasHullMod(HullMods.CIVGRADE) || variant.getHints().contains(ShipHullSpecAPI.ShipTypeHints.CIVILIAN)
+        );
     }
 
     private boolean isSignificant(String commodityId) {
@@ -222,7 +222,11 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
     private void removeShips(FleetDataAPI ships) {
         for (FleetMemberAPI member : ships.getMembersListCopy()) {
             if (isIllegalOnSubmarket(member, TransferAction.PLAYER_BUY)) {
-                log.info(location + ": Removing from black market due to high stability " + member.getHullSpec().getHullName());
+                log.info(
+                    location +
+                    ": Removing from black market due to high stability " +
+                    member.getHullSpec().getHullName()
+                );
                 ships.removeFleetMember(member);
             }
         }
@@ -232,5 +236,4 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
     public String getTariffTextOverride() {
         return "Bribes";
     }
-
 }

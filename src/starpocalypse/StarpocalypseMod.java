@@ -63,8 +63,7 @@ public class StarpocalypseMod extends BaseModPlugin {
         if (ConfigHelper.isUninstall()) {
             SharedData.getData().getPlayerActivityTracker().advance(0);
             showUninstalledDialog();
-        }
-        else {
+        } else {
             salvageMultiplier();
         }
     }
@@ -95,9 +94,7 @@ public class StarpocalypseMod extends BaseModPlugin {
     private void addGroundDefenses(MarketListener listener) {
         if (settings.optBoolean("addGroundDefenses", true)) {
             log.info("Enabling ground defenses adder");
-            listener.add(
-                new GroundDefenseAdder(settings.optInt("sizeHeavyBatteries", 5))
-            );
+            listener.add(new GroundDefenseAdder(settings.optInt("sizeHeavyBatteries", 5)));
         }
     }
 
@@ -119,11 +116,13 @@ public class StarpocalypseMod extends BaseModPlugin {
     private void addStations(MarketListener listener) {
         if (settings.optBoolean("addStations", true)) {
             log.info("Enabling station adder");
-            listener.add(new StationAdder(
-                settings.optInt("sizeForOrbitalStation", 5),
-                settings.optInt("sizeForBattleStation", 6),
-                settings.optInt("sizeForStarFortress", 7)
-            ));
+            listener.add(
+                new StationAdder(
+                    settings.optInt("sizeForOrbitalStation", 5),
+                    settings.optInt("sizeForBattleStation", 6),
+                    settings.optInt("sizeForStarFortress", 7)
+                )
+            );
         }
     }
 

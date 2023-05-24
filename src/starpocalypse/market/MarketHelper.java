@@ -1,9 +1,8 @@
 package starpocalypse.market;
 
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
-import lombok.extern.log4j.Log4j;
-
 import java.util.Objects;
+import lombok.extern.log4j.Log4j;
 
 @Log4j
 public class MarketHelper {

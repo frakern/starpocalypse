@@ -13,7 +13,7 @@ public class GroundDefenseAdder extends MarketChanger {
 
     public GroundDefenseAdder(int sizeHeavyBatteries) {
         this.sizeHeavyBatteries = sizeHeavyBatteries;
-        this.blockingIndustries = new String[] {Industries.GROUNDDEFENSES, Industries.HEAVYBATTERIES};
+        this.blockingIndustries = new String[] { Industries.GROUNDDEFENSES, Industries.HEAVYBATTERIES };
     }
 
     @Override
