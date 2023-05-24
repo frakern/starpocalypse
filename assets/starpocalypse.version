@@ -1,11 +1,11 @@
 {
     "masterVersionFile": "https://raw.githubusercontent.com/frakern/starpocalypse/master/assets/starpocalypse.version",
     "modName": "Starpocalypse",
-    "modThreadId": 21812,
+    "modThreadId": 26969,
     "modVersion": {
         "major": 3,
         "minor": 0,
-        "patch": 0
+        "patch": 1
     },
-    "directDownloadURL": "https://github.com/frakern/starpocalypse/releases/download/3.0.0/starpocalypse-3.0.0.zip"
+    "directDownloadURL": "https://github.com/frakern/starpocalypse/releases/latest"
 }
