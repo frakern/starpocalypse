@@ -5,7 +5,9 @@
         "format": "prettier --write src/"
     },
     "dependencies": {
-        "prettier": "*",
         "prettier-plugin-java": "*"
+    },
+    "devDependencies": {
+        "prettier": "2.8.8"
     }
 }

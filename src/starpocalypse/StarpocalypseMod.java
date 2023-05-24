@@ -48,7 +48,8 @@ public class StarpocalypseMod extends BaseModPlugin {
         industryChanges();
         combatAdjustedReputation();
         hostilityForSpecialItemRaid();
-        stingyRecoveries();
+        stingyDerelictRecoveries();
+        stingyCombatRecoveries();
         salvageMultiplier();
     }
 
@@ -159,10 +160,17 @@ public class StarpocalypseMod extends BaseModPlugin {
         Misc.MAX_PERMA_MODS = maxPermaMods;
     }
 
-    private void stingyRecoveries() {
-        if (settings.optBoolean("stingyRecoveries", true)) {
-            log.info("Enabling stingy recoveries");
-            DropTableUtils.makeRecoveryRequireStoryPoint();
+    private void stingyDerelictRecoveries() {
+        if (settings.optBoolean("stingyRecoveriesDerelicts", true)) {
+            log.info("Enabling stingy derelict recoveries");
+            DropTableUtils.makeDerelictRecoveryRequireStoryPoint();
+        }
+    }
+
+    private void stingyCombatRecoveries() {
+        if (settings.optBoolean("stingyRecoveriesCombat", true)) {
+            log.info("Enabling stingy combat recoveries");
+            DropTableUtils.makeCombatRecoveryRequireStoryPoint();
         }
     }
 

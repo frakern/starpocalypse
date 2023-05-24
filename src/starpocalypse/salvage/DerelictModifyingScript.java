@@ -24,12 +24,11 @@ public class DerelictModifyingScript implements EveryFrameScript {
 
     @Override
     public void advance(float amount) {
-        // Check for nearby salvageable derelicts
         for (SectorEntityToken entity : getEntities(Tags.DEBRIS_FIELD)) {
-            clearSpecialData(entity);
+            forceStoryPointRecovery(entity);
         }
         for (SectorEntityToken entity : getEntities(Tags.SALVAGEABLE)) {
-            clearSpecialData(entity);
+            forceStoryPointRecovery(entity);
         }
     }
 
@@ -37,7 +36,7 @@ public class DerelictModifyingScript implements EveryFrameScript {
         return Global.getSector().getPlayerFleet().getContainingLocation().getEntitiesWithTag(tag);
     }
 
-    private void clearSpecialData(SectorEntityToken entity) {
+    private void forceStoryPointRecovery(SectorEntityToken entity) {
         MemoryAPI memory = entity.getMemoryWithoutUpdate();
         if (memory.contains(MemFlags.SALVAGE_SPECIAL_DATA)) {
             Object specialData = memory.get(MemFlags.SALVAGE_SPECIAL_DATA);

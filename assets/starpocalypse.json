@@ -61,10 +61,12 @@
     # Number of s-mods available to player (without skill).
     "maxPermaMods": 0, # easy mode: 1, vanilla: 2
 
-    # Remove all ships from salvageable debris fields and always require a story point to recover a ship (both derelict
-    # ships found across the sector, and post battle recoveries - including own ships).
-    # Also remove all cryopods with officers, and other "items" (like survey data).
-    "stingyRecoveries": true,
+    # Always require story points to recover ships
+    # (both derelict ships found across the sector, and post battle recoveries).
+    "stingyRecoveriesDerelicts": true,
+    "stingyRecoveriesCombat": true,
+    # Also require a story point to recover disabled player ships post battle.
+    "stingyRecoveriesCombatIncludePlayerShips": true,
 
     # Reduce quantity of salvaged items.
     "salvageMultiplier": -0.5, # vanilla: 0
