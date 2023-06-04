@@ -3,13 +3,11 @@ package starpocalypse.submarket;
 import com.fs.starfarer.api.campaign.CargoAPI;
 import com.fs.starfarer.api.campaign.CargoStackAPI;
 import com.fs.starfarer.api.campaign.FleetDataAPI;
-import com.fs.starfarer.api.campaign.econ.CommodityOnMarketAPI;
 import com.fs.starfarer.api.campaign.econ.SubmarketAPI;
 import com.fs.starfarer.api.combat.ShipHullSpecAPI;
 import com.fs.starfarer.api.combat.ShipHullSpecAPI.ShipTypeHints;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
-import com.fs.starfarer.api.impl.campaign.ids.Commodities;
 import com.fs.starfarer.api.impl.campaign.ids.HullMods;
 import com.fs.starfarer.api.impl.campaign.submarkets.OpenMarketPlugin;
 import lombok.extern.log4j.Log4j;
@@ -37,9 +35,6 @@ public class RegulatedOpenMarket extends OpenMarketPlugin {
             return false;
         }
         if (isAlwaysIllegal(commodityId)) {
-            return true;
-        }
-        if (isSignificant(commodityId)) {
             return true;
         }
         return super.isIllegalOnSubmarket(commodityId, action);
@@ -114,11 +109,6 @@ public class RegulatedOpenMarket extends OpenMarketPlugin {
 
     private boolean isCivilian(ShipVariantAPI variant) {
         return variant.hasHullMod(HullMods.CIVGRADE) || variant.getHints().contains(ShipTypeHints.CIVILIAN);
-    }
-
-    private boolean isSignificant(String commodityId) {
-        CommodityOnMarketAPI com = market.getCommodityData(commodityId);
-        return com.getCommodity().getTags().contains(Commodities.TAG_MILITARY);
     }
 
     private boolean isSignificant(CargoStackAPI stack) {

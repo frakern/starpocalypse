@@ -5,12 +5,10 @@ import com.fs.starfarer.api.campaign.CargoAPI;
 import com.fs.starfarer.api.campaign.CargoStackAPI;
 import com.fs.starfarer.api.campaign.CoreUIAPI;
 import com.fs.starfarer.api.campaign.FleetDataAPI;
-import com.fs.starfarer.api.campaign.econ.CommodityOnMarketAPI;
 import com.fs.starfarer.api.campaign.econ.SubmarketAPI;
 import com.fs.starfarer.api.combat.ShipHullSpecAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
-import com.fs.starfarer.api.impl.campaign.ids.Commodities;
 import com.fs.starfarer.api.impl.campaign.ids.HullMods;
 import com.fs.starfarer.api.impl.campaign.submarkets.BlackMarketPlugin;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
@@ -75,7 +73,7 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
         if (isAlwaysLegal(commodityId)) {
             return false;
         }
-        if (isSignificant(commodityId) && isStabilityIllegal(commodityId)) {
+        if (isStabilityIllegal(commodityId)) {
             return true;
         }
         return super.isIllegalOnSubmarket(commodityId, action);
@@ -162,11 +160,6 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
         );
     }
 
-    private boolean isSignificant(String commodityId) {
-        CommodityOnMarketAPI com = market.getCommodityData(commodityId);
-        return com.getCommodity().getTags().contains(Commodities.TAG_MILITARY);
-    }
-
     private boolean isInsignificant(CargoStackAPI stack) {
         return CargoUtils.getTier(stack) <= ConfigHelper.getRegulationMaxTier();
     }
@@ -175,15 +168,18 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
         return member.getFleetPointCost() <= ConfigHelper.getRegulationMaxFP();
     }
 
-    private boolean isStabilityIllegal(String name) {
+    private boolean isStabilityIllegal(String commodityId) {
         if (!ConfigHelper.wantsRegulation(market.getFactionId())) {
             return false;
         }
+        if (!market.getFaction().isIllegal(commodityId)) {
+            return false;
+        }
         float stability = submarket.getMarket().getStabilityValue();
-        if (Objects.equals(name, "marines") && stability >= 7) {
+        if (Objects.equals(commodityId, "marines") && stability >= 7) {
             return true;
         }
-        if (Objects.equals(name, "hand_weapons") && stability >= 5) {
+        if (Objects.equals(commodityId, "hand_weapons") && stability >= 5) {
             return true;
         }
         return false;
