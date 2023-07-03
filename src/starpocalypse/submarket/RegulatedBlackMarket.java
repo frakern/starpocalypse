@@ -189,12 +189,9 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
         if (!ConfigHelper.wantsRegulation(market.getFactionId())) {
             return false;
         }
-        float stability = submarket.getMarket().getStabilityValue();
+        float stability = submarket.getMarket().getStabilityValue() - 2;
         if (stability <= 0) {
             return false;
-        }
-        if (stability >= 10) {
-            return true;
         }
         String stabilityKey = String.format("%.0f", stability);
         if (!stabilityMap.containsKey(stabilityKey)) {
