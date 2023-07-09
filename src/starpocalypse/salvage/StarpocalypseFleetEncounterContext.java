@@ -21,22 +21,38 @@ public class StarpocalypseFleetEncounterContext extends FleetEncounterContext {
         CampaignFleetAPI winningFleet,
         CampaignFleetAPI otherFleet
     ) {
+        // Get game-generated list of recoverable ships. Will be combined in getStoryRecoverableShips.
         recoverableShips.clear();
         recoverableShips.addAll(super.getRecoverableShips(battle, winningFleet, otherFleet));
         storyRecoverableShips.clear();
         storyRecoverableShips.addAll(super.getStoryRecoverableShips());
-        // Ignore player ships.
+
+        // Empty list to hold player ships.
         playerShips.clear();
-        if (!ConfigHelper.isStingyRecoveriesIncludePlayerShips()) {
-            // Fleet snapshot before battle.
-            List<FleetMemberAPI> playerFleet = Global.getSector().getPlayerFleet().getFleetData().getSnapshot();
-            for (FleetMemberAPI ship : recoverableShips) {
-                if (playerFleet.contains(ship)) {
+
+        // Fleet snapshot before battle.
+        List<FleetMemberAPI> playerFleet = Global.getSector().getPlayerFleet().getFleetData().getSnapshot();
+
+        // Loop through recoverable ships and pull out player ships according to settings.
+        for (FleetMemberAPI ship : recoverableShips) {
+            if (playerFleet.contains(ship)) {
+                if (!ConfigHelper.isStingyRecoveriesIncludePlayerShips()) {
                     playerShips.add(ship);
-                    recoverableShips.remove(ship);
+                }
+                else if (ship.isFrigate() && ConfigHelper.getStingyRecoveriesCombatPlayerShipsSize() > 1) {
+                    playerShips.add(ship);
+                }
+                else if (ship.isDestroyer() && ConfigHelper.getStingyRecoveriesCombatPlayerShipsSize() > 2) {
+                    playerShips.add(ship);
+                }
+                else if (ship.isCruiser() && ConfigHelper.getStingyRecoveriesCombatPlayerShipsSize() > 3) {
+                    playerShips.add(ship);
                 }
             }
         }
+
+        // Remove any selected player ships from original recoverable ships list.
+        recoverableShips.removeAll(playerShips);
         return playerShips;
     }
 

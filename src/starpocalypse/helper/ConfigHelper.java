@@ -64,6 +64,9 @@ public class ConfigHelper {
     private static boolean stingyRecoveriesIncludePlayerShips = true;
 
     @Getter
+    private static int stingyRecoveriesCombatPlayerShipsSize = 1;
+
+    @Getter
     private static final SimpleSet shyBlackMarketFaction = new SimpleSet("faction", "shyBlackMarketFaction.csv");
 
     @Getter
@@ -109,7 +112,8 @@ public class ConfigHelper {
         shyBlackMarket = settings.optBoolean("shyBlackMarket", true);
         stingyRecoveriesDerelicts = settings.optBoolean("stingyRecoveriesDerelicts", true);
         stingyRecoveriesCombat = settings.optBoolean("stingyRecoveriesCombat", true);
-        stingyRecoveriesIncludePlayerShips = settings.optBoolean("stingyRecoveriesIncludePlayerShips", true);
+        stingyRecoveriesIncludePlayerShips = settings.optBoolean("stingyRecoveriesCombatIncludePlayerShips", true);
+        stingyRecoveriesCombatPlayerShipsSize = settings.optInt("stingyRecoveriesCombatPlayerShipsSize", 1);
     }
 
     private static void transparentMarket(JSONObject settings, Logger log) {

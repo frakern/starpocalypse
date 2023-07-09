@@ -65,8 +65,11 @@
     # (both derelict ships found across the sector, and post battle recoveries).
     "stingyRecoveriesDerelicts": true,
     "stingyRecoveriesCombat": true,
-    # Also require a story point to recover disabled player ships post battle.
+    # Also require a story point to recover disabled player ships post battle. stingyRecoveriesCombat must be true.
     "stingyRecoveriesCombatIncludePlayerShips": true,
+    # Require story point to recover player ships by size. Only applies if above setting is true.
+    # 1 = all ships. 2 = destroyer + cruiser + capital. 3 = cruiser + capital. 4 = capital only.
+    "stingyRecoveriesCombatPlayerShipsSize": 1,
 
     # Reduce quantity of salvaged items.
     "salvageMultiplier": -0.5, # vanilla: 0
