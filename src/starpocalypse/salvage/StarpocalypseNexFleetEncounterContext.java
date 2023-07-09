@@ -38,14 +38,11 @@ public class StarpocalypseNexFleetEncounterContext extends NexFleetEncounterCont
             if (playerFleet.contains(ship)) {
                 if (!ConfigHelper.isStingyRecoveriesIncludePlayerShips()) {
                     playerShips.add(ship);
-                }
-                else if (ship.isFrigate() && ConfigHelper.getStingyRecoveriesCombatPlayerShipsSize() > 1) {
+                } else if (ship.isFrigate() && ConfigHelper.getStingyRecoveriesCombatPlayerShipsSize() > 1) {
                     playerShips.add(ship);
-                }
-                else if (ship.isDestroyer() && ConfigHelper.getStingyRecoveriesCombatPlayerShipsSize() > 2) {
+                } else if (ship.isDestroyer() && ConfigHelper.getStingyRecoveriesCombatPlayerShipsSize() > 2) {
                     playerShips.add(ship);
-                }
-                else if (ship.isCruiser() && ConfigHelper.getStingyRecoveriesCombatPlayerShipsSize() > 3) {
+                } else if (ship.isCruiser() && ConfigHelper.getStingyRecoveriesCombatPlayerShipsSize() > 3) {
                     playerShips.add(ship);
                 }
             }
