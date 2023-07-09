@@ -1,3 +1,9 @@
+# Version 3.0.2
+* Add adjustable setting for class of player ships subject to stingy recoveries.
+* Adjust black market to allow some items at higher stability levels.
+* Fix ShipDamager always applying 1 less dmod than max setting.
+* Fix for Heavy Weapons being marked as illegal in markets of factions that do not regulate their sale.
+
 # Version 3.0.1
 
 * Added setting for salvage multiplier
