@@ -34,6 +34,8 @@ public class StarpocalypseCampaignPlugin extends BaseCampaignPlugin {
                 );
             }
         }
+
+
         return super.pickInteractionDialogPlugin(interactionTarget);
     }
 }

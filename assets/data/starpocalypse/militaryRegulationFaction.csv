@@ -1,6 +1,8 @@
-faction
-all
-!independent
-!luddic_path
-!pirates
-!player
+faction,standing
+all, 0
+pirates, 50
+luddic_path, 35
+tritachyon, 15
+hegemony, -10
+sindrian_diktat, -10
+!player, 0

@@ -5,7 +5,7 @@
     "utility": true,
     "version": "3.0.2",
     "description": "More apocalyptic settings",
-    "gameVersion": "0.96a-RC7",
+    "gameVersion": "0.97a-RC11",
     "modPlugin": "starpocalypse.StarpocalypseMod",
     "jars": [
         "starpocalypse.jar"

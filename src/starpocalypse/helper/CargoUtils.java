@@ -4,6 +4,7 @@ import com.fs.starfarer.api.campaign.CargoStackAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.DModManager;
+import com.fs.starfarer.api.impl.campaign.ids.Items;
 import com.fs.starfarer.api.loading.FighterWingSpecAPI;
 import com.fs.starfarer.api.loading.HullModSpecAPI;
 import com.fs.starfarer.api.loading.WeaponSpecAPI;
@@ -28,11 +29,11 @@ public class CargoUtils {
     }
 
     public static int getTier(CargoStackAPI stack) {
-        int tier = 0;
+        int tier = -1;
         if (stack.isWeaponStack()) {
             WeaponSpecAPI spec = stack.getWeaponSpecIfWeapon();
             tier = spec.getTier();
-        } else if (stack.isModSpecStack()) {
+        } else if (stack.isSpecialStack() && stack.getSpecialDataIfSpecial().getId().equals(Items.MODSPEC) ) {
             HullModSpecAPI spec = stack.getHullModSpecIfHullMod();
             tier = spec.getTier();
         } else if (stack.isFighterWingStack()) {

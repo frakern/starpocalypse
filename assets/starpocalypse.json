@@ -6,32 +6,92 @@
     "addDmodsToStartingFleet": true,
     # Configure min and max of d-mods each pristine ship should receive. Ships with less d-mods are ignored.
     # Used by both options above. Minimum is always at least 1, and maximum at most 5.
-    "minimumDmods": 2,
-    "maximumDmods": 4,
+    "minimumDmods": 1,
+    "maximumDmods": 3,
 
     ## MILITARY REGULATIONS
-    # Buying or selling military wares Open Market is illegal unless you are commissioned with the owner of the market.
-    # Uses same logic as Military market with the addition of:
+    # Buying military wares Open Market is illegal for common folk. Selling to approved vendors is allowed. Items are not removed. Just because you cant buy a tank does not mean that none are sold.
     # - Legal list is applied to make item or ship always legal (or illegal, if !negated),
-    # - All civ-grade or civ-hint ships are always legal.
+    # - All civ-grade or civ-hint ships are always legal.,
+    # The standing system is a bit complicated. Basically sum up all influences and check if the value is larger than standingMinimumSelling.
+    # If it is not they will not sell to you. They will buy though.
     "militaryRegulations": true,
     # LPC, weapon, and modspec tier and combat ship FP at which they are still legal.
-    "regulationMaxLegalTier": 0, # easy mode: 1
+    "regulationMaxLegalTier": -1, # easy mode: 1
     "regulationMaxLegalFP": 0, # easy mode: 5
-    # Remove endgame ships (all capitals) and items (tier3 LPC, modspecs, and weapons) from Military Markets.
-    "removeMilitaryEndgameCargo": true,
-    "removeMilitaryEndgameShips": true,
-    # Suspicion level will grow even with transponder off. It is still useful to sell illegal wares.
+
+    #Low stability increases legal items. Can be changed in militaryRegulationStability.csv
+    "standingBonusAtLowStability": true,
+
+    # Minimum standing required to buy stuff. Just because a faction does not sell stuff to you does not mean that they aint buying.
+    "standingMinimumSelling": -25,
+
+    # If they have a surplus they will sell to more people. If they need it themself the export may be restricted.
+    "standingBonusSurplus": 15,
+    "standingBonusShortage": -15,
+
+    # Apply Faction reputation to standing with this factor
+    "standingFactionFactor": 1,
+
+    # Apply contact reputation to standing with this factor.
+    "standingContactFactor": 0.5,
+
+    # Contact level applies bonus to standing.
+    "standingContactBonusNoContact": 0,
+    "standingContactBonusVeryLow": 5,
+    "standingContactBonusLow": 10,
+    "standingContactBonusMedium": 35,
+    "standingContactBonusHigh": 50,
+    "standingContactBonusVeryHigh": 75,
+
+    # Commission standing bonus:
+    "standingCommissionBonus": 75,
+
+    # Weapon tier standing cutoffs. Set to unreachable value (e.g. 1000) always remove.
+    "standingWeaponT0" : 40,
+    "standingWeaponT1" : 75,
+    "standingWeaponT2": 125,
+    "standingWeaponT3": 175,
+    "standingWeaponT4": 225, # There are no T4 weapons in the basegame. Any mod adding items a tier above 3 will be treated as this
+
+    #Ship size tier cutoff. Set to unreachable value (e.g. 1000) always remove.
+    "standingShipCivilian": 0,
+    "standingShipFrigate": 75,
+    "standingShipDestroyer": 125,
+    "standingShipCruiser": 175,
+    "standingShipCapital": 200,
+
+# Suspicion level will grow even with transponder off. It is still useful to sell illegal wares.
     "transparentMarket": true,
     # Setting this to 0 essentially disabled the feature. Setting this to 1 makes it behave as if the transponder was on
     # for suspicion calculations. Setting it above 1 will cause a penalty for trading with transponder off.
     "transparentMarketMult": 0.5,# vanilla: 0
     # Accessing Black Market is only possible with transponder turned off.
-    "shyBlackMarket": true,
+    "shyBlackMarket": false,
     # Black Market handling fee (bribe) as a fraction of the Open Market tariff. If tariff is 30%, Black Market bribe will be 15%.
     "blackMarketFenceCut": 0.5,# vanilla: 0
+    # Black market access requires a pirate contact at that location.
+    "blackMarketRequiresContact": true, # vanilla: false If Nexerelin is present: No contact will be required if the planet is in rebellion. Restrictions below will still apply though.
+    # Not every contact can get you the good stuff. At least this importance is required of the blackMarket contact to enable you buying this
+    # 0: No Contact required
+    # 1: Very Low
+    # 2: Low
+    # 3: Medium
+    # 4: High
+    # 5: Very High
+    # 6: Never
+    "blackMarketWeaponT0" : 0,
+    "blackMarketWeaponT1" : 1,
+    "blackMarketWeaponT2": 2,
+    "blackMarketWeaponT3": 4,
+    "blackMarketWeaponT4": 5,
+    "blackMarketShipCivilian": 0,
+    "blackMarketShipFrigate": 3,
+    "blackMarketShipDestroyer": 4,
+    "blackMarketShipCruiser": 5,
+    "blackMarketShipCapital": 6,
 
-    ## BETTER MARKET DEFENCES
+    ### BETTER MARKET DEFENCES
     # Add a station to non-hidden markets based on size where one does not already exist.
     "addStations": true,
     # Minimum market size to add Star Fortress.
@@ -43,14 +103,21 @@
     # Add Ground Defenses/Heavy Batteries to all markets.
     "addGroundDefenses": true,
     # At this size and above, all Ground Defenses will be upgraded to Heavy Batteries.
-    "sizeHeavyBatteries": 6,
+    "sizeHeavyBatteries": 5,
     # Add a Patrol HQ to all non-hidden markets.
-    "addPatrolHqs": true,
+    "addPatrolHqs": false,
+
+    ## Pirates and Luddic Path get eradicated too often. Lets change that.
+
+    # My pirates starved to death as they could not acquire food after their planet that contained their farms was captured. This gives them a leg up regarding accesability.
+    "pirateMegaport": true,
+    # One can never trust another pirate. So invest in bigger guns. Also improves them. There is a reason the hegemony didnt wipe them out yet.
+    "pirateHeavyBatteries": true,
 
     ## REPUTATION CHANGES
     # After winning an engagement, the enemies of the beaten fleet will have a slightly better reputation of you.
     # Their allies will dislike you slightly more, though.
-    "combatAdjustedReputation": true,
+    "combatAdjustedReputation": false,
     # Raiding for special items instantly ruins player reputation with the owner of the item.
     "hostilityForSpecialItemRaid": true,
     
@@ -59,18 +126,28 @@
     "blueprintPackageNoDrop": true,
 
     # Number of s-mods available to player (without skill).
-    "maxPermaMods": 0, # easy mode: 1, vanilla: 2
+    "maxPermaMods": 1, # easy mode: 1, vanilla: 2
 
     # Always require story points to recover ships
     # (both derelict ships found across the sector, and post battle recoveries).
     "stingyRecoveriesDerelicts": true,
     "stingyRecoveriesCombat": true,
     # Also require a story point to recover disabled player ships post battle. stingyRecoveriesCombat must be true.
-    "stingyRecoveriesCombatIncludePlayerShips": true,
+    "stingyRecoveriesCombatIncludePlayerShips": false,
     # Require story point to recover player ships by size. Only applies if above setting is true.
     # 1 = all ships. 2 = destroyer + cruiser + capital. 3 = cruiser + capital. 4 = capital only.
     "stingyRecoveriesCombatPlayerShipsSize": 1,
 
+    #Chance for a recoverable ship to be recoverable without storypoint (0 = always require story point)
+    "stingyRecoveriesChanceFrigate": 0.4,
+    "stingyRecoveriesChanceDestroyer": 0.3,
+    "stingyRecoveriesChanceCruiser": 0.2,
+    "stingyRecoveriesChanceCapital": 0.1,
+
+
     # Reduce quantity of salvaged items.
-    "salvageMultiplier": -0.5, # vanilla: 0
+    "salvageMultiplier": -0.25, # vanilla: 0,
+
+    #Economy Changes
+    "applyBuySellCostMultToQuest":true
 }

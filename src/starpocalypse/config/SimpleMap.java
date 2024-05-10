@@ -28,8 +28,8 @@ public class SimpleMap extends FileReader {
         log.debug("Reading " + file);
         for (int i = 0; i < data.length(); i++) {
             JSONObject line = data.getJSONObject(i);
-            String key = line.getString(column);
-            String value = line.getString(field);
+            String key = line.getString(column).trim();
+            String value = line.getString(field).replace(" ", "");
             map.put(key, value);
             log.debug("> " + key + " = " + value);
         }

@@ -5,21 +5,24 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignUIAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Industries;
+import com.fs.starfarer.api.impl.campaign.missions.HandMeDownFreighter;
+import com.fs.starfarer.api.impl.campaign.missions.HijackingMission;
 import com.fs.starfarer.api.impl.campaign.shared.SharedData;
 import com.fs.starfarer.api.util.Misc;
 import java.util.List;
+
+import exerelin.campaign.intel.missions.BuyShip;
 import lombok.extern.log4j.Log4j;
 import org.json.JSONObject;
 import starpocalypse.helper.ConfigHelper;
 import starpocalypse.helper.DropTableUtils;
-import starpocalypse.market.GroundDefenseAdder;
-import starpocalypse.market.IndustryAdder;
-import starpocalypse.market.MarketListener;
-import starpocalypse.market.StationAdder;
+import starpocalypse.market.*;
 import starpocalypse.reputation.EngagementListener;
 import starpocalypse.reputation.RaidListener;
 import starpocalypse.submarket.ShipDamager;
 import starpocalypse.submarket.SubmarketSwapper;
+
+import com.fs.starfarer.api.impl.campaign.missions.SurplusShipHull;
 
 @Log4j
 public class StarpocalypseMod extends BaseModPlugin {
@@ -51,6 +54,7 @@ public class StarpocalypseMod extends BaseModPlugin {
         stingyDerelictRecoveries();
         stingyCombatRecoveries();
         salvageMultiplier();
+        applyCostModifierToVanillaQuests();
     }
 
     @Override
@@ -73,6 +77,7 @@ public class StarpocalypseMod extends BaseModPlugin {
         addGroundDefenses(listener);
         addPatrolHqs(listener);
         addStations(listener);
+        upgradePirateSpaceport(listener);
         listener.register();
     }
 
@@ -125,8 +130,18 @@ public class StarpocalypseMod extends BaseModPlugin {
             );
         }
     }
+    private void upgradePirateSpaceport(MarketListener listener) {
+        listener.add(
+                new PirateUpgrader(
+                        settings.optBoolean("pirateHeavyBatteries", true),
+                        settings.optBoolean("pirateMegaport", true)
+                )
+        );
+    }
 
-    private void combatAdjustedReputation() {
+
+
+        private void combatAdjustedReputation() {
         if (settings.optBoolean("combatAdjustedReputation", true)) {
             log.info("Enabling combat adjusted reputation");
             EngagementListener.register();
@@ -187,5 +202,16 @@ public class StarpocalypseMod extends BaseModPlugin {
             "\n\nThank you for playing with Starpocalypse. I hope you had a bad day." +
             "\n\nYours, Jaghaimo."
         );
+    }
+
+    private void applyCostModifierToVanillaQuests() {
+
+        if(ConfigHelper.isApplyBuySellCostMultToQuest())
+        {
+            SurplusShipHull.BASE_PRICE_MULT = 0.5f * (Global.getSettings().getFloat("shipSellPriceMult") + Global.getSettings().getFloat("shipBuyPriceMult"));
+            HijackingMission.BASE_PRICE_MULT = Global.getSettings().getFloat("shipSellPriceMult") / 2f;
+            HandMeDownFreighter.BASE_PRICE_MULT = Global.getSettings().getFloat("shipSellPriceMult");
+        }
+
     }
 }

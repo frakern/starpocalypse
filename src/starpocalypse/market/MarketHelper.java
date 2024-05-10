@@ -39,4 +39,13 @@ public class MarketHelper {
             market.removeIndustry(industryId, null, false);
         }
     }
+
+    public void improveIndustry(MarketAPI market, String industryId)
+    {
+        if(market.hasIndustry(industryId))
+        {
+            market.getIndustry(industryId).setImproved(true);
+        }
+
+    }
 }
