@@ -16,6 +16,8 @@
     # The standing system is a bit complicated. Basically sum up all influences and check if the value is larger than standingMinimumSelling.
     # If it is not they will not sell to you. They will buy though.
     "militaryRegulations": true,
+    # Whether the military market can be fully accessed without commission. Only active if regulation is true.
+    "militaryNoCommission": true,
     # LPC, weapon, and modspec tier and combat ship FP at which they are still legal.
     "regulationMaxLegalTier": -1, # easy mode: 1
     "regulationMaxLegalFP": 0, # easy mode: 5

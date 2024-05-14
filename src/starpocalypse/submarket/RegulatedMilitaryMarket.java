@@ -143,6 +143,12 @@ public class RegulatedMilitaryMarket extends MilitarySubmarketPlugin {
         }
     }
 
+    @Override
+
+    protected boolean requiresCommission(RepLevel req) {
+        return super.requiresCommission(req) && !ConfigHelper.isMilitaryNoCommission();
+    }
+
     private int getCommodityStandingModifier(String commodityID)
     {
         // Cant really get how much shortage there is relative to market size. So now it is just if there is a shortage/excess

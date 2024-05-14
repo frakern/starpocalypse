@@ -21,6 +21,9 @@ public class ConfigHelper {
     private static boolean regulation = true;
 
     @Getter
+    private static boolean militaryNoCommission = false;
+
+    @Getter
     private static float regulationMaxTier = 0;
 
     @Getter
@@ -233,6 +236,7 @@ public class ConfigHelper {
         minDmods = clamp(settings.optInt("minimumDmods", 2), 1, 5);
         maxDmods = clamp(settings.optInt("maximumDmods", 4), minDmods, 5);
         regulation = settings.optBoolean("militaryRegulations", true);
+        militaryNoCommission = settings.optBoolean("militaryNoCommission", false);
         regulationMaxFP = settings.optInt("regulationMaxLegalFP", 0);
         regulationMaxTier = settings.optInt("regulationMaxLegalTier", 0);
         shyBlackMarket = settings.optBoolean("shyBlackMarket", true);
