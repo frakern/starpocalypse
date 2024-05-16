@@ -9,6 +9,7 @@ import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.ids.HullMods;
 import com.fs.starfarer.api.impl.campaign.submarkets.MilitarySubmarketPlugin;
+import com.fs.starfarer.api.util.Highlights;
 import com.fs.starfarer.api.util.Misc;
 import exerelin.campaign.AllianceManager;
 import exerelin.campaign.PlayerFactionStore;
@@ -117,7 +118,7 @@ public class RegulatedMilitaryMarket extends MilitarySubmarketPlugin {
 
     @Override
     public String getIllegalTransferText(CargoStackAPI stack, SubmarketPlugin.TransferAction action) {
-        if(super.isIllegalOnSubmarket(stack, action))
+        if(super.isIllegalOnSubmarket(stack, action) && (!ConfigHelper.isMilitaryNoCommission() || super.isIllegalOnSubmarket(stack, TransferAction.PLAYER_BUY)))
         {
             return super.getIllegalTransferText(stack, action);
         }
@@ -130,8 +131,22 @@ public class RegulatedMilitaryMarket extends MilitarySubmarketPlugin {
     }
 
     @Override
+    public Highlights getIllegalTransferTextHighlights(CargoStackAPI stack, SubmarketPlugin.TransferAction action) {
+        if(super.isIllegalOnSubmarket(stack, action) && (!ConfigHelper.isMilitaryNoCommission() || super.isIllegalOnSubmarket(stack, TransferAction.PLAYER_BUY)))
+        {
+            return super.getIllegalTransferTextHighlights(stack, action);
+        }
+        else
+        {
+            Highlights h = new Highlights();
+            h.append(getIllegalTransferText(stack, action), Misc.getNegativeHighlightColor());
+            return h;
+        }
+    }
+
+    @Override
     public String getIllegalTransferText(FleetMemberAPI ship, SubmarketPlugin.TransferAction action) {
-        if(super.isIllegalOnSubmarket(ship, action))
+        if(super.isIllegalOnSubmarket(ship, action) && (!ConfigHelper.isMilitaryNoCommission() || super.isIllegalOnSubmarket(ship, TransferAction.PLAYER_BUY)))
         {
             return super.getIllegalTransferText(ship, action);
         }
@@ -142,9 +157,20 @@ public class RegulatedMilitaryMarket extends MilitarySubmarketPlugin {
             return "Standing is " + standing + " Required is " + requiredStanding;
         }
     }
-
     @Override
-
+    public Highlights getIllegalTransferTextHighlights(FleetMemberAPI member, SubmarketPlugin.TransferAction action) {
+        if(super.isIllegalOnSubmarket(member, action) && (!ConfigHelper.isMilitaryNoCommission() || super.isIllegalOnSubmarket(member, TransferAction.PLAYER_BUY)))
+        {
+            return super.getIllegalTransferTextHighlights(member, action);
+        }
+        else
+        {
+            Highlights h = new Highlights();
+            h.append(getIllegalTransferText(member, action), Misc.getNegativeHighlightColor());
+            return h;
+        }
+    }
+    @Override
     protected boolean requiresCommission(RepLevel req) {
         return super.requiresCommission(req) && !ConfigHelper.isMilitaryNoCommission();
     }

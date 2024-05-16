@@ -76,6 +76,7 @@ public class StandingMarketRegulation
     public static PersonAPI getBestContactOfFaction(FactionAPI faction)
     {
         PersonAPI candidate = null;
+        int best_bonus = -25000;
         for(IntelInfoPlugin intel : Global.getSector().getIntelManager().getIntel(ContactIntel.class))
         {
             if (!intel.isEnding() &&
@@ -87,9 +88,11 @@ public class StandingMarketRegulation
                     ((ContactIntel)intel).getPerson().getFaction().equals(faction)
             )
             {
-                if(candidate == null || candidate.getImportance().getValue() < ((ContactIntel)intel).getPerson().getImportance().getValue())
+                int contactStanding = getContactStanding(((ContactIntel)intel).getPerson());
+                if(candidate == null || best_bonus < contactStanding)
                 {
                     candidate = ((ContactIntel)intel).getPerson();
+                    best_bonus = contactStanding;
                 }
             }
         }

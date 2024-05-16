@@ -4,6 +4,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.econ.CommoditySpecAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
+import com.fs.starfarer.api.campaign.econ.MarketConditionAPI;
 import com.fs.starfarer.api.campaign.econ.SubmarketAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.combat.ShipHullSpecAPI;
@@ -78,8 +79,7 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
 
         if(ConfigHelper.hasNexerelin())
         {
-            String rebellionStr = Global.getSettings().getString("exerelin_marketConditions", "rebellion");
-            result |= market.getStability().getMods().containsKey(rebellionStr);
+            result |= market.hasCondition("nex_rebellion_condition");
         }
 
         return result;
