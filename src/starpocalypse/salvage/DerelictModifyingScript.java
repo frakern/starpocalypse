@@ -66,6 +66,10 @@ public class DerelictModifyingScript implements EveryFrameScript {
                             double recoveryChance = 1;
                             for(ShipRecoverySpecial.PerShipData ship:((ShipRecoverySpecial.ShipRecoverySpecialData) specialData).ships)
                             {
+                                if(ship.getVariant() == null) //Yes this can occur.
+                                {
+                                    continue;
+                                }
                                 ShipAPI.HullSize shipClass = ship.getVariant().getHullSize();
 
                                 switch (shipClass){
