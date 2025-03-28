@@ -48,23 +48,22 @@ public class StandingMarketRegulation
         if(contact != null)
         {
             contactStanding += ConfigHelper.getStandingContactFactor() * contact.getRelToPlayer().getRepInt();
-            int contactLevelBonus = 0;
             switch (contact.getImportance().getDisplayName())
             {
                 case("Very Low"):
-                    contactLevelBonus = ConfigHelper.getStandingContactBonusVeryLow();
+                    contactStanding += ConfigHelper.getStandingContactBonusVeryLow();
                     break;
                 case("Low"):
-                    contactLevelBonus = ConfigHelper.getStandingContactBonusLow();
+                    contactStanding +=ConfigHelper.getStandingContactBonusLow();
                     break;
                 case("Medium"):
-                    contactLevelBonus = ConfigHelper.getStandingContactBonusMedium();
+                    contactStanding += ConfigHelper.getStandingContactBonusMedium();
                     break;
                 case("High"):
-                    contactLevelBonus = ConfigHelper.getStandingContactBonusHigh();
+                    contactStanding += ConfigHelper.getStandingContactBonusHigh();
                     break;
                 case("Very High"):
-                    contactLevelBonus = ConfigHelper.getStandingContactBonusVeryHigh();
+                    contactStanding += ConfigHelper.getStandingContactBonusVeryHigh();
                     break;
                 default:
                     break;
