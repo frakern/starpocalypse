@@ -69,10 +69,11 @@
     "costMultiplierShips": 2, # Vanilla 1
     "costMultiplierProduction": 3, # Multiplier for pruduction volume Vanilla 1
     "costMultiplierSellerProfitMargin": 0.5, # Sets profit margin for Markets. Basically how much of the value the player looses by selling. -1 means vanilla values are used. Max value: 1 (You sell everything for 0) Min value: 0 (Sell price = buy price)
-    "costMultiplierOverrideDmods": 0.5, # Multiplier for pruduction volume Vanilla 0.3
+    "costMultiplierOverrideDmods": 0.5, # Override for hullWithDModsSellPriceMult. Larger values result in a smaller sell/buy value loss caused by D-mods. Vanilla 0.3
 
 
-    ## Black Market changes
+
+## Black Market changes
     # Suspicion level will grow even with transponder off. It is still useful to sell illegal wares.
     "transparentMarket": true,
     # Setting this to 0 essentially disabled the feature. Setting this to 1 makes it behave as if the transponder was on
