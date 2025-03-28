@@ -226,7 +226,7 @@ public class StarpocalypseMod extends BaseModPlugin {
         Global.getSettings().setFloat("productionCostMult", ConfigHelper.getCostMultiplierProduction() * (float)original_vanilla_setting.get("productionCostMult"));
         Global.getSettings().setFloat("productionCapacityPerSWUnit", ConfigHelper.getCostMultiplierProduction() * (float)original_vanilla_setting.get("productionCapacityPerSWUnit"));
 
-        if(ConfigHelper.getCostMultiplierSellerProfitMargin() == 0)
+        if(ConfigHelper.getCostMultiplierSellerProfitMargin() < 0)
         {
             Global.getSettings().setFloat("shipSellPriceMult", ConfigHelper.getCostMultiplierShips() * (float)original_vanilla_setting.get("shipSellPriceMult"));
             Global.getSettings().setFloat("shipWeaponSellPriceMult", ConfigHelper.getCostMultiplierWeapon() * (float)original_vanilla_setting.get("shipWeaponSellPriceMult"));

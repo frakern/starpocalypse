@@ -2,7 +2,7 @@
 
 This mod makes the following changes to the campaign layer of Starsector:
 
-1. Weapons and combat ships are scarce and highly regulated and more expensive. Access to these is regulated with a standing system, with the standing affected by your reputation, your best contact (contact reputation and quality) and your commission status (if possible). Buying larger hulls or high tier weapons is next to impossible without the right connections.
+1. Weapons and combat ships are scarce and highly regulated and more expensive (2x by default). Access to these is regulated with a standing system, with the standing affected by your reputation, your best contact (contact reputation and quality) and your commission status (if possible). Buying larger hulls or high tier weapons is next to impossible without the right connections.
     1. If you dont have a high enough standing you wont be getting combat ships and weapons equipment from them. If they hate you enough they may even not sell you civilian ships. Can be configured using the config and csv files mentioned in it.
     2. You can only buy combat ships and weapons on the black market if your contact has a high enough importance. Can be configured in the config.
 
