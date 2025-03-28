@@ -9,7 +9,10 @@ import com.fs.starfarer.api.impl.campaign.missions.HandMeDownFreighter;
 import com.fs.starfarer.api.impl.campaign.missions.HijackingMission;
 import com.fs.starfarer.api.impl.campaign.shared.SharedData;
 import com.fs.starfarer.api.util.Misc;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import exerelin.campaign.intel.missions.BuyShip;
 import lombok.extern.log4j.Log4j;
@@ -28,7 +31,8 @@ import com.fs.starfarer.api.impl.campaign.missions.SurplusShipHull;
 public class StarpocalypseMod extends BaseModPlugin {
 
     private static JSONObject settings;
-
+    private static Map<String,Object> original_vanilla_setting = new HashMap<>();
+    private boolean cached_orgiginal_settings = false;
     @Override
     public void onApplicationLoad() throws Exception {
         settings = Global.getSettings().loadJSON("starpocalypse.json");
@@ -54,6 +58,7 @@ public class StarpocalypseMod extends BaseModPlugin {
         stingyDerelictRecoveries();
         stingyCombatRecoveries();
         salvageMultiplier();
+        applyCostModifiers();
         applyCostModifierToVanillaQuests();
     }
 
@@ -204,6 +209,36 @@ public class StarpocalypseMod extends BaseModPlugin {
         );
     }
 
+    private void applyCostModifiers() {
+
+        if(!cached_orgiginal_settings)
+        {
+            original_vanilla_setting.put("shipSellPriceMult", Global.getSettings().getFloat("shipSellPriceMult"));
+            original_vanilla_setting.put("shipBuyPriceMult", Global.getSettings().getFloat("shipBuyPriceMult"));
+            original_vanilla_setting.put("shipWeaponBuyPriceMult", Global.getSettings().getFloat("shipWeaponBuyPriceMult"));
+            original_vanilla_setting.put("shipWeaponSellPriceMult", Global.getSettings().getFloat("shipWeaponSellPriceMult"));
+            original_vanilla_setting.put("productionCostMult", Global.getSettings().getFloat("productionCostMult"));
+            original_vanilla_setting.put("productionCapacityPerSWUnit", Global.getSettings().getFloat("productionCapacityPerSWUnit"));
+            cached_orgiginal_settings = true;
+        }
+        Global.getSettings().setFloat("shipBuyPriceMult", ConfigHelper.getCostMultiplierShips() * (float)original_vanilla_setting.get("shipSellPriceMult"));
+        Global.getSettings().setFloat("shipWeaponBuyPriceMult", ConfigHelper.getCostMultiplierWeapon() * (float)original_vanilla_setting.get("shipWeaponBuyPriceMult"));
+        Global.getSettings().setFloat("productionCostMult", ConfigHelper.getCostMultiplierProduction() * (float)original_vanilla_setting.get("productionCostMult"));
+        Global.getSettings().setFloat("productionCapacityPerSWUnit", ConfigHelper.getCostMultiplierProduction() * (float)original_vanilla_setting.get("productionCapacityPerSWUnit"));
+
+        if(ConfigHelper.getCostMultiplierSellerProfitMargin() == 0)
+        {
+            Global.getSettings().setFloat("shipSellPriceMult", ConfigHelper.getCostMultiplierShips() * (float)original_vanilla_setting.get("shipSellPriceMult"));
+            Global.getSettings().setFloat("shipWeaponSellPriceMult", ConfigHelper.getCostMultiplierWeapon() * (float)original_vanilla_setting.get("shipWeaponSellPriceMult"));
+        }
+        else
+        {
+            Global.getSettings().setFloat("shipSellPriceMult", (1f - ConfigHelper.getCostMultiplierSellerProfitMargin()) * ConfigHelper.getCostMultiplierShips() * (float)original_vanilla_setting.get("shipBuyPriceMult"));
+            Global.getSettings().setFloat("shipWeaponSellPriceMult", (1f - ConfigHelper.getCostMultiplierSellerProfitMargin()) * ConfigHelper.getCostMultiplierWeapon() * (float)original_vanilla_setting.get("shipWeaponBuyPriceMult"));
+        }
+        Global.getSettings().setFloat("hullWithDModsSellPriceMult", ConfigHelper.getCostMultiplierOverrideDmods());
+    }
+
     private void applyCostModifierToVanillaQuests() {
 
         if(ConfigHelper.isApplyBuySellCostMultToQuest())
@@ -212,6 +247,5 @@ public class StarpocalypseMod extends BaseModPlugin {
             HijackingMission.BASE_PRICE_MULT = Global.getSettings().getFloat("shipSellPriceMult") / 2f;
             HandMeDownFreighter.BASE_PRICE_MULT = Global.getSettings().getFloat("shipSellPriceMult");
         }
-
     }
 }

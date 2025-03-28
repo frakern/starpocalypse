@@ -178,7 +178,26 @@ public class ConfigHelper {
     @Getter
     private static double stingyRecoveriesChanceCapital = 1;
 
-    @Getter static boolean applyBuySellCostMultToQuest = true;
+    @Getter
+    private static double stingyRecoveriesChanceWeapons = 1;
+
+    @Getter
+    static boolean applyBuySellCostMultToQuest = true;
+
+    @Getter
+    private static float costMultiplierWeapon = 1;
+
+    @Getter
+    private static float costMultiplierShips = 1;
+
+    @Getter
+    private static float costMultiplierProduction = 1;
+
+    @Getter
+    private static float costMultiplierSellerProfitMargin = 0;
+
+    @Getter
+    private static float costMultiplierOverrideDmods = 0.3f;
 
     @Getter
     private static final SimpleSet shyBlackMarketFaction = new SimpleSet("faction", "shyBlackMarketFaction.csv");
@@ -294,6 +313,14 @@ public class ConfigHelper {
         stingyRecoveriesChanceDestroyer = settings.optDouble("stingyRecoveriesChanceDestroyer",1.0);
         stingyRecoveriesChanceCruiser = settings.optDouble("stingyRecoveriesChanceCruiser",1.0);
         stingyRecoveriesChanceCapital = settings.optDouble("stingyRecoveriesChanceCapital",1.0);
+
+        stingyRecoveriesChanceWeapons = settings.optDouble("stingyRecoveriesChanceWeapons",1.0);
+
+        costMultiplierWeapon = (float) settings.optDouble("costMultiplierWeapon",1.0);
+        costMultiplierShips = (float) settings.optDouble("costMultiplierShips",1.0);
+        costMultiplierProduction = (float) settings.optDouble("costMultiplierProduction",1.0);
+        costMultiplierSellerProfitMargin = (float) settings.optDouble("costMultiplierSellerProfitMargin",1.0);
+        costMultiplierOverrideDmods = (float) settings.optDouble("costMultiplierOverrideDmods",1.0);
     }
 
     private static void transparentMarket(JSONObject settings, Logger log) {

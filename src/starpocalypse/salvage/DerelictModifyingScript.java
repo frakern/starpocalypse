@@ -2,6 +2,7 @@ package starpocalypse.salvage;
 
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CargoStackAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
@@ -11,6 +12,7 @@ import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.special.ShipRecoverySp
 import java.util.List;
 import java.util.Random;
 import lombok.extern.log4j.Log4j;
+import starpocalypse.helper.CargoUtils;
 import starpocalypse.helper.ConfigHelper;
 
 @Log4j
@@ -48,64 +50,55 @@ public class DerelictModifyingScript implements EveryFrameScript {
             Object specialData = memory.get(MemFlags.SALVAGE_SPECIAL_DATA);
             if(!entity.hasTag(salvageChangeAppliedTag) && !memory.contains(salvageChangeAppliedTag))
             {
+                Random rand;
+                if(entity.getId() == null || entity.getId().isEmpty())
+                {
+                    rand = new Random();
+                }
+                else{
+                    rand = new Random(entity.getId().hashCode());
+                }
+
+                boolean handled = false;
                 if (specialData instanceof ShipRecoverySpecial.ShipRecoverySpecialData) {
+                    double recoveryChance = 1;
                     if(!((ShipRecoverySpecial.ShipRecoverySpecialData) specialData).ships.isEmpty())
                     {
-                        log.info("Found new salvageable: " +entity.getFullName()+ " in " + entity.getContainingLocation().getName() + " special Data " + specialData);
-                        if(((ShipRecoverySpecial.ShipRecoverySpecialData) specialData).storyPointRecovery == null || !(((ShipRecoverySpecial.ShipRecoverySpecialData) specialData).storyPointRecovery))
+                        log.info("Found new salvageable: " +entity.getFullName()+ " in " + entity.getContainingLocation().getName());
+                        for(ShipRecoverySpecial.PerShipData ship:((ShipRecoverySpecial.ShipRecoverySpecialData) specialData).ships)
                         {
-
-                            Random rand;
-                            if(entity.getId() == null || entity.getId().isEmpty())
+                            if(ship.getVariant() == null) //Yes this can occur.
                             {
-                                rand = new Random();
+                                continue;
                             }
-                            else{
-                                rand = new Random(entity.getId().hashCode());
-                            }
-                            double recoveryChance = 1;
-                            for(ShipRecoverySpecial.PerShipData ship:((ShipRecoverySpecial.ShipRecoverySpecialData) specialData).ships)
+                            handled = true;
+                            if(! ship.getVariant().isFighter())
                             {
-                                if(ship.getVariant() == null) //Yes this can occur.
-                                {
-                                    continue;
-                                }
-                                ShipAPI.HullSize shipClass = ship.getVariant().getHullSize();
-
-                                switch (shipClass){
-                                    case FRIGATE:
-                                        recoveryChance =  Math.min(ConfigHelper.getStingyRecoveriesChanceFrigate(),recoveryChance);
-                                        break;
-
-                                    case DESTROYER:
-                                        recoveryChance = Math.min(ConfigHelper.getStingyRecoveriesChanceDestroyer(),recoveryChance);
-                                        break;
-                                    case CRUISER:
-                                        recoveryChance = Math.min(ConfigHelper.getStingyRecoveriesChanceCruiser(),recoveryChance);
-                                        break;
-
-                                    case CAPITAL_SHIP:
-                                        recoveryChance = Math.min(ConfigHelper.getStingyRecoveriesChanceCapital(),recoveryChance);
-                                        break;
-
-                                    default:
-                                        recoveryChance = 0;
-                                }
+                                // Remove more weapons based on StingyRecoveriesChanceWeapons
+                                CargoUtils.handleStingyWeapon(ship.getVariant(), rand);
+                            }
+                            if(((ShipRecoverySpecial.ShipRecoverySpecialData) specialData).storyPointRecovery == null || !(((ShipRecoverySpecial.ShipRecoverySpecialData) specialData).storyPointRecovery))
+                            {
+                                recoveryChance =  Math.min(CargoUtils.getStingyRecoveryChance(ship.getVariant().getHullSize()),recoveryChance);
                                 log.info("Recovery chance for " + ship.variantId + " determined  to be " + recoveryChance);
                             }
-                            double randomDouble = rand.nextDouble();
-                            boolean forceStoryPoint = randomDouble >= recoveryChance;
-                            log.info("Salvage Chance for " + entity.getFullName() + " with ID " + entity.getId() + " Random double is " + randomDouble + " recovery chance was " + recoveryChance +" now requires story point " + forceStoryPoint);
-
-                            ((ShipRecoverySpecial.ShipRecoverySpecialData) specialData).storyPointRecovery = forceStoryPoint;
+                            if(recoveryChance < 1)
+                            {
+                                double randomDouble = rand.nextDouble();
+                                boolean forceStoryPoint = randomDouble >= recoveryChance;
+                                log.info("Salvage Chance for " + entity.getFullName() + ": " + ship.variantId + " Random double is " + randomDouble + " recovery chance was " + recoveryChance +" now requires story point " + forceStoryPoint);
+                                ((ShipRecoverySpecial.ShipRecoverySpecialData) specialData).storyPointRecovery = forceStoryPoint;
+                            }
                         }
 
-                        entity.addTag(salvageChangeAppliedTag);
-                        memory.set(salvageChangeAppliedTag, true);
-                        log.info("Updated memory for entity");
+                        if(handled)
+                        {
+                            entity.addTag(salvageChangeAppliedTag);
+                            memory.set(salvageChangeAppliedTag, true);
+                            log.info("Updated memory for entity");
+                        }
 
                     }
-
                 }
             }
         }

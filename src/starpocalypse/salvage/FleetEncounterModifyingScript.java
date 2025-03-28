@@ -6,9 +6,11 @@ import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import lombok.extern.log4j.Log4j;
+import starpocalypse.helper.CargoUtils;
 import starpocalypse.helper.ConfigHelper;
 import starpocalypse.submarket.StandingMarketRegulation;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -36,30 +38,28 @@ public class FleetEncounterModifyingScript
         // Fleet snapshot before battle.
         List<FleetMemberAPI> playerFleet = Global.getSector().getPlayerFleet().getFleetData().getSnapshot();
 
+        for (FleetMemberAPI ship : storyRecoverableShips)
+        {
+            Random rand = new Random();
+            // Remove more weapons based on StingyRecoveriesChanceWeapons
+            if(!ship.isFighterWing() && (!ship.isAlly() || ConfigHelper.isStingyRecoveriesIncludePlayerShips()))
+            {
+                CargoUtils.handleStingyWeapon(ship.getVariant(), rand);
+            }
+        }
+
         // Loop through recoverable ships and pull out player ships according to settings.
         for (FleetMemberAPI ship : recoverableShips) {
-            Random rand = new Random(ship.hashCode());
-            double recoveryChance;
-            ShipAPI.HullSize shipClass = ship.getHullSpec().getHullSize();
-            switch (shipClass){
-                case FRIGATE:
-                    recoveryChance = ConfigHelper.getStingyRecoveriesChanceFrigate();
-                    break;
 
-                case DESTROYER:
-                    recoveryChance = ConfigHelper.getStingyRecoveriesChanceDestroyer();
-                    break;
-                case CRUISER:
-                    recoveryChance = ConfigHelper.getStingyRecoveriesChanceCruiser();
-                    break;
-
-                case CAPITAL_SHIP:
-                    recoveryChance = ConfigHelper.getStingyRecoveriesChanceCapital();
-                    break;
-
-                default:
-                    recoveryChance = 0;
+            Random rand = new Random();
+            // Remove more weapons based on StingyRecoveriesChanceWeapons
+            if(!ship.isFighterWing() && (!ship.isAlly() || ConfigHelper.isStingyRecoveriesIncludePlayerShips()))
+            {
+                CargoUtils.handleStingyWeapon(ship.getVariant(), rand);
             }
+
+            double recoveryChance = CargoUtils.getStingyRecoveryChance(ship.getHullSpec().getHullSize());
+            ShipAPI.HullSize shipClass = ship.getHullSpec().getHullSize();
             double randomDouble = rand.nextDouble();
             boolean forceStoryPoint = randomDouble >= recoveryChance;
 
@@ -94,4 +94,10 @@ public class FleetEncounterModifyingScript
         int cutOff = Math.min(23, allShips.size());
         return allShips.subList(0, cutOff);
     }
+
+    public boolean isRecoverableShip(FleetMemberAPI member)
+    {
+        return recoverableShips.contains(member) || storyRecoverableShips.contains(member);
+    }
+
 }
