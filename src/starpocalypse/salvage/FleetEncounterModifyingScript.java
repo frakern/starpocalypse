@@ -42,7 +42,7 @@ public class FleetEncounterModifyingScript
         {
             Random rand = new Random();
             // Remove more weapons based on StingyRecoveriesChanceWeapons
-            if(!ship.isFighterWing() && (!ship.isAlly() || ConfigHelper.isStingyRecoveriesIncludePlayerShips()))
+            if(!ship.isFighterWing() && (ship.getOwner() != 1  || ConfigHelper.isStingyRecoveriesIncludePlayerShips()))
             {
                 CargoUtils.handleStingyWeapon(ship.getVariant(), rand);
             }
@@ -53,7 +53,7 @@ public class FleetEncounterModifyingScript
 
             Random rand = new Random();
             // Remove more weapons based on StingyRecoveriesChanceWeapons
-            if(!ship.isFighterWing() && (!ship.isAlly() || ConfigHelper.isStingyRecoveriesIncludePlayerShips()))
+            if(!ship.isFighterWing() && (ship.getOwner() != 1  || ConfigHelper.isStingyRecoveriesIncludePlayerShips()))
             {
                 CargoUtils.handleStingyWeapon(ship.getVariant(), rand);
             }
