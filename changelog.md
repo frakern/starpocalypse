@@ -1,3 +1,10 @@
+# Version 4.0.0
+* Remade submarket changes. Now willingness to sell is based on multiple factors.
+* Made black markets require a pirate contact (Configurable).
+* Improved pirate defences.
+* Added stingy weapon recovery. Weapons are now harder to acquire
+* Increased prices of ships and weapons
+
 # Version 3.0.2
 * Add adjustable setting for class of player ships subject to stingy recoveries.
 * Adjust black market to allow some items at higher stability levels.

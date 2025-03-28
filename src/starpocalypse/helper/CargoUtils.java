@@ -37,7 +37,7 @@ public class CargoUtils {
         if (stack.isWeaponStack()) {
             WeaponSpecAPI spec = stack.getWeaponSpecIfWeapon();
             tier = spec.getTier();
-        } else if (stack.isSpecialStack() && stack.getSpecialDataIfSpecial().getId().equals(Items.MODSPEC) ) {
+        } else if (stack.isSpecialStack() && stack.getSpecialDataIfSpecial().getId().equals(Items.TAG_MODSPEC) ) {
             HullModSpecAPI spec = stack.getHullModSpecIfHullMod();
             tier = spec.getTier();
         } else if (stack.isFighterWingStack()) {

@@ -1,19 +1,18 @@
-# Starpocalypse
+# Starpocalypse - Economic apocalypse
 
 This mod makes the following changes to the campaign layer of Starsector:
 
-1. Weapons and combat ships are scarce and highly regulated. As such, only Military Markets (and those pesky Black Markets) will sell higher tier weapons, LPCs, modspecs, and combat ships. Open Markets still sell civilian grade ships and low-tier combat ships and items.
-    1. Lawless factions (e.g. Pirates and Pathers) and Independents do not regular their markets. You can still find high-tier weapons and combat ships at their bases (both core and raider).
-    2. Contraband can happen, and when stability is low, some weapons and ships from Military Market can become "legal".
-    3. Conversely, when stability is high, higher value ships and weapons become too hot to trade on the Black Market.
+1. Weapons and combat ships are scarce and highly regulated and more expensive. Access to these is regulated with a standing system, with the standing affected by your reputation, your best contact (contact reputation and quality) and your commission status (if possible). Buying larger hulls or high tier weapons is next to impossible without the right connections.
+    1. If you dont have a high enough standing you wont be getting combat ships and weapons equipment from them. If they hate you enough they may even not sell you civilian ships. Can be configured using the config and csv files mentioned in it.
+    2. You can only buy combat ships and weapons on the black market if your contact has a high enough importance. Can be configured in the config.
+
 2. There are no pristine ships, everything is d-modded. Including your starting fleet.
-3. Access to most Black Markets is impossible while legally docked at the station. Additionally, you will need to pay bribes to transact your business (in lieu of tariffs).
-4. Factions are armed to the teeth. All core markets have Ground Defences and Patrol HQ with larger size markets all receiving stations. Hidden bases (Pirates and Pathers raider bases) only get Ground Defences.
+3. Access to most Black Markets is impossible while not having a pirate contact at that location. Additionally, you will need to pay bribes to transact your business (in lieu of tariffs).
+4. Factions are armed to the teeth. All core markets have Ground Defences and Patrol HQ with larger size markets all receiving stations. Pirates get megaports and heavy batteries.
 5. Your actions have consequences. When defeating a fleet, your reputation with other factions changes as well. Enemies of your enemy start to like you a bit, while their friends, less.
     1. Similarly, targeting any colony item will be deemed as an act of war.
 6. Blueprint packages are no longer lootable. You will have to collect blueprints one by one.
-7. Baseline salvage is reduced and all ship recoveries cost a story point.
-8. Finally, a skill is needed to use s-mods at all (no skill = 0 s-mods, with skill = 1 s-mod).
+7. Baseline salvage chance is reduced dependent on hull size. No ships are removed from being salvageable, but require a story-point.
 
 All changes are optional, and can be disabled via `starpocalypse.json`.
 
@@ -30,7 +29,8 @@ Mods can apply changes and merges to default values by shipping the same folder 
 1. Ignore player owned markets altogether (do nothing). This also means autonomous colonies from Nexerelin.
 2. Add Ground Defenses or Heavy Batteries to all non-player markets, raider bases included.
 3. Additionally, add Orbital Stations and Patrol HQ to all non-player, non-hidden markets that did not have them, or did not have any of their upgrades...
-4. And make sure that the above two are met at all times (via a transient listener).
+4. Pirates get megaports and heavy batteries.
+5. And make sure that the above three are met at all times (via a transient listener).
 
 Two files regulate station additions (`station*.csv`): faction map which points which station tech to use depending on faction, and database file that is needed to prevent stations being added multiple times.
 
@@ -50,30 +50,28 @@ The list of raid-protected items (special item ids) is present in `raidProtector
 
 ### Submarket changes
 
-1. Remove combat ships, and high-tier weapons, LPCs, and modspecs from Open Markets except for Independent, Pirate or Luddic Path markets.
-2. When stability is low, some of the initially illegal items and ships on Military Market will become legal.
-3. When stability is high, higher value weapons and ships disappear from the Black Market.
-4. Finally, all pristine ships are damaged by putting a random number of d-mods on them.
+1. Combat ships, and weapons, LPCs, and modspecs are limited based on standing, your contacts, its tier, their stability (`militaryRegulationsStability.csv`) and your commissioned status. See config for exact values
+2. Finally, all pristine ships are damaged by putting a random number of d-mods on them.
 
-Which factions have their Open Markets regulated is declared in the `militaryRegulationFaction.csv` file.
-The same submarkets and factions can additionally have contraband applied to their Military Market in `militaryRegulationsStability.csv`.
+Factions have modifiers for their willingness to sell weapons declared in the `militaryRegulationFaction.csv` file. 
+The willingness to sell given good can be modified in `militaryRegulationsSpecialStanding.csv`.
 Finally, exclusion lists can be applied to regulations - see `militaryRegulationsLegal.csv`.
 
 Ship damager is configurable by faction and submarket, and is applied to all ships. It is controlled by `shipDamage*.csv`.
 
-Both faction and submarket files work as whitelist and accept: faction or submarket (allow) id, negated faction or submarket id (!disallow), "all" keyword (allow all except negated).
-
 #### Black Market
 
-Black Market mechanics are slightly tweaked to make it less of a go-to market for everything.
-Factions that regulate their Open Markets will block access to the Black Market.
-As such, you will have to illegally dock at those stations (transponder off).
-Market stability will also affect what items are available for trade on the Black Market using values mapped in `militaryRegulationsStability.csv`.
+Black Market mechanics are tweaked to make it less of a go-to market for everything.
+One needs a pirate contact at the location to access the black market. Even then not every contact enables you to get everything. The higher the importance of the contact the more you can get.
 Suspicion will be raised even when trading with the transponder off, but at half rate as with the transponder on.
 On top of that, bribes equal half of the market tariff will be required to complete any transaction.
 
 ### Other changes
 
 On game load, all blueprint packages are given "no drop" tag.
-Quantity of salvaged basic items is reduced by 50%. Special items (weapons, AI cores, etc) are unaffected.
-On recovery (salvage or post battle) all recoverable ships are made into story-recoverable (even own lost ships).
+Quantity of salvaged basic items is reduced by 25%. Special items (weapons, AI cores, etc) are unaffected.
+On recovery (salvage or post battle) some recoverable ships are made into story-recoverable depending on hull size (optionally even own lost ships).
+Weapon salvage rates from battles and derelict ships was reduced to 25%. Value is configurable in config.
+
+## Known Issues
+Sometimes the derelict modifying script is too slow, and one can get a ship/weapons before it ran. I currently have no way to prevent that, though in normal gameplay this should very rarely happen.
