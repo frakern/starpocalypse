@@ -191,7 +191,7 @@ public class ConfigHelper {
     private static float costMultiplierShips = 1;
 
     @Getter
-    private static float costMultiplierProduction = 1;
+    private static float costMultiplierBuildings = 1;
 
     @Getter
     private static float costMultiplierSellerProfitMargin = 0;
@@ -318,7 +318,7 @@ public class ConfigHelper {
 
         costMultiplierWeapon = (float) settings.optDouble("costMultiplierWeapon",1.0);
         costMultiplierShips = (float) settings.optDouble("costMultiplierShips",1.0);
-        costMultiplierProduction = (float) settings.optDouble("costMultiplierProduction",1.0);
+        costMultiplierBuildings = (float) settings.optDouble("costMultiplierBuildings",1.0);
         costMultiplierSellerProfitMargin = (float) settings.optDouble("costMultiplierSellerProfitMargin",1.0);
         costMultiplierOverrideDmods = (float) settings.optDouble("costMultiplierOverrideDmods",1.0);
     }
