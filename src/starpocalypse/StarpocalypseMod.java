@@ -31,8 +31,6 @@ import com.fs.starfarer.api.impl.campaign.missions.SurplusShipHull;
 public class StarpocalypseMod extends BaseModPlugin {
 
     private static JSONObject settings;
-    private static Map<String,Object> original_vanilla_setting = new HashMap<>();
-    private boolean cached_orgiginal_settings = false;
     @Override
     public void onApplicationLoad() throws Exception {
         settings = Global.getSettings().loadJSON("starpocalypse.json");
@@ -210,33 +208,22 @@ public class StarpocalypseMod extends BaseModPlugin {
     }
 
     private void applyCostModifiers() {
-
-        if(!cached_orgiginal_settings)
-        {
-            original_vanilla_setting.put("shipSellPriceMult", Global.getSettings().getFloat("shipSellPriceMult"));
-            original_vanilla_setting.put("shipBuyPriceMult", Global.getSettings().getFloat("shipBuyPriceMult"));
-            original_vanilla_setting.put("shipWeaponBuyPriceMult", Global.getSettings().getFloat("shipWeaponBuyPriceMult"));
-            original_vanilla_setting.put("shipWeaponSellPriceMult", Global.getSettings().getFloat("shipWeaponSellPriceMult"));
-            original_vanilla_setting.put("productionCostMult", Global.getSettings().getFloat("productionCostMult"));
-            original_vanilla_setting.put("productionCapacityPerSWUnit", Global.getSettings().getFloat("productionCapacityPerSWUnit"));
-            cached_orgiginal_settings = true;
-        }
-        Global.getSettings().setFloat("shipBuyPriceMult", ConfigHelper.getCostMultiplierShips() * (float)original_vanilla_setting.get("shipSellPriceMult"));
-        Global.getSettings().setFloat("shipWeaponBuyPriceMult", ConfigHelper.getCostMultiplierWeapon() * (float)original_vanilla_setting.get("shipWeaponBuyPriceMult"));
-        Global.getSettings().setFloat("productionCostMult", ConfigHelper.getCostMultiplierBuildings() * (float)original_vanilla_setting.get("productionCostMult"));
-        Global.getSettings().setFloat("productionCapacityPerSWUnit", ConfigHelper.getCostMultiplierShips()  * (float)original_vanilla_setting.get("productionCapacityPerSWUnit"));
+        ConfigHelper.overwriteOriginalVanillaFloat("shipBuyPriceMult", ConfigHelper.getCostMultiplierShips() * ConfigHelper.getOriginalVanillaFloat("shipBuyPriceMult"));
+        ConfigHelper.overwriteOriginalVanillaFloat("shipWeaponBuyPriceMult", ConfigHelper.getCostMultiplierWeapon() * ConfigHelper.getOriginalVanillaFloat("shipWeaponBuyPriceMult"));
+        ConfigHelper.overwriteOriginalVanillaFloat("productionCostMult", ConfigHelper.getCostMultiplierBuildings() * ConfigHelper.getOriginalVanillaFloat("productionCostMult"));
+        ConfigHelper.overwriteOriginalVanillaFloat("productionCapacityPerSWUnit", ConfigHelper.getCostMultiplierShips() * ConfigHelper.getOriginalVanillaFloat("productionCapacityPerSWUnit"));
 
         if(ConfigHelper.getCostMultiplierSellerProfitMargin() < 0)
         {
-            Global.getSettings().setFloat("shipSellPriceMult", ConfigHelper.getCostMultiplierShips() * (float)original_vanilla_setting.get("shipSellPriceMult"));
-            Global.getSettings().setFloat("shipWeaponSellPriceMult", ConfigHelper.getCostMultiplierWeapon() * (float)original_vanilla_setting.get("shipWeaponSellPriceMult"));
+            ConfigHelper.overwriteOriginalVanillaFloat("shipSellPriceMult", ConfigHelper.getCostMultiplierShips() * ConfigHelper.getOriginalVanillaFloat("shipSellPriceMult"));
+            ConfigHelper.overwriteOriginalVanillaFloat("shipWeaponSellPriceMult", ConfigHelper.getCostMultiplierWeapon() * ConfigHelper.getOriginalVanillaFloat("shipWeaponSellPriceMult"));
         }
         else
         {
-            Global.getSettings().setFloat("shipSellPriceMult", (1f - ConfigHelper.getCostMultiplierSellerProfitMargin()) * ConfigHelper.getCostMultiplierShips() * (float)original_vanilla_setting.get("shipBuyPriceMult"));
-            Global.getSettings().setFloat("shipWeaponSellPriceMult", (1f - ConfigHelper.getCostMultiplierSellerProfitMargin()) * ConfigHelper.getCostMultiplierWeapon() * (float)original_vanilla_setting.get("shipWeaponBuyPriceMult"));
+            ConfigHelper.overwriteOriginalVanillaFloat("shipSellPriceMult", (1f - ConfigHelper.getCostMultiplierSellerProfitMargin()) * ConfigHelper.getCostMultiplierShips() * ConfigHelper.getOriginalVanillaFloat("shipSellPriceMult"));
+            ConfigHelper.overwriteOriginalVanillaFloat("shipWeaponSellPriceMult", (1f - ConfigHelper.getCostMultiplierSellerProfitMargin()) * ConfigHelper.getCostMultiplierWeapon() * ConfigHelper.getOriginalVanillaFloat("shipWeaponSellPriceMult"));
         }
-        Global.getSettings().setFloat("hullWithDModsSellPriceMult", ConfigHelper.getCostMultiplierOverrideDmods());
+        ConfigHelper.overwriteOriginalVanillaFloat("hullWithDModsSellPriceMult", ConfigHelper.getCostMultiplierOverrideDmods());
     }
 
     private void applyCostModifierToVanillaQuests() {

@@ -6,8 +6,12 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import starpocalypse.config.SimpleMap;
 import starpocalypse.config.SimpleSet;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ConfigHelper {
+
+    private static Map<String,Object> originalVanillaSetting = new HashMap<>();
 
     @Getter
     private static float blackMarketFenceCut = 0.5f;
@@ -185,6 +189,9 @@ public class ConfigHelper {
     static boolean applyBuySellCostMultToQuest = true;
 
     @Getter
+    static boolean stingyNerfHullRestoration = true;
+
+    @Getter
     private static float costMultiplierWeapon = 1;
 
     @Getter
@@ -303,6 +310,7 @@ public class ConfigHelper {
         standingShipCapital = settings.optInt("standingShipCapital", 0);
 
         applyBuySellCostMultToQuest = settings.optBoolean("applyBuySellCostMultToQuest", true);
+        stingyNerfHullRestoration = settings.optBoolean("stingyNerfHullRestoration", true);
 
         stingyRecoveriesDerelicts = settings.optBoolean("stingyRecoveriesDerelicts", true);
         stingyRecoveriesCombat = settings.optBoolean("stingyRecoveriesCombat", true);
@@ -322,6 +330,26 @@ public class ConfigHelper {
         costMultiplierSellerProfitMargin = (float) settings.optDouble("costMultiplierSellerProfitMargin",1.0);
         costMultiplierOverrideDmods = (float) settings.optDouble("costMultiplierOverrideDmods",1.0);
     }
+
+
+    public static void overwriteOriginalVanillaFloat(String setting, Float value)
+    {
+        if(!originalVanillaSetting.containsKey(setting))
+        {
+            originalVanillaSetting.put(setting, Global.getSettings().getFloat(setting));
+        }
+        Global.getSettings().setFloat(setting, value);
+    }
+
+    public static float getOriginalVanillaFloat(String setting)
+    {
+        if(!originalVanillaSetting.containsKey(setting))
+        {
+            originalVanillaSetting.put(setting, Global.getSettings().getFloat(setting));
+        }
+        return (float)originalVanillaSetting.get(setting);
+    }
+
 
     private static void transparentMarket(JSONObject settings, Logger log) {
         if (settings.optBoolean("transparentMarket", true)) {

@@ -32,6 +32,8 @@ public class DerelictModifyingScript implements EveryFrameScript {
 
     @Override
     public void advance(float amount) {
+        if(Global.getSector().getMemoryWithoutUpdate().contains("$tutStage")) // Dont make the tutorial too difficult
+            return;
         for (SectorEntityToken entity : getEntities(Tags.DEBRIS_FIELD)) {
             forceStoryPointRecovery(entity);
         }

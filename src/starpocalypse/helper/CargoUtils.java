@@ -64,9 +64,10 @@ public class CargoUtils {
         List<String> remove = new ArrayList<String>();
 
         for (String slotId : variant.getNonBuiltInWeaponSlots()) {
-            if (rand.nextFloat() > ConfigHelper.getStingyRecoveriesChanceWeapons() && !variant.getWeaponSpec(slotId).hasTag("omega"))
+            double randResult = rand.nextFloat();
+            if (randResult > ConfigHelper.getStingyRecoveriesChanceWeapons() && !variant.getWeaponSpec(slotId).hasTag("omega"))
             {
-                log.info("Removing weapon " + variant.getWeaponSpec(slotId).getWeaponName() + " from " + variant.getHullVariantId());
+                log.info("Removing weapon from " + variant.getFullDesignationWithHullName() +" in slot " + slotId + ": " + variant.getWeaponSpec(slotId).getWeaponName() + " from " + variant.getHullSpec().getHullName() + " with rand " + randResult + " keep below " + ConfigHelper.getStingyRecoveriesChanceWeapons() );
                 remove.add(slotId);
             }
         }
@@ -74,14 +75,14 @@ public class CargoUtils {
             variant.clearSlot(slotId);
         int index = 0;
         for (String id : variant.getFittedWings()) {
-            if (rand.nextFloat() > ConfigHelper.getStingyRecoveriesChanceWeapons())
+            double randResult = rand.nextFloat();
+            if (randResult> ConfigHelper.getStingyRecoveriesChanceWeapons())
             {
-                log.info("Removing wing " + variant.getWing(index).getWingName() + " from " + variant.getHullVariantId());
+                log.info("Removing wing " + variant.getWing(index).getWingName() + " from " + variant.getHullSpec().getHullName() + " with rand " + randResult + " needed to keep " + ConfigHelper.getStingyRecoveriesChanceWeapons() );
                 variant.setWingId(index, null);
             }
             index++;
         }
-
     }
 
     public static double getStingyRecoveryChance(ShipAPI.HullSize shipClass)

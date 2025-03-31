@@ -1,3 +1,11 @@
+# Version 4.0.1
+* Fixed contact level not providing standing
+* Fixed stringy weapon recovery mistakenly applying to players
+* Changed costMultiplierProduction to costMultiplierBuildings and corrected the description
+* Reimplemented battle stingy recovery as BaseCampaignEventListener. That should make it more resilient and also apply to fights originating from Domain probes
+* Disabled salvage stingy recovery in the tutorial to prevent soft-locks.
+* Increased default stingy weapon recovery to 0.33 (was 0.25)
+
 # Version 4.0.0
 * Reimagined submarket changes. Now willingness to sell is based on multiple factors.
 * Made black markets require a pirate contact.
