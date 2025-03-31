@@ -13,9 +13,9 @@
     # Buying military wares Open Market is illegal for common folk. Selling to approved vendors is allowed. Items are not removed. Just because you cant buy a tank does not mean that none are sold.
     # - Legal list is applied to make item or ship always legal (or illegal, if !negated),
     # - All civ-grade or civ-hint ships are always legal.,
-    # The standing system is a bit complicated. Basically sum up all influences and check if the value is larger than standingMinimumSelling.
+    # The standing system is a bit complicated. Basically sum up all influences and check if the value is larger than standingMinimumSelling. Special rules can be found in starpocalypse/militaryRegulation[mechanic].csv
     # If it is not they will not sell to you. They will buy though.
-    "militaryRegulations": true,
+    "militaryRegulations": true, # Vanilla: false
     # Whether the military market can be fully accessed without commission. Only active if regulation is true.
     "militaryNoCommission": true,
     # LPC, weapon, and modspec tier and combat ship FP at which they are still legal.
@@ -106,7 +106,7 @@
 
     ## BETTER MARKET DEFENCES
     # Add a station to non-hidden markets based on size where one does not already exist.
-    "addStations": true,
+    "addStations": true, # Vanilla: false
     # Minimum market size to add Star Fortress.
     "sizeForStarFortress": 7,
     # Minimum market size to add Battle Station.
@@ -114,37 +114,37 @@
     # Minimum market size to add Orbital Station.
     "sizeForOrbitalStation": 5,
     # Add Ground Defenses/Heavy Batteries to all markets.
-    "addGroundDefenses": true,
+    "addGroundDefenses": true, # Vanilla: false
     # At this size and above, all Ground Defenses will be upgraded to Heavy Batteries.
     "sizeHeavyBatteries": 5,
     # Add a Patrol HQ to all non-hidden markets.
-    "addPatrolHqs": false,
+    "addPatrolHqs": false, # Vanilla: false
 
     ## Pirates and Luddic Path get eradicated too often. Lets change that.
 
     # My pirates starved to death as they could not acquire food after their planet that contained their farms was captured. This gives them a leg up regarding accesability.
-    "pirateMegaport": true,
+    "pirateMegaport": true, # Vanilla: false
     # One can never trust another pirate. So invest in bigger guns. There is a reason the hegemony didnt wipe them out yet.
-    "pirateHeavyBatteries": true,
+    "pirateHeavyBatteries": true, # Vanilla: false
 
     ## REPUTATION CHANGES
     # After winning an engagement, the enemies of the beaten fleet will have a slightly better reputation of you.
     # Their allies will dislike you slightly more, though.
-    "combatAdjustedReputation": false,
+    "combatAdjustedReputation": false, # Vanilla: false
     # Raiding for special items instantly ruins player reputation with the owner of the item.
-    "hostilityForSpecialItemRaid": true,
+    "hostilityForSpecialItemRaid": true, # Vanilla: false
     
     ## OTHER CHANGES
     # Do not drop blueprint packages. Player will have to collect blueprints one by one.
-    "blueprintPackageNoDrop": true,
+    "blueprintPackageNoDrop": true, # Vanilla: false
 
     # Number of s-mods available to player (without skill).
     "maxPermaMods": 1, # vanilla: 2
 
     # Always require story points to recover ships
     # (both derelict ships found across the sector, and post battle recoveries).
-    "stingyRecoveriesDerelicts": true,
-    "stingyRecoveriesCombat": true,
+    "stingyRecoveriesDerelicts": true, # Vanilla: false
+    "stingyRecoveriesCombat": true, # Vanilla: false
     # Also require a story point to recover disabled player ships post battle. stingyRecoveriesCombat must be true.
     "stingyRecoveriesCombatIncludePlayerShips": false,
     # Require story point to recover player ships by size. Only applies if above setting is true.
@@ -152,13 +152,18 @@
     "stingyRecoveriesCombatPlayerShipsSize": 1,
 
     #Chance for a recoverable ship to be recoverable without storypoint (0 = always require story point)
-    "stingyRecoveriesChanceFrigate": 0.4,
-    "stingyRecoveriesChanceDestroyer": 0.3,
-    "stingyRecoveriesChanceCruiser": 0.2,
-    "stingyRecoveriesChanceCapital": 0.1,
+    "stingyRecoveriesChanceFrigate": 0.4, # Vanilla: 1.0
+    "stingyRecoveriesChanceDestroyer": 0.3, # Vanilla: 1.0
+    "stingyRecoveriesChanceCruiser": 0.2, # Vanilla: 1.0
+    "stingyRecoveriesChanceCapital": 0.1, # Vanilla: 1.0
 
     # Multiplier to weapon salvage chance. As weapons can not be slavaged with a story point, they can not be recovered instead. Does not affect [super redacted] weapons, as their suppy is quiet limited
-    "stingyRecoveriesChanceWeapons": 0.33,
+    # Higher tier weapons are more powerfull (and assumed to be more delicate, making them easier to damage in battle)
+    "stingyWeaponRecoveriesChanceT0": 0.5, # Vanilla: 1.0
+    "stingyWeaponRecoveriesChanceT1": 0.35, # Vanilla: 1.0
+    "stingyWeaponRecoveriesChanceT2": 0.25, # Vanilla: 1.0
+    "stingyWeaponRecoveriesChanceT3": 0.1, # Vanilla: 1.0
+    "stingyWeaponRecoveriesChanceT4": 0.05, # There are no T4 weapons in the basegame. Any mod adding items a tier above 3 will be treated as this
 
     # Make hull restoration not make all after battle recoveries into normal ones. See https://fractalsoftworks.com/forum/index.php?topic=31987.0
     "stingyNerfHullRestoration":true

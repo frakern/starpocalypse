@@ -65,9 +65,9 @@ public class CargoUtils {
 
         for (String slotId : variant.getNonBuiltInWeaponSlots()) {
             double randResult = rand.nextFloat();
-            if (randResult > ConfigHelper.getStingyRecoveriesChanceWeapons() && !variant.getWeaponSpec(slotId).hasTag("omega"))
+            if (randResult > getStingyRecoveryChance(variant.getWeaponSpec(slotId).getTier()) && !variant.getWeaponSpec(slotId).hasTag("omega"))
             {
-                log.info("Removing weapon from " + variant.getFullDesignationWithHullName() +" in slot " + slotId + ": " + variant.getWeaponSpec(slotId).getWeaponName() + " from " + variant.getHullSpec().getHullName() + " with rand " + randResult + " keep below " + ConfigHelper.getStingyRecoveriesChanceWeapons() );
+                log.info("Removing weapon from " + variant.getFullDesignationWithHullName() +" in slot " + slotId + ": " + variant.getWeaponSpec(slotId).getWeaponName() + " from " + variant.getHullSpec().getHullName() + " with rand " + randResult + " keep below " + getStingyRecoveryChance(variant.getWeaponSpec(slotId).getTier()));
                 remove.add(slotId);
             }
         }
@@ -76,9 +76,9 @@ public class CargoUtils {
         int index = 0;
         for (String id : variant.getFittedWings()) {
             double randResult = rand.nextFloat();
-            if (randResult> ConfigHelper.getStingyRecoveriesChanceWeapons())
+            if (randResult > getStingyRecoveryChance(variant.getWing(index).getTier()))
             {
-                log.info("Removing wing " + variant.getWing(index).getWingName() + " from " + variant.getHullSpec().getHullName() + " with rand " + randResult + " needed to keep " + ConfigHelper.getStingyRecoveriesChanceWeapons() );
+                log.info("Removing wing " + variant.getWing(index).getWingName() + " from " + variant.getHullSpec().getHullName() + " with rand " + randResult + " needed to keep " + getStingyRecoveryChance(variant.getWing(index).getTier()));
                 variant.setWingId(index, null);
             }
             index++;
@@ -100,4 +100,25 @@ public class CargoUtils {
                 return 0;
         }
     }
+
+    public static double getStingyRecoveryChance(int tier)
+    {
+        if(tier > 4)
+            tier = 4;
+        switch (tier){
+            case 0:
+                return ConfigHelper.getStingyRecoveriesWeaponT0();
+            case 1:
+                return ConfigHelper.getStingyRecoveriesWeaponT1();
+            case 2:
+                return ConfigHelper.getStingyRecoveriesWeaponT2();
+            case 3:
+                return ConfigHelper.getStingyRecoveriesWeaponT3();
+            case 4:
+                return ConfigHelper.getStingyRecoveriesWeaponT4();
+            default:
+                return 1.0;
+        }
+    }
+
 }

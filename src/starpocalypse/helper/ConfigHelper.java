@@ -88,7 +88,6 @@ public class ConfigHelper {
     @Getter
     private static int blackMarketShipCapital = 0;
 
-
     @Getter
     private static boolean standingBonusAtLowStability = true;
 
@@ -183,7 +182,19 @@ public class ConfigHelper {
     private static double stingyRecoveriesChanceCapital = 1;
 
     @Getter
-    private static double stingyRecoveriesChanceWeapons = 1;
+    private static double stingyRecoveriesWeaponT0 = 1f;
+
+    @Getter
+    private static double stingyRecoveriesWeaponT1 = 1f;
+
+    @Getter
+    private static double stingyRecoveriesWeaponT2 = 1f;
+
+    @Getter
+    private static double stingyRecoveriesWeaponT3 = 1f;
+
+    @Getter
+    private static double stingyRecoveriesWeaponT4 = 1f;
 
     @Getter
     static boolean applyBuySellCostMultToQuest = true;
@@ -322,7 +333,12 @@ public class ConfigHelper {
         stingyRecoveriesChanceCruiser = settings.optDouble("stingyRecoveriesChanceCruiser",1.0);
         stingyRecoveriesChanceCapital = settings.optDouble("stingyRecoveriesChanceCapital",1.0);
 
-        stingyRecoveriesChanceWeapons = settings.optDouble("stingyRecoveriesChanceWeapons",1.0);
+
+        stingyRecoveriesWeaponT0 = settings.optDouble("stingyWeaponWeaponT0", 1f);
+        stingyRecoveriesWeaponT1 = settings.optDouble("stingyWeaponWeaponT1", 1f);
+        stingyRecoveriesWeaponT2 = settings.optDouble("stingyWeaponWeaponT2", 1f);
+        stingyRecoveriesWeaponT3 = settings.optDouble("stingyWeaponWeaponT3", 1f);
+        stingyRecoveriesWeaponT4 = settings.optDouble("stingyWeaponWeaponT4", 1f);
 
         costMultiplierWeapon = (float) settings.optDouble("costMultiplierWeapon",1.0);
         costMultiplierShips = (float) settings.optDouble("costMultiplierShips",1.0);

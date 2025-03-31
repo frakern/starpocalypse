@@ -4,7 +4,7 @@
 * Changed costMultiplierProduction to costMultiplierBuildings and corrected the description
 * Reimplemented battle stingy recovery as BaseCampaignEventListener. That should make it more resilient and also apply to fights originating from Domain probes
 * Disabled salvage stingy recovery in the tutorial to prevent soft-locks.
-* Increased default stingy weapon recovery to 0.33 (was 0.25)
+* Changed stingy weapon recovery to support different values based on weapon tier.
 
 # Version 4.0.0
 * Reimagined submarket changes. Now willingness to sell is based on multiple factors.

@@ -33,7 +33,7 @@ public class BattleSalvageListener extends BaseCampaignEventListener {
     public void reportPlayerEngagement(EngagementResultAPI result)
     {
         log.info("reportPlayerEngagement trigger");
-        if(result.didPlayerWin())
+        if(result.didPlayerWin() && ConfigHelper.isStingyRecoveriesCombat()) // In theory just not adding the listener should be enough, but in my testing it was active anyway sometimes. So better make sure
         {
             applySalvageReduction(result.getLoserResult().getDestroyed(), false);
             applySalvageReduction(result.getLoserResult().getDisabled(), false);
@@ -54,8 +54,6 @@ public class BattleSalvageListener extends BaseCampaignEventListener {
                 ConfigHelper.overwriteOriginalVanillaFloat("baseOwnShipRecoveryChance", ConfigHelper.getOriginalVanillaFloat("baseOwnShipRecoveryChance"));
             }
         }
-
-
     }
 
     private void applySalvageReduction(List<FleetMemberAPI> members, boolean isPlayer)
