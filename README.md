@@ -1,4 +1,4 @@
-# Starpocalypse - Economic apocalypse
+# Starpocalypse - Grind Edition
 
 This mod makes the following changes to the campaign layer of Starsector:
 

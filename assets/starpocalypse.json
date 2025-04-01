@@ -166,7 +166,7 @@
     "stingyWeaponRecoveriesChanceT4": 0.05, # There are no T4 weapons in the basegame. Any mod adding items a tier above 3 will be treated as this
 
     # Make hull restoration not make all after battle recoveries into normal ones. See https://fractalsoftworks.com/forum/index.php?topic=31987.0
-    "stingyNerfHullRestoration":true
+    "stingyNerfHullRestoration":true,
 
     # Reduce quantity of salvaged items.
     "salvageMultiplier": -0.25, # vanilla: 0,

@@ -1,9 +1,9 @@
 {
     "id": "starpocalypse",
-    "name": " Starpocalypse - Economic apocalypse",
+    "name": " Starpocalypse - Grind Edition",
     "author": "Thomas Rahm",
     "utility": true,
-    "version": "4.0.1",
+    "version": "4.1.0",
     "description": "More apocalyptic settings",
     "gameVersion": "0.98a-RC5",
     "modPlugin": "starpocalypse.StarpocalypseMod",
