@@ -106,10 +106,24 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
                 return false;
             }
         }
-
         return super.isIllegalOnSubmarket(commodityId, action);
     }
 
+    public String getIllegalTransferText(CargoStackAPI stack, SubmarketPlugin.TransferAction action)
+    {
+        int bestContactLevelBefore = bestContactLevel;
+        bestContactLevel = Integer.MAX_VALUE;
+        if(super.isIllegalOnSubmarket(stack, action))
+        {
+            bestContactLevel = bestContactLevelBefore;
+            return super.getIllegalTransferText(stack, action);
+        }
+        else
+        {
+            bestContactLevel = bestContactLevelBefore;
+            return "Contact access level: " + bestContactLevel + " Required: " + getContactLevelFor(stack);
+        }
+    }
 
     @Override
     public boolean isIllegalOnSubmarket(CargoStackAPI stack, TransferAction action) {
@@ -118,7 +132,6 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
         if (!ConfigHelper.wantsRegulation(market.getFactionId())) {
             return vanillaIllegal;
         }
-
 
         String stackName = stack.getDisplayName();
         if (isAlwaysLegal(stackName)) {
@@ -134,26 +147,39 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
 
         if(ConfigHelper.isBlackMarketRequiresContact())
         {
-            int tier = CargoUtils.getTier(stack);
-
-            switch (tier)
-            {
-                case(0):
-                    return bestContactLevel < ConfigHelper.getBlackMarketWeaponT0();
-                case(1):
-                    return bestContactLevel < ConfigHelper.getBlackMarketWeaponT1();
-                case(2):
-                    return bestContactLevel < ConfigHelper.getBlackMarketWeaponT2();
-                case(3):
-                    return bestContactLevel < ConfigHelper.getBlackMarketWeaponT3();
-                case(4):
-                    return bestContactLevel < ConfigHelper.getBlackMarketWeaponT4();
-                default:
-                    break;
-            }
+            return bestContactLevel < getContactLevelFor(stack);
         }
 
         return false;
+    }
+
+    private int getContactLevelFor(CargoStackAPI stack)
+    {
+        int tier = CargoUtils.getTier(stack);
+        return switch (tier) {
+            case (0) -> ConfigHelper.getBlackMarketWeaponT0();
+            case (1) -> ConfigHelper.getBlackMarketWeaponT1();
+            case (2) -> ConfigHelper.getBlackMarketWeaponT2();
+            case (3) -> ConfigHelper.getBlackMarketWeaponT3();
+            case (4) -> ConfigHelper.getBlackMarketWeaponT4();
+            default -> 0;
+        };
+    }
+
+    public String getIllegalTransferText(FleetMemberAPI member, SubmarketPlugin.TransferAction action)
+    {
+        int bestContactLevelBefore = bestContactLevel;
+        bestContactLevel = Integer.MAX_VALUE;
+        if(super.isIllegalOnSubmarket(member, action))
+        {
+            bestContactLevel = bestContactLevelBefore;
+            return super.getIllegalTransferText(member, action);
+        }
+        else
+        {
+            bestContactLevel = bestContactLevelBefore;
+            return "Contact access level: " + bestContactLevel + " Required: " + getContactLevelFor(member);
+        }
     }
 
     @Override
@@ -179,31 +205,34 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
 
         if(ConfigHelper.isBlackMarketRequiresContact())
         {
-
-            if(StandingMarketRegulation.isCivilian(member.getVariant()))
-            {
-                return bestContactLevel < ConfigHelper.getBlackMarketShipCivilian();
-            }
-            else if(member.isFrigate())
-            {
-                return bestContactLevel < ConfigHelper.getBlackMarketShipFrigate();
-            }
-            else if(member.isDestroyer())
-            {
-                return bestContactLevel < ConfigHelper.getBlackMarketShipDestroyer();
-            }
-            else if(member.isCruiser())
-            {
-                return bestContactLevel < ConfigHelper.getBlackMarketShipCruiser();
-            }
-            else if(member.isCapital())
-            {
-                return bestContactLevel < ConfigHelper.getBlackMarketShipCapital();
-            }
-
+            return bestContactLevel < getContactLevelFor(member);
         }
         return false;
+    }
 
+    private int getContactLevelFor(FleetMemberAPI member)
+    {
+        if(StandingMarketRegulation.isCivilian(member.getVariant()))
+        {
+            return ConfigHelper.getBlackMarketShipCivilian();
+        }
+        else if(member.isFrigate())
+        {
+            return ConfigHelper.getBlackMarketShipFrigate();
+        }
+        else if(member.isDestroyer())
+        {
+            return ConfigHelper.getBlackMarketShipDestroyer();
+        }
+        else if(member.isCruiser())
+        {
+            return ConfigHelper.getBlackMarketShipCruiser();
+        }
+        else if(member.isCapital())
+        {
+            return ConfigHelper.getBlackMarketShipCapital();
+        }
+        return 0;
     }
 
     @Override

@@ -115,29 +115,37 @@ public class RegulatedOpenMarket extends OpenMarketPlugin {
 
     @Override
     public String getIllegalTransferText(CargoStackAPI stack, SubmarketPlugin.TransferAction action) {
-        if(super.isIllegalOnSubmarket(stack, action))
+        int econStandingBefore = econStanding;
+        int requiredStanding = StandingMarketRegulation.getRequiredStanding(stack);
+        econStanding = requiredStanding + Math.abs(contactStanding);
+        if(super.isIllegalOnSubmarket(stack, action)) // This super call is not working out the way I want so lets make sure standing doesn't cause issues
         {
+            econStanding = econStandingBefore;
             return super.getIllegalTransferText(stack, action);
         }
         else
         {
-            int requiredStanding = StandingMarketRegulation.getRequiredStanding(stack);
+            econStanding = econStandingBefore;
             int standing = (econStanding + contactStanding);
-            return "Standing is " + standing + " Required is " + (requiredStanding - (stack.isCommodityStack() ? getCommodityStandingModifier(stack.getCommodityId()) : 0));
+            return "Standing: " + standing + " Required: " + (requiredStanding - (stack.isCommodityStack() ? getCommodityStandingModifier(stack.getCommodityId()) : 0));
         }
     }
 
     @Override
     public String getIllegalTransferText(FleetMemberAPI ship, SubmarketPlugin.TransferAction action) {
+        int econStandingBefore = econStanding;
+        int requiredStanding = StandingMarketRegulation.getRequiredStanding(ship);
+        econStanding = requiredStanding + Math.abs(contactStanding);
         if(super.isIllegalOnSubmarket(ship, action))
         {
+            econStanding = econStandingBefore;
             return super.getIllegalTransferText(ship, action);
         }
         else
         {
-            int requiredStanding = StandingMarketRegulation.getRequiredStanding(ship);
+            econStanding = econStandingBefore;
             int standing = (econStanding + contactStanding);
-            return "Standing is " + standing + " Required is " + requiredStanding;
+            return "Standing: " + standing + " Required: " + requiredStanding;
         }
     }
 

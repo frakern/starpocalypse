@@ -118,15 +118,19 @@ public class RegulatedMilitaryMarket extends MilitarySubmarketPlugin {
 
     @Override
     public String getIllegalTransferText(CargoStackAPI stack, SubmarketPlugin.TransferAction action) {
+        int econStandingBefore = econStanding;
+        int requiredStanding = StandingMarketRegulation.getRequiredStanding(stack);
+        econStanding = requiredStanding + Math.abs(contactStanding);
         if(super.isIllegalOnSubmarket(stack, action) && (!ConfigHelper.isMilitaryNoCommission() || super.isIllegalOnSubmarket(stack, TransferAction.PLAYER_BUY)))
         {
+            econStanding = econStandingBefore;
             return super.getIllegalTransferText(stack, action);
         }
         else
         {
-            int requiredStanding = StandingMarketRegulation.getRequiredStanding(stack);
+            econStanding = econStandingBefore;
             int standing = (econStanding + contactStanding);
-            return "Standing is " + standing + " Required is " + (requiredStanding - (stack.isCommodityStack() ? getCommodityStandingModifier(stack.getCommodityId()) : 0));
+            return "Standing: " + standing + " Required: " + (requiredStanding - (stack.isCommodityStack() ? getCommodityStandingModifier(stack.getCommodityId()) : 0));
         }
     }
 
@@ -146,15 +150,19 @@ public class RegulatedMilitaryMarket extends MilitarySubmarketPlugin {
 
     @Override
     public String getIllegalTransferText(FleetMemberAPI ship, SubmarketPlugin.TransferAction action) {
+        int econStandingBefore = econStanding;
+        int requiredStanding = StandingMarketRegulation.getRequiredStanding(ship);
+        econStanding = requiredStanding + Math.abs(contactStanding);
         if(super.isIllegalOnSubmarket(ship, action) && (!ConfigHelper.isMilitaryNoCommission() || super.isIllegalOnSubmarket(ship, TransferAction.PLAYER_BUY)))
         {
+            econStanding = econStandingBefore;
             return super.getIllegalTransferText(ship, action);
         }
         else
         {
-            int requiredStanding = StandingMarketRegulation.getRequiredStanding(ship);
+            econStanding = econStandingBefore;
             int standing = (econStanding + contactStanding);
-            return "Standing is " + standing + " Required is " + requiredStanding;
+            return "Standing: " + standing + " Required: " + requiredStanding;
         }
     }
     @Override
