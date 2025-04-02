@@ -67,7 +67,6 @@
 
     "costMultiplierWeapon": 2, # Vanilla 1
     "costMultiplierShips": 2, # Vanilla 1
-    "costMultiplierBuildings": 3, # Vanilla 1
     "costMultiplierSellerProfitMargin": 0.5, # Sets profit margin for Markets. Basically how much of the value the player looses by selling. -1 means vanilla values are used. Max value: 1 (You sell everything for 0) Min value: 0 (Sell price = buy price)
     "costMultiplierOverrideDmods": 0.5, # Override for hullWithDModsSellPriceMult. Larger values result in a smaller sell/buy value loss caused by D-mods. Vanilla 0.3
 

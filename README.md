@@ -5,7 +5,6 @@ This mod makes the following changes to the campaign layer of Starsector:
 1. Weapons and combat ships are scarce and highly regulated and more expensive (2x by default). Access to these is regulated with a standing system, with the standing affected by your reputation, your best contact (contact reputation and quality) and your commission status (if possible). Buying larger hulls or high tier weapons is next to impossible without the right connections.
     1. If you dont have a high enough standing you wont be getting combat ships and weapons equipment from them. If they hate you enough they may even not sell you civilian ships. Can be configured using the config and csv files mentioned in it.
     2. You can only buy combat ships and weapons on the black market if your contact has a high enough importance. Can be configured in the config.
-
 2. There are no pristine ships, everything is d-modded. Including your starting fleet.
 3. Access to most Black Markets is impossible while not having a pirate contact at that location. Additionally, you will need to pay bribes to transact your business (in lieu of tariffs).
 4. Factions are armed to the teeth. All core markets have Ground Defences and Patrol HQ with larger size markets all receiving stations. Pirates get megaports and heavy batteries.
@@ -75,3 +74,4 @@ Weapon salvage rates from battles and derelict ships was reduced to 25%. Value i
 
 ## Known Issues
 Sometimes the derelict modifying script is too slow, and one can get a ship/weapons before it ran. I currently have no way to prevent that, though in normal gameplay this should very rarely happen.
+costMultiplierBuilding is not working and will be removed in the next release. The modified setting is applied before the game is loaded, so modifying it does nothing. 
