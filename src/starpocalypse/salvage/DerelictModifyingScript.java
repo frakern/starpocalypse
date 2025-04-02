@@ -11,6 +11,7 @@ import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.special.ShipRecoverySpecial;
 import java.util.List;
 import java.util.Random;
+import com.fs.starfarer.api.impl.campaign.tutorial.TutorialMissionIntel;
 import lombok.extern.log4j.Log4j;
 import starpocalypse.helper.CargoUtils;
 import starpocalypse.helper.ConfigHelper;
@@ -32,8 +33,10 @@ public class DerelictModifyingScript implements EveryFrameScript {
 
     @Override
     public void advance(float amount) {
-        if(Global.getSector().getMemoryWithoutUpdate().contains("$tutStage")) // Dont make the tutorial too difficult
+        if(TutorialMissionIntel.isTutorialInProgress() && Global.getSector().getPlayerFleet().getContainingLocation().getId().equals("galatia")) // Dont make the tutorial too difficult
+        {
             return;
+        }
         for (SectorEntityToken entity : getEntities(Tags.DEBRIS_FIELD)) {
             forceStoryPointRecovery(entity);
         }
