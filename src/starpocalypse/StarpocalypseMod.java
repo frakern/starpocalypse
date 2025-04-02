@@ -210,7 +210,9 @@ public class StarpocalypseMod extends BaseModPlugin {
     private void applyCostModifiers() {
         ConfigHelper.overwriteOriginalVanillaFloat("shipBuyPriceMult", ConfigHelper.getCostMultiplierShips() * ConfigHelper.getOriginalVanillaFloat("shipBuyPriceMult"));
         ConfigHelper.overwriteOriginalVanillaFloat("shipWeaponBuyPriceMult", ConfigHelper.getCostMultiplierWeapon() * ConfigHelper.getOriginalVanillaFloat("shipWeaponBuyPriceMult"));
-        ConfigHelper.overwriteOriginalVanillaFloat("productionCostMult", ConfigHelper.getCostMultiplierBuildings() * ConfigHelper.getOriginalVanillaFloat("productionCostMult"));
+        ConfigHelper.overwriteOriginalVanillaFloat("industryBuildCostMult", ConfigHelper.getCostMultiplierBuildings() * ConfigHelper.getOriginalVanillaFloat("industryBuildCostMult"));
+
+        ConfigHelper.overwriteOriginalVanillaFloat("productionCostMult", ConfigHelper.getCostMultiplierShips() * ConfigHelper.getOriginalVanillaFloat("productionCostMult"));
         ConfigHelper.overwriteOriginalVanillaFloat("productionCapacityPerSWUnit", ConfigHelper.getCostMultiplierShips() * ConfigHelper.getOriginalVanillaFloat("productionCapacityPerSWUnit"));
 
         if(ConfigHelper.getCostMultiplierSellerProfitMargin() < 0)
