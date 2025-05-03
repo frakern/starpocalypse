@@ -145,7 +145,7 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
             return false;
         }
 
-        if(ConfigHelper.isBlackMarketRequiresContact())
+        if(ConfigHelper.isBlackMarketGoodStuffRequiresContact())
         {
             return bestContactLevel < getContactLevelFor(stack);
         }
@@ -203,7 +203,7 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
             return false;
         }
 
-        if(ConfigHelper.isBlackMarketRequiresContact())
+        if(ConfigHelper.isBlackMarketGoodStuffRequiresContact())
         {
             return bestContactLevel < getContactLevelFor(member);
         }
@@ -239,7 +239,7 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
     public void updateCargoPrePlayerInteraction()
     {
         super.updateCargoPrePlayerInteraction();
-        if(ConfigHelper.isBlackMarketRequiresContact())
+        if(ConfigHelper.isBlackMarketGoodStuffRequiresContact())
         {
             getBestContact();
         }

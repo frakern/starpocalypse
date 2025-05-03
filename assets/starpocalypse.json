@@ -84,7 +84,8 @@
     # Black Market handling fee (bribe) as a fraction of the Open Market tariff. If tariff is 30%, Black Market bribe will be 15%.
     "blackMarketFenceCut": 0.5,# vanilla: 0
     # Black market access requires a pirate contact at that location.
-    "blackMarketRequiresContact": true, # vanilla: false If Nexerelin is present: No contact will be required if the planet is in rebellion. Restrictions below will still apply though.
+    "blackMarketRequiresContact": true, # vanilla: false If Nexerelin is present: No contact will be required if the planet is in rebellion.
+    "blackMarketGoodStuffRequiresContact": true, # vanilla: false Accessing black market can be done but good stuff is sold by contacts as below.
     # Not every contact can get you the good stuff. At least this importance is required of the blackMarket contact to enable you buying this
     # 0: No Contact required
     # 1: Very Low

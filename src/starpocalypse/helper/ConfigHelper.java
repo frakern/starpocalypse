@@ -59,6 +59,9 @@ public class ConfigHelper {
     private static boolean blackMarketRequiresContact = false;
 
     @Getter
+    private static boolean blackMarketGoodStuffRequiresContact = false;
+
+    @Getter
     private static int blackMarketWeaponT0 = 0;
 
     @Getter
@@ -278,6 +281,7 @@ public class ConfigHelper {
         regulationMaxTier = settings.optInt("regulationMaxLegalTier", 0);
         shyBlackMarket = settings.optBoolean("shyBlackMarket", true);
         blackMarketRequiresContact = settings.optBoolean("blackMarketRequiresContact", true);
+        blackMarketGoodStuffRequiresContact = settings.optBoolean("blackMarketGoodStuffRequiresContact", true);
 
         blackMarketWeaponT0 = settings.optInt("blackMarketWeaponT0", 0);
         blackMarketWeaponT1 = settings.optInt("blackMarketWeaponT1", 0);
