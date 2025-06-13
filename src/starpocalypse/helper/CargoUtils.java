@@ -83,8 +83,8 @@ public class CargoUtils {
                     log.info("Removing wing " + variant.getWing(index).getWingName() + " from " + variant.getHullSpec().getHullName() + " with rand " + randResult + " needed to keep " + getStingyRecoveryChance(variant.getWing(index).getTier()));
                     variant.setWingId(index, null);
                 }
-                index++;
             }
+            index++;
         }
     }
 
