@@ -75,13 +75,16 @@ public class CargoUtils {
             variant.clearSlot(slotId);
         int index = 0;
         for (String id : variant.getFittedWings()) {
-            double randResult = rand.nextFloat();
-            if (randResult > getStingyRecoveryChance(variant.getWing(index).getTier()))
+            if(variant.getWing(index) != null)
             {
-                log.info("Removing wing " + variant.getWing(index).getWingName() + " from " + variant.getHullSpec().getHullName() + " with rand " + randResult + " needed to keep " + getStingyRecoveryChance(variant.getWing(index).getTier()));
-                variant.setWingId(index, null);
+                double randResult = rand.nextFloat();
+                if (randResult > getStingyRecoveryChance(variant.getWing(index).getTier()))
+                {
+                    log.info("Removing wing " + variant.getWing(index).getWingName() + " from " + variant.getHullSpec().getHullName() + " with rand " + randResult + " needed to keep " + getStingyRecoveryChance(variant.getWing(index).getTier()));
+                    variant.setWingId(index, null);
+                }
+                index++;
             }
-            index++;
         }
     }
 
