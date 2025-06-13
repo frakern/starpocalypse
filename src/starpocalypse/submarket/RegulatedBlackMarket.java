@@ -251,7 +251,7 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
         bestContactLevel = 0;
         for(PersonAPI person:submarket.getMarket().getPeopleCopy())
         {
-            if(person.getFaction().getDisplayName().toLowerCase().contains("pirate"))
+            if(person.hasTag("underworld"))
             {
                 if(ContactIntel.playerHasContact(person,false)) {
 
