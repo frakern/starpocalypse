@@ -1,4 +1,4 @@
-# Version 4.1.1
+# Version 4.2.0
 * Remove costMultiplierBuildings, as industryBuildCostMult is applied when loading the csv files.
 * Fix crash when a fitted wing is null.
 * Exclude a certain story-relevant Venture from being affected by stingy recovery
@@ -6,6 +6,7 @@
 * Change to default settings: Increased required contact relevance for T0-T2 weapons by one level.
 * Fix price calculation when costMultiplierSellerProfitMargin is used (now sellPriceMult is based on buyPriceMult * margin instead of the vanilla sellPriceMult)
 * Change the way HULL_RESTORATION is prevented from affecting enemy ships. Should hopefully now also work with mods that add similar effects using ship_recovery_mod.
+* Separated sell restrictions of blackMarketRequiresContact into blackMarketGoodStuffRequiresContact. Thanks @random-cdda-modder for the pull request.
 
 # Version 4.1.0
 * Fixed contact level not providing standing
