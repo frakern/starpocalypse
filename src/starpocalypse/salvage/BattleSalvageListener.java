@@ -26,13 +26,13 @@ public class BattleSalvageListener extends BaseCampaignEventListener {
         {
             ship.getVariant().removePermaMod("starpocalypeSalvage");
             ship.getVariant().removeTag("starpocalypseAppliedStingyWeapon");
+            Global.getSector().getPlayerFleet().getStats().getDynamic().getMod("ship_recovery_mod").unmodifyFlat("starpocalype_ship_recovery_fix");
         }
     }
 
     @Override
     public void reportPlayerEngagement(EngagementResultAPI result)
     {
-        log.info("reportPlayerEngagement trigger");
         if(result.didPlayerWin() && ConfigHelper.isStingyRecoveriesCombat()) // In theory just not adding the listener should be enough, but in my testing it was active anyway sometimes. So better make sure
         {
             applySalvageReduction(result.getLoserResult().getDestroyed(), false);
@@ -42,17 +42,16 @@ public class BattleSalvageListener extends BaseCampaignEventListener {
         }
         if(ConfigHelper.isStingyNerfHullRestoration())
         {
-            HullRestoration.RECOVERY_PROB = 0;
-            if(Global.getSector().getPlayerStats().hasSkill(Skills.HULL_RESTORATION))
+            float flatMod = 0;
+            for(String flatKey : Global.getSector().getPlayerFleet().getStats().getDynamic().getMod("ship_recovery_mod").getFlatBonuses().keySet())
             {
-                ConfigHelper.overwriteOriginalVanillaFloat("baseOwnShipRecoveryChance", 2f);
-                Global.getSector().getPlayerFleet().getStats().getDynamic().getMod("ship_recovery_mod").unmodifyFlat("hull_restoration_stats_0");
-                Global.getSector().getPlayerFleet().getStats().getDynamic().getMod("ship_recovery_mod").unmodifyFlat("hull_restoration_stats_0");
+                if(! Global.getSector().getPlayerFleet().getStats().getDynamic().getMod("ship_recovery_mod").getFlatBonus(flatKey).getSource().equals("starpocalype_ship_recovery_fix"))
+                    flatMod += Global.getSector().getPlayerFleet().getStats().getDynamic().getMod("ship_recovery_mod").getFlatBonus(flatKey).getValue();
             }
-            else
-            {
-                ConfigHelper.overwriteOriginalVanillaFloat("baseOwnShipRecoveryChance", ConfigHelper.getOriginalVanillaFloat("baseOwnShipRecoveryChance"));
-            }
+            ConfigHelper.overwriteOriginalVanillaFloat("baseOwnShipRecoveryChance",  flatMod + ConfigHelper.getOriginalVanillaFloat("baseOwnShipRecoveryChance"));
+            //Todo On version update check Misc.isShipRecoverable if ship_recovery_mod still applies to every ship
+            Global.getSector().getPlayerFleet().getStats().getDynamic().getMod("ship_recovery_mod").modifyFlatAlways("starpocalype_ship_recovery_fix", -flatMod, "Starpocalypse ship recovery fix");
+            ConfigHelper.overwriteOriginalVanillaFloat("baseOwnShipRecoveryChance",  flatMod + ConfigHelper.getOriginalVanillaFloat("baseOwnShipRecoveryChance"));
         }
     }
 
