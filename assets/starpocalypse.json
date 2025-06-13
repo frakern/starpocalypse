@@ -92,9 +92,9 @@
     # 4: High
     # 5: Very High
     # 6: Never
-    "blackMarketWeaponT0" : 0,
-    "blackMarketWeaponT1" : 1,
-    "blackMarketWeaponT2": 2,
+    "blackMarketWeaponT0" : 1,
+    "blackMarketWeaponT1" : 2,
+    "blackMarketWeaponT2": 3,
     "blackMarketWeaponT3": 4,
     "blackMarketWeaponT4": 5,
     "blackMarketShipCivilian": 0,
