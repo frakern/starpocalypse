@@ -220,8 +220,8 @@ public class StarpocalypseMod extends BaseModPlugin {
         }
         else
         {
-            ConfigHelper.overwriteOriginalVanillaFloat("shipSellPriceMult", (1f - ConfigHelper.getCostMultiplierSellerProfitMargin()) * ConfigHelper.getCostMultiplierShips() * ConfigHelper.getOriginalVanillaFloat("shipSellPriceMult"));
-            ConfigHelper.overwriteOriginalVanillaFloat("shipWeaponSellPriceMult", (1f - ConfigHelper.getCostMultiplierSellerProfitMargin()) * ConfigHelper.getCostMultiplierWeapon() * ConfigHelper.getOriginalVanillaFloat("shipWeaponSellPriceMult"));
+            ConfigHelper.overwriteOriginalVanillaFloat("shipSellPriceMult", ConfigHelper.getCostMultiplierShips() * ConfigHelper.getOriginalVanillaFloat("shipBuyPriceMult") * (1f - ConfigHelper.getCostMultiplierSellerProfitMargin()));
+            ConfigHelper.overwriteOriginalVanillaFloat("shipWeaponSellPriceMult", (1f - ConfigHelper.getCostMultiplierSellerProfitMargin()) * ConfigHelper.getCostMultiplierWeapon() * ConfigHelper.getOriginalVanillaFloat("shipWeaponBuyPriceMult"));
         }
         ConfigHelper.overwriteOriginalVanillaFloat("hullWithDModsSellPriceMult", ConfigHelper.getCostMultiplierOverrideDmods());
     }
