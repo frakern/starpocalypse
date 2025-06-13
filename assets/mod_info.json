@@ -3,9 +3,9 @@
     "name": " Starpocalypse - Grind Edition",
     "author": "Thomas Rahm",
     "utility": true,
-    "version": "4.1.0",
+    "version": "4.1.1",
     "description": "More apocalyptic settings",
-    "gameVersion": "0.98a-RC5",
+    "gameVersion": "0.98a-RC7",
     "modPlugin": "starpocalypse.StarpocalypseMod",
     "jars": [
         "starpocalypse.jar"
