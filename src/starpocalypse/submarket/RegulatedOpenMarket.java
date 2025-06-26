@@ -33,6 +33,10 @@ public class RegulatedOpenMarket extends OpenMarketPlugin {
     public boolean isIllegalOnSubmarket(String commodityId, TransferAction action) {
         boolean vanillaIllegal = super.isIllegalOnSubmarket(commodityId, action);
 
+        if (!ConfigHelper.isFreePortOpenMarketRegulations() && market.isFreePort()) {
+            return false;
+        }
+
         CommoditySpecAPI commodity =  market.getCommodityData(commodityId).getCommodity();
         if (!ConfigHelper.wantsRegulation(market.getFactionId()) || commodity.isMeta()) {
             return vanillaIllegal;
@@ -55,11 +59,14 @@ public class RegulatedOpenMarket extends OpenMarketPlugin {
 
     @Override
     public boolean isIllegalOnSubmarket(CargoStackAPI stack, TransferAction action) {
-
         if (!ConfigHelper.wantsRegulation(market.getFactionId())) {
             return super.isIllegalOnSubmarket(stack, action);
         }
         boolean vanillaIllegal = super.isIllegalOnSubmarket(stack, action);
+
+        if (!ConfigHelper.isFreePortOpenMarketRegulations() && market.isFreePort()) {
+            return false;
+        }
 
         if(vanillaIllegal || action == TransferAction.PLAYER_SELL)
         {
@@ -87,6 +94,10 @@ public class RegulatedOpenMarket extends OpenMarketPlugin {
         }
 
         boolean vanillaIllegal = super.isIllegalOnSubmarket(member, action);
+
+        if (!ConfigHelper.isFreePortOpenMarketRegulations() && market.isFreePort()) {
+            return false;
+        }
 
         if(vanillaIllegal || action == TransferAction.PLAYER_SELL)
         {
