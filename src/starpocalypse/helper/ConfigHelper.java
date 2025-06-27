@@ -149,6 +149,9 @@ public class ConfigHelper {
     private static int standingWeaponT4= 0;
 
     @Getter
+    private static boolean standingShipLogarthmic = true;
+
+    @Getter
     private static int standingShipCivilian = 0;
 
     @Getter
@@ -319,6 +322,7 @@ public class ConfigHelper {
         standingWeaponT3 = settings.optInt("standingWeaponT3", 0);
         standingWeaponT4 = settings.optInt("standingWeaponT4", 0);
 
+        standingShipLogarthmic = settings.optBoolean("standingShipLogarthmic", true);
         standingShipCivilian = settings.optInt("standingShipCivilian", 0);
         standingShipFrigate = settings.optInt("standingShipFrigate", 0);
         standingShipDestroyer = settings.optInt("standingShipDestroyer", 0);

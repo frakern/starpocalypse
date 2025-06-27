@@ -138,7 +138,6 @@ public class StandingMarketRegulation
         return standing >= getRequiredStanding(stack);
     }
 
-
     public static int getRequiredStanding(FleetMemberAPI ship)
     {
         int requiredStanding = 0;
@@ -148,25 +147,41 @@ public class StandingMarketRegulation
             requiredStanding -= Integer.parseInt(ConfigHelper.getStandingIndividual().get(itemKey));
         }
 
-        if(isCivilian(ship.getVariant()))
+        if (ConfigHelper.isStandingShipLogarthmic())
         {
-            requiredStanding += ConfigHelper.getStandingShipCivilian();
+            if(isCivilian(ship.getVariant()))
+            {
+                requiredStanding += ConfigHelper.getStandingShipCivilian();
+            }
+            else
+            {
+                int fleetPoints = Math.max(1, ship.getFleetPointCost());
+                float scale = 60f;
+                float minimum = 0f;
+                requiredStanding += Math.round(scale * (float)Math.log(fleetPoints) + minimum);
+            }
         }
-        else if(ship.isFrigate())
-        {
-            requiredStanding += ConfigHelper.getStandingShipFrigate();
-        }
-        else if(ship.isDestroyer())
-        {
-            requiredStanding += ConfigHelper.getStandingShipDestroyer();
-        }
-        else if(ship.isCruiser())
-        {
-            requiredStanding += ConfigHelper.getStandingShipCruiser();
-        }
-        else if(ship.isCapital())
-        {
-            requiredStanding += ConfigHelper.getStandingShipCapital();
+        else {
+            if(isCivilian(ship.getVariant()))
+            {
+                requiredStanding += ConfigHelper.getStandingShipCivilian();
+            }
+            else if(ship.isFrigate())
+            {
+                requiredStanding += ConfigHelper.getStandingShipFrigate();
+            }
+            else if(ship.isDestroyer())
+            {
+                requiredStanding += ConfigHelper.getStandingShipDestroyer();
+            }
+            else if(ship.isCruiser())
+            {
+                requiredStanding += ConfigHelper.getStandingShipCruiser();
+            }
+            else if(ship.isCapital())
+            {
+                requiredStanding += ConfigHelper.getStandingShipCapital();
+            }
         }
 
         requiredStanding += ConfigHelper.getStandingMinimumSelling();
