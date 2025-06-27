@@ -130,7 +130,7 @@ public class RegulatedMilitaryMarket extends MilitarySubmarketPlugin {
         {
             econStanding = econStandingBefore;
             int standing = (econStanding + contactStanding);
-            return "Standing: " + standing + " Required: " + (requiredStanding - (stack.isCommodityStack() ? getCommodityStandingModifier(stack.getCommodityId()) : 0));
+            return "Req: Standing - " + (requiredStanding - (stack.isCommodityStack() ? getCommodityStandingModifier(stack.getCommodityId()) : 0)) + " (" + standing + ")";
         }
     }
 
@@ -162,7 +162,7 @@ public class RegulatedMilitaryMarket extends MilitarySubmarketPlugin {
         {
             econStanding = econStandingBefore;
             int standing = (econStanding + contactStanding);
-            return "Standing: " + standing + " Required: " + requiredStanding;
+            return "Req: Standing - " + requiredStanding + " (" + standing + ")";
         }
     }
     @Override

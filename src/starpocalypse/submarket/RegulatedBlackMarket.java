@@ -116,7 +116,7 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
         else
         {
             bestContactLevel = bestContactLevelBefore;
-            return "Underworld Contact: " + getContactLevelText(bestContactLevel) + " Required: " + getContactLevelText(getContactLevelFor(stack));
+            return "Req: Underworld Contact - " + getContactLevelText(getContactLevelFor(stack));
         }
     }
 
@@ -173,7 +173,7 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
         else
         {
             bestContactLevel = bestContactLevelBefore;
-            return "Underworld Contact: " + getContactLevelText(bestContactLevel) + " Required: " + getContactLevelText(getContactLevelFor(member));
+            return "Req: Underworld Contact - " + getContactLevelText(getContactLevelFor(member));
         }
     }
 
