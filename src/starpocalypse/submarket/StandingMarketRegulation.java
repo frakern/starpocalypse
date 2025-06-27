@@ -36,7 +36,7 @@ public class StandingMarketRegulation
         String stabilityKey = String.format("%.0f", market.getMarket().getStabilityValue());
         if(ConfigHelper.isStandingBonusAtLowStability() && ConfigHelper.getStandingStability().containsKey(stabilityKey) && !market.getPlugin().isBlackMarket())
         {
-            econStanding += Integer.parseInt(ConfigHelper.getStandingStability().get(stabilityKey));;
+            econStanding += Integer.parseInt(ConfigHelper.getStandingStability().get(stabilityKey));
         }
 
         return (int) econStanding;
