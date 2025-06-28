@@ -224,6 +224,9 @@ public class ConfigHelper {
     private static float costMultiplierOverrideDmods = 0.3f;
 
     @Getter
+    private static boolean disablePrismFreeport = false;
+
+    @Getter
     private static final SimpleSet shyBlackMarketFaction = new SimpleSet("faction", "shyBlackMarketFaction.csv");
 
     @Getter
@@ -353,6 +356,8 @@ public class ConfigHelper {
         costMultiplierShips = (float) settings.optDouble("costMultiplierShips",1.0);
         costMultiplierSellerProfitMargin = (float) settings.optDouble("costMultiplierSellerProfitMargin",1.0);
         costMultiplierOverrideDmods = (float) settings.optDouble("costMultiplierOverrideDmods",1.0);
+
+        disablePrismFreeport = settings.optBoolean("removeHighEndSeller", false);
     }
 
 

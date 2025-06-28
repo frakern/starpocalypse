@@ -147,6 +147,9 @@
     # Do not drop blueprint packages. Player will have to collect blueprints one by one.
     "blueprintPackageNoDrop": true, # Vanilla: false
 
+    # Remove Nexerelin High-End Seller from Prism Freeport.
+    "removeHighEndSeller": false,
+
     # Number of s-mods available to player (without skill).
     "maxPermaMods": 1, # vanilla: 2
 
