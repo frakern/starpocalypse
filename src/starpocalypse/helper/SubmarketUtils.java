@@ -21,7 +21,9 @@ public class SubmarketUtils {
         replaceSubmarket(market, Submarkets.GENERIC_MILITARY, forceReplace);
         replaceSubmarket(market, Submarkets.SUBMARKET_BLACK, forceReplace);
         if (ConfigHelper.hasNexerelin() && ConfigHelper.isDisablePrismFreeport()) {
-            market.removeSubmarket("exerelin_prismMarket");
+            if (market.hasSubmarket("exerelin_prismMarket")) {
+                replaceSubmarket(market, "exerelin_prismMarket", forceReplace);
+            }
         }
     }
 

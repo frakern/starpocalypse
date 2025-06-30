@@ -20,6 +20,9 @@ public class SubmarketSwapper implements ColonyInteractionListener {
             SubmarketUtils.replaceSubmarket(market, "regulated_open_market", Submarkets.SUBMARKET_OPEN, true);
             SubmarketUtils.replaceSubmarket(market, "regulated_generic_military", Submarkets.GENERIC_MILITARY, true);
             SubmarketUtils.replaceSubmarket(market, "regulated_black_market", Submarkets.SUBMARKET_BLACK, true);
+            if (ConfigHelper.hasNexerelin()) {
+                SubmarketUtils.replaceSubmarket(market, "regulated_exerelin_prismMarket", "exerelin_prismMarket", true);
+            }
         }
     }
 
