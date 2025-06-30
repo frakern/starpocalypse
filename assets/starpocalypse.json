@@ -17,7 +17,7 @@
     # If it is not they will not sell to you. They will buy though.
     "militaryRegulations": true, # Vanilla: false
 
-    # Whether free ports regulate their open markets. false removes all regulations on free port open markets.
+    # Whether free ports regulate their open markets. false removes all the following military regulations on free port open markets.
     "freePortOpenMarketRegulations": true, # Vanilla: false
 
     # Whether the military market can be fully accessed without commission. Only active if regulation is true.
@@ -112,6 +112,7 @@
     "blackMarketShipDestroyer": 4,
     "blackMarketShipCruiser": 5,
     "blackMarketShipCapital": 6,
+    "freePortBlackMarketRequiresContact": true, # Vanilla: false If false black markets in free ports will ignore the above rules.
 
     ## BETTER MARKET DEFENCES
     # Add a station to non-hidden markets based on size where one does not already exist.
