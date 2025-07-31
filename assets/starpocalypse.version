@@ -1,11 +1,10 @@
 {
-    "masterVersionFile": "https://raw.githubusercontent.com/frakern/starpocalypse/master/assets/starpocalypse.version",
+    "masterVersionFile": "https://raw.githubusercontent.com/ThomasRahm/starpocalypse/master/assets/starpocalypse.version",
     "modName": "Starpocalypse",
-    "modThreadId": 26969,
     "modVersion": {
-        "major": 3,
-        "minor": 0,
-        "patch": 2
+        "major": 4,
+        "minor": 2,
+        "patch": 0
     },
-    "directDownloadURL": "https://github.com/frakern/starpocalypse/releases/latest"
+    "directDownloadURL": "https://github.com/ThomasRahm/starpocalypse/releases/latest"
 }

@@ -10,7 +10,7 @@ import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import lombok.extern.log4j.Log4j;
 import starpocalypse.salvage.DerelictModifyingScript;
-import starpocalypse.salvage.StarpocalypseCampaignPlugin;
+import starpocalypse.salvage.BattleSalvageListener;
 
 @Log4j
 public class DropTableUtils {
@@ -32,7 +32,10 @@ public class DropTableUtils {
     }
 
     public static void makeCombatRecoveryRequireStoryPoint() {
-        Global.getSector().registerPlugin(new StarpocalypseCampaignPlugin());
+        if(!Global.getSector().getListenerManager().hasListenerOfClass(BattleSalvageListener.class))
+        {
+            Global.getSector().getListenerManager().addListener(new BattleSalvageListener(true), true);
+        }
     }
 
     public static void applySalvageMultiplier(float multiplier) {

@@ -30,7 +30,7 @@ public class RaidListener implements ColonyPlayerHostileActListener {
         CargoAPI raidLoot = actionData.raidLoot;
         for (CargoStackAPI stack : raidLoot.getStacksCopy()) {
             String item = getSpecialStackId(stack);
-            if (protectedItems.has(item)) {
+            if (protectedItems.has(item) && !actionData.secret) {
                 setAtWar(market);
                 return;
             }
