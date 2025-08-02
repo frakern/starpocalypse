@@ -65,6 +65,9 @@ public class ConfigHelper {
     private static boolean blackMarketGoodStuffRequiresContact = false;
 
     @Getter
+    private static boolean freePortBlackMarketRequiresContact = false;
+
+    @Getter
     private static int blackMarketWeaponT0 = 0;
 
     @Getter
@@ -289,6 +292,7 @@ public class ConfigHelper {
         shyBlackMarket = settings.optBoolean("shyBlackMarket", true);
         blackMarketRequiresContact = settings.optBoolean("blackMarketRequiresContact", true);
         blackMarketGoodStuffRequiresContact = settings.optBoolean("blackMarketGoodStuffRequiresContact", true);
+        freePortBlackMarketRequiresContact = settings.optBoolean("freePortBlackMarketRequiresContact", true);
 
         blackMarketWeaponT0 = settings.optInt("blackMarketWeaponT0", 0);
         blackMarketWeaponT1 = settings.optInt("blackMarketWeaponT1", 0);

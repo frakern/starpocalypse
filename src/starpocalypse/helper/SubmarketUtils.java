@@ -17,11 +17,14 @@ public class SubmarketUtils {
     }
 
     public static void replaceSubmarkets(MarketAPI market, boolean forceReplace) {
+        log.debug("Replacing submarkets on market " + market.getName());
         replaceSubmarket(market, Submarkets.SUBMARKET_OPEN, forceReplace);
         replaceSubmarket(market, Submarkets.GENERIC_MILITARY, forceReplace);
         replaceSubmarket(market, Submarkets.SUBMARKET_BLACK, forceReplace);
         if (ConfigHelper.hasNexerelin() && ConfigHelper.isDisablePrismFreeport()) {
-            market.removeSubmarket("exerelin_prismMarket");
+            if (market.hasSubmarket("exerelin_prismMarket")) {
+                replaceSubmarket(market, "exerelin_prismMarket", forceReplace);
+            }
         }
     }
 
@@ -44,6 +47,7 @@ public class SubmarketUtils {
             log.debug("Skipping already regulated submarket " + oldSubmarket.getNameOneLine());
             return;
         }
+        log.debug("Replacing submarket " + oldSubmarketId + " with " + newSubmarketId + " on market " + market.getName());
         market.removeSubmarket(oldSubmarketId);
         market.addSubmarket(newSubmarketId);
         SubmarketAPI newSubmarket = market.getSubmarket(newSubmarketId);

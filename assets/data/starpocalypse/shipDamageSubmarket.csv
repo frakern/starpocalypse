@@ -2,6 +2,7 @@ submarket
 # vanilla
 all
 !storage
+!generic_military
 # mods
 !IndEvo_tempStorage
 !IndEvo_DeconstStorage
@@ -9,3 +10,4 @@ all
 !IndEvo_RepairStorage
 !IndEvo_ReqCenterMarket
 !IndEvo_SharedStore
+!exerelin_prismMarket

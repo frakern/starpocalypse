@@ -95,8 +95,12 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
     @Override
     public boolean isIllegalOnSubmarket(String commodityId, TransferAction action) {
 
+        if (!ConfigHelper.isFreePortBlackMarketRequiresContact() && market.isFreePort()) {
+            return false;
+        }
+
         if (ConfigHelper.wantsRegulation(market.getFactionId())) {
-            CommoditySpecAPI commodity =  market.getCommodityData(commodityId).getCommodity();
+            CommoditySpecAPI commodity = market.getCommodityData(commodityId).getCommodity();
             if (isAlwaysLegal(commodity.getName())) {
                 return false;
             }
@@ -126,6 +130,10 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
         boolean vanillaIllegal = super.isIllegalOnSubmarket(stack, action);
         if (!ConfigHelper.wantsRegulation(market.getFactionId())) {
             return vanillaIllegal;
+        }
+
+        if (!ConfigHelper.isFreePortBlackMarketRequiresContact() && market.isFreePort()) {
+            return false;
         }
 
         String stackName = stack.getDisplayName();
@@ -183,6 +191,10 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
 
         if (!ConfigHelper.wantsRegulation(market.getFactionId())) {
             return super.isIllegalOnSubmarket(member, action);
+        }
+
+        if (!ConfigHelper.isFreePortBlackMarketRequiresContact() && market.isFreePort()) {
+            return false;
         }
 
         String hullName = StandingMarketRegulation.getHullName(member);

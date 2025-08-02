@@ -48,7 +48,7 @@ build {
 
 // compile time dependencies
 dependencies {
-    implementation files('N:/Starsector/starsector-core/starfarer.api.jar')
+    implementation "jaghaimo:starsector-api:0.98a-RC7@starfarer.api.jar"
     implementation "Histidine91:Nexerelin:ExerelinCore.jar"
 
     // game dependencies
