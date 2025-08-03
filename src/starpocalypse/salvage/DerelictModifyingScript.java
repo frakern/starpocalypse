@@ -72,7 +72,7 @@ public class DerelictModifyingScript implements EveryFrameScript {
                         log.info("Found new salvageable: " +entity.getFullName()+ " in " + entity.getContainingLocation().getName());
                         for(ShipRecoverySpecial.PerShipData ship:((ShipRecoverySpecial.ShipRecoverySpecialData) specialData).ships)
                         {
-                            if(ship.getVariant() == null || memory.contains("$hamatsu")) //Yes null variant this can occur.
+                            if(ship.getVariant() == null || memory.contains("$hamatsu") || memory.contains("$onslaughtMkI") || memory.contains("$ziggurat")) //Yes null variant this can occur.
                             {
                                 continue;
                             }
