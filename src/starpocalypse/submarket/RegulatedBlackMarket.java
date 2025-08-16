@@ -84,6 +84,9 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
         if (!ConfigHelper.isShyBlackMarket()) {
             return false;
         }
+        if (!ConfigHelper.isFreePortBlackMarketRequiresContact() && market.isFreePort()) {
+            return false;
+        }
         String faction = market.getFactionId();
         return ConfigHelper.getShyBlackMarketFaction().has(faction);
     }

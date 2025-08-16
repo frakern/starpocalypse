@@ -8,6 +8,7 @@ import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.combat.ShipHullSpecAPI;
 import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import com.fs.starfarer.api.impl.campaign.DModManager;
 import com.fs.starfarer.api.impl.campaign.ids.HullMods;
 import com.fs.starfarer.api.impl.campaign.intel.contacts.ContactIntel;
 import com.fs.starfarer.api.util.Misc;
@@ -182,6 +183,27 @@ public class StandingMarketRegulation
             {
                 requiredStanding += ConfigHelper.getStandingShipCapital();
             }
+        }
+
+        switch (DModManager.getNumDMods(ship.getVariant())) {
+            case 0:
+                requiredStanding += (int) (requiredStanding * 0.25f);
+                break;
+            case 1:
+                requiredStanding += (int) (requiredStanding * 0.1f);
+                break;
+            case 2:
+                requiredStanding += 0;
+                break;
+            case 3:
+                requiredStanding -= (int) (requiredStanding * 0.1f);
+                break;
+            case 4:
+                requiredStanding -= (int) (requiredStanding * 0.2f);
+                break;
+            case 5:
+                requiredStanding -= (int) (requiredStanding * 0.4f);
+                break;
         }
 
         requiredStanding += ConfigHelper.getStandingMinimumSelling();

@@ -17,11 +17,11 @@
     # If it is not they will not sell to you. They will buy though.
     "militaryRegulations": true, # Vanilla: false
 
-    # Whether free ports regulate their open markets. false removes all the following military regulations on free port open markets.
-    "freePortOpenMarketRegulations": true, # Vanilla: false
-
     # Whether the military market can be fully accessed without commission. Only active if regulation is true.
     "militaryNoCommission": true,
+
+    # Whether free ports regulate their open markets. false removes all the following military regulations on free port open markets.
+    "freePortOpenMarketRegulations": true, # Vanilla: false
 
     # LPC, weapon, and modspec tier and combat ship FP at which they are still legal.
     "regulationMaxLegalTier": -1, # easy mode: 1
@@ -37,10 +37,10 @@
     "standingBonusSurplus": 15,
     "standingBonusShortage": -15,
 
-    # Apply Faction reputation to standing with this factor
+    # Add Faction reputation to standing with this factor
     "standingFactionFactor": 1,
 
-    # Apply contact reputation to standing with this factor.
+    # Add contact reputation to standing with this factor.
     "standingContactFactor": 0.5,
 
     # Contact level applies bonus to standing.
@@ -63,7 +63,7 @@
 
     # Apply a logarthmic scale to ship standing required by fleet points.
     # Ranges from 80 at 4fp to 125 at 8fp to 175 at 18fp and to 200 at 28.
-    # If false, will use the set values below.
+    # If false, will use the fixed values below.
     "standingShipLogarthmic": true,
     # Ship size tier cutoff. Set to unreachable value (e.g. 1000) always remove.
     "standingShipCivilian": 0,
