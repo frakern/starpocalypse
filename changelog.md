@@ -1,3 +1,13 @@
+# Version 4.3.0
+* Added a few settings for allowing free sale of items in free port open and black markets.
+* Add setting for applying logarithmic scale to ship required standing.
+* Adjusted various texts to more closely match vanilla formatting and tone.
+* Add option to disable Nexerelin high end seller.
+* Cleaned up settings file.
+* Prevent stingy recoveries on story ships.
+* Adjust reputation needed to buy ships based on number of dmods present.
+* Made standing mechanic more transparent. All tooltips now show reputation required.
+
 # Version 4.2.0
 * Remove costMultiplierBuildings, as industryBuildCostMult is applied when loading the csv files.
 * Fix crash when a fitted wing is null.

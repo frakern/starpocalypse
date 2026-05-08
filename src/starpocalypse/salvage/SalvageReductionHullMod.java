@@ -8,16 +8,23 @@ import starpocalypse.helper.CargoUtils;
 
 public class SalvageReductionHullMod extends BaseHullMod {
 
-
     @Override
     public void applyEffectsBeforeShipCreation(ShipAPI.HullSize hullSize, MutableShipStatsAPI stats, String id) {
-        stats.getDynamic().getMod("individual_ship_recovery_mod").modifyMultAlways("Starpocalypse", (float) CargoUtils.getStingyRecoveryChance(hullSize), "You should not see this.");
+        stats
+            .getDynamic()
+            .getMod("individual_ship_recovery_mod")
+            .modifyMultAlways(
+                "Starpocalypse",
+                (float) CargoUtils.getStingyRecoveryChance(hullSize),
+                "You should not see this."
+            );
     }
 
     @Override
     public String getDescriptionParam(int index, ShipAPI.HullSize hullSize) {
-        return "If you see this, something went wrong! index: " + index +" Hullsize: " +hullSize.name();
+        return "If you see this, something went wrong! index: " + index + " Hullsize: " + hullSize.name();
     }
+
     @Override
     public boolean affectsOPCosts() {
         return false;

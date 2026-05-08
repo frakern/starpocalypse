@@ -40,12 +40,9 @@ public class MarketHelper {
         }
     }
 
-    public void improveIndustry(MarketAPI market, String industryId)
-    {
-        if(market.hasIndustry(industryId))
-        {
+    public void improveIndustry(MarketAPI market, String industryId) {
+        if (market.hasIndustry(industryId)) {
             market.getIndustry(industryId).setImproved(true);
         }
-
     }
 }

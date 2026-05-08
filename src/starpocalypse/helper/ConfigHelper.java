@@ -1,17 +1,17 @@
 package starpocalypse.helper;
 
 import com.fs.starfarer.api.Global;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.Getter;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import starpocalypse.config.SimpleMap;
 import starpocalypse.config.SimpleSet;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ConfigHelper {
 
-    private static Map<String,Object> originalVanillaSetting = new HashMap<>();
+    private static Map<String, Object> originalVanillaSetting = new HashMap<>();
 
     @Getter
     private static float blackMarketFenceCut = 0.5f;
@@ -28,31 +28,32 @@ public class ConfigHelper {
     private static boolean freePortOpenMarketRegulations = true;
 
     @Getter
-    private static boolean militaryNoCommission = false;
-
-    @Getter
     private static float regulationMaxTier = 0;
 
     @Getter
     private static float regulationMaxFP = 0;
 
-    private static final SimpleMap regulationFaction = new SimpleMap("faction", "standing", "militaryRegulationFaction.csv");
+    private static final SimpleMap regulationFaction = new SimpleMap(
+        "faction",
+        "reputationModifier",
+        "militaryRegulationFaction.csv"
+    );
 
     @Getter
     private static final SimpleSet regulationLegal = new SimpleSet("name", "militaryRegulationLegal.csv");
 
     @Getter
-    private static final SimpleMap standingStability = new SimpleMap(
+    private static final SimpleMap reputationStability = new SimpleMap(
         "stability",
-        "standing",
+        "reputationModifier",
         "militaryRegulationStability.csv"
     );
 
     @Getter
-    private static final SimpleMap standingIndividual = new SimpleMap(
+    private static final SimpleMap reputationIndividual = new SimpleMap(
         "item_or_hull_name",
-        "standing",
-        "militaryRegulationSpecialStanding.csv"
+        "reputation",
+        "militaryRegulationSpecialReputation.csv"
     );
 
     @Getter
@@ -74,13 +75,13 @@ public class ConfigHelper {
     private static int blackMarketWeaponT1 = 0;
 
     @Getter
-    private static int blackMarketWeaponT2= 0;
+    private static int blackMarketWeaponT2 = 0;
 
     @Getter
-    private static int blackMarketWeaponT3= 0;
+    private static int blackMarketWeaponT3 = 0;
 
     @Getter
-    private static int blackMarketWeaponT4= 0;
+    private static int blackMarketWeaponT4 = 0;
 
     @Getter
     private static int blackMarketShipCivilian = 0;
@@ -98,76 +99,73 @@ public class ConfigHelper {
     private static int blackMarketShipCapital = 0;
 
     @Getter
-    private static boolean standingBonusAtLowStability = true;
+    private static boolean reputationBonusAtLowStability = true;
 
     @Getter
-    private static int standingMinimumSelling = -100;
+    private static int reputationMinimumSelling = -100;
 
     @Getter
-    private static int standingBonusSurplus = 0;
+    private static int reputationBonusSurplus = 0;
 
     @Getter
-    private static int standingBonusShortage = 0;
+    private static int reputationBonusShortage = 0;
 
     @Getter
-    private static double standingContactFactor = 1f;
+    private static double reputationContactFactor = 1f;
 
     @Getter
-    private static double standingFactionFactor = 1f;
+    private static int reputationContactBonusNoContact = 0;
 
     @Getter
-    private static int standingContactBonusNoContact = 0;
+    private static int reputationContactBonusVeryLow = 0;
 
     @Getter
-    private static int standingContactBonusVeryLow = 0;
+    private static int reputationContactBonusLow = 0;
 
     @Getter
-    private static int standingContactBonusLow = 0;
+    private static int reputationContactBonusMedium = 0;
 
     @Getter
-    private static int standingContactBonusMedium = 0;
+    private static int reputationContactBonusHigh = 0;
 
     @Getter
-    private static int standingContactBonusHigh = 0;
+    private static int reputationContactBonusVeryHigh = 0;
 
     @Getter
-    private static int standingContactBonusVeryHigh = 0;
+    private static int reputationCommissionBonus = 0;
 
     @Getter
-    private static int standingCommissionBonus = 0;
+    private static int reputationWeaponT0 = 0;
 
     @Getter
-    private static int standingWeaponT0 = 0;
+    private static int reputationWeaponT1 = 0;
 
     @Getter
-    private static int standingWeaponT1 = 0;
+    private static int reputationWeaponT2 = 0;
 
     @Getter
-    private static int standingWeaponT2= 0;
+    private static int reputationWeaponT3 = 0;
 
     @Getter
-    private static int standingWeaponT3= 0;
+    private static int reputationWeaponT4 = 0;
 
     @Getter
-    private static int standingWeaponT4= 0;
+    private static boolean reputationShipLogarthmic = true;
 
     @Getter
-    private static boolean standingShipLogarthmic = true;
+    private static int reputationShipCivilian = 0;
 
     @Getter
-    private static int standingShipCivilian = 0;
+    private static int reputationShipFrigate = 0;
 
     @Getter
-    private static int standingShipFrigate = 0;
+    private static int reputationShipDestroyer = 0;
 
     @Getter
-    private static int standingShipDestroyer = 0;
+    private static int reputationShipCruiser = 150;
 
     @Getter
-    private static int standingShipCruiser = 150;
-
-    @Getter
-    private static int standingShipCapital = 200;
+    private static int reputationShipCapital = 200;
 
     @Getter
     private static boolean stingyRecoveriesDerelicts = true;
@@ -253,22 +251,21 @@ public class ConfigHelper {
     }
 
     public static boolean wantsRegulation(String factionId) {
-        return regulation &&
-                (regulationFaction.containsKey(factionId) || (regulationFaction.containsKey("all") && ! regulationFaction.containsKey("!"+factionId)))  ;
+        return (
+            regulation &&
+            (
+                regulationFaction.containsKey(factionId) ||
+                (regulationFaction.containsKey("all") && !regulationFaction.containsKey("!" + factionId))
+            )
+        );
     }
 
-    public static int getFactionStandingBonus(String factionId)
-    {
-        if(regulationFaction.containsKey(factionId))
-        {
+    public static int getFactionReputationModifier(String factionId) {
+        if (regulationFaction.containsKey(factionId)) {
             return Integer.parseInt(regulationFaction.get(factionId));
-        }
-        else if(regulationFaction.containsKey("all") && !regulationFaction.containsKey("!"+factionId))
-        {
+        } else if (regulationFaction.containsKey("all") && !regulationFaction.containsKey("!" + factionId)) {
             return Integer.parseInt(regulationFaction.get("all"));
-        }
-        else
-        {
+        } else {
             return 0;
         }
     }
@@ -284,9 +281,8 @@ public class ConfigHelper {
         blackMarketFenceCut = (float) settings.optDouble("blackMarketFenceCut", 0.5);
         minDmods = clamp(settings.optInt("minimumDmods", 2), 1, 5);
         maxDmods = clamp(settings.optInt("maximumDmods", 4), minDmods, 5);
-        regulation = settings.optBoolean("militaryRegulations", true);
+        regulation = settings.optBoolean("marketRegulations", true);
         freePortOpenMarketRegulations = settings.optBoolean("freePortOpenMarketRegulations", true);
-        militaryNoCommission = settings.optBoolean("militaryNoCommission", false);
         regulationMaxFP = settings.optInt("regulationMaxLegalFP", 0);
         regulationMaxTier = settings.optInt("regulationMaxLegalTier", 0);
         shyBlackMarket = settings.optBoolean("shyBlackMarket", true);
@@ -306,35 +302,33 @@ public class ConfigHelper {
         blackMarketShipCruiser = settings.optInt("blackMarketShipCruiser", 0);
         blackMarketShipCapital = settings.optInt("blackMarketShipCapital", 0);
 
+        reputationBonusAtLowStability = settings.optBoolean("reputationBonusAtLowStability", true);
 
-        standingBonusAtLowStability = settings.optBoolean("standingBonusAtLowStability", true);
+        reputationMinimumSelling = settings.optInt("reputationMinimumSelling", -100);
+        reputationBonusSurplus = settings.optInt("reputationBonusSurplus", 0);
+        reputationBonusShortage = settings.optInt("reputationBonusShortage", 0);
+        reputationContactFactor = settings.optDouble("reputationContactFactor", 1.0);
 
-        standingMinimumSelling = settings.optInt("standingMinimumSelling", -100);
-        standingBonusSurplus = settings.optInt("standingBonusSurplus", 0);
-        standingBonusShortage = settings.optInt("standingBonusShortage", 0);
-        standingContactFactor = settings.optDouble("standingContactFactor",1.0);
-        standingFactionFactor = settings.optDouble("standingFactionFactor",1.0);
+        reputationContactBonusNoContact = settings.optInt("reputationContactBonusNoContact", 0);
+        reputationContactBonusVeryLow = settings.optInt("reputationContactBonusVeryLow", 0);
+        reputationContactBonusLow = settings.optInt("reputationContactBonusLow", 0);
+        reputationContactBonusMedium = settings.optInt("reputationContactBonusMedium", 0);
+        reputationContactBonusHigh = settings.optInt("reputationContactBonusHigh", 0);
+        reputationContactBonusVeryHigh = settings.optInt("reputationContactBonusVeryHigh", 0);
+        reputationCommissionBonus = settings.optInt("reputationCommissionBonus", 0);
 
-        standingContactBonusNoContact = settings.optInt("standingContactBonusNoContact", 0);
-        standingContactBonusVeryLow = settings.optInt("standingContactBonusVeryLow", 0);
-        standingContactBonusLow = settings.optInt("standingContactBonusLow", 0);
-        standingContactBonusMedium = settings.optInt("standingContactBonusMedium", 0);
-        standingContactBonusHigh = settings.optInt("standingContactBonusHigh", 0);
-        standingContactBonusVeryHigh = settings.optInt("standingContactBonusVeryHigh", 0);
-        standingCommissionBonus = settings.optInt("standingCommissionBonus", 0);
+        reputationWeaponT0 = settings.optInt("reputationWeaponT0", 0);
+        reputationWeaponT1 = settings.optInt("reputationWeaponT1", 0);
+        reputationWeaponT2 = settings.optInt("reputationWeaponT2", 0);
+        reputationWeaponT3 = settings.optInt("reputationWeaponT3", 0);
+        reputationWeaponT4 = settings.optInt("reputationWeaponT4", 0);
 
-        standingWeaponT0 = settings.optInt("standingWeaponT0", 0);
-        standingWeaponT1 = settings.optInt("standingWeaponT1", 0);
-        standingWeaponT2 = settings.optInt("standingWeaponT2", 0);
-        standingWeaponT3 = settings.optInt("standingWeaponT3", 0);
-        standingWeaponT4 = settings.optInt("standingWeaponT4", 0);
-
-        standingShipLogarthmic = settings.optBoolean("standingShipLogarthmic", true);
-        standingShipCivilian = settings.optInt("standingShipCivilian", 0);
-        standingShipFrigate = settings.optInt("standingShipFrigate", 0);
-        standingShipDestroyer = settings.optInt("standingShipDestroyer", 0);
-        standingShipCruiser = settings.optInt("standingShipCruiser", 0);
-        standingShipCapital = settings.optInt("standingShipCapital", 0);
+        reputationShipLogarthmic = settings.optBoolean("reputationShipLogarthmic", true);
+        reputationShipCivilian = settings.optInt("reputationShipCivilian", 0);
+        reputationShipFrigate = settings.optInt("reputationShipFrigate", 0);
+        reputationShipDestroyer = settings.optInt("reputationShipDestroyer", 0);
+        reputationShipCruiser = settings.optInt("reputationShipCruiser", 0);
+        reputationShipCapital = settings.optInt("reputationShipCapital", 0);
 
         applyBuySellCostMultToQuest = settings.optBoolean("applyBuySellCostMultToQuest", true);
         stingyNerfHullRestoration = settings.optBoolean("stingyNerfHullRestoration", true);
@@ -344,11 +338,10 @@ public class ConfigHelper {
         stingyRecoveriesIncludePlayerShips = settings.optBoolean("stingyRecoveriesCombatIncludePlayerShips", true);
         stingyRecoveriesCombatPlayerShipsSize = settings.optInt("stingyRecoveriesCombatPlayerShipsSize", 1);
 
-        stingyRecoveriesChanceFrigate = settings.optDouble("stingyRecoveriesChanceFrigate",1.0);
-        stingyRecoveriesChanceDestroyer = settings.optDouble("stingyRecoveriesChanceDestroyer",1.0);
-        stingyRecoveriesChanceCruiser = settings.optDouble("stingyRecoveriesChanceCruiser",1.0);
-        stingyRecoveriesChanceCapital = settings.optDouble("stingyRecoveriesChanceCapital",1.0);
-
+        stingyRecoveriesChanceFrigate = settings.optDouble("stingyRecoveriesChanceFrigate", 1.0);
+        stingyRecoveriesChanceDestroyer = settings.optDouble("stingyRecoveriesChanceDestroyer", 1.0);
+        stingyRecoveriesChanceCruiser = settings.optDouble("stingyRecoveriesChanceCruiser", 1.0);
+        stingyRecoveriesChanceCapital = settings.optDouble("stingyRecoveriesChanceCapital", 1.0);
 
         stingyRecoveriesWeaponT0 = settings.optDouble("stingyWeaponWeaponT0", 1f);
         stingyRecoveriesWeaponT1 = settings.optDouble("stingyWeaponWeaponT1", 1f);
@@ -356,33 +349,27 @@ public class ConfigHelper {
         stingyRecoveriesWeaponT3 = settings.optDouble("stingyWeaponWeaponT3", 1f);
         stingyRecoveriesWeaponT4 = settings.optDouble("stingyWeaponWeaponT4", 1f);
 
-        costMultiplierWeapon = (float) settings.optDouble("costMultiplierWeapon",1.0);
-        costMultiplierShips = (float) settings.optDouble("costMultiplierShips",1.0);
-        costMultiplierSellerProfitMargin = (float) settings.optDouble("costMultiplierSellerProfitMargin",1.0);
-        costMultiplierOverrideDmods = (float) settings.optDouble("costMultiplierOverrideDmods",1.0);
+        costMultiplierWeapon = (float) settings.optDouble("costMultiplierWeapon", 1.0);
+        costMultiplierShips = (float) settings.optDouble("costMultiplierShips", 1.0);
+        costMultiplierSellerProfitMargin = (float) settings.optDouble("costMultiplierSellerProfitMargin", 1.0);
+        costMultiplierOverrideDmods = (float) settings.optDouble("costMultiplierOverrideDmods", 1.0);
 
         disablePrismFreeport = settings.optBoolean("removeHighEndSeller", false);
     }
 
-
-    public static void overwriteOriginalVanillaFloat(String setting, Float value)
-    {
-        if(!originalVanillaSetting.containsKey(setting))
-        {
+    public static void overwriteOriginalVanillaFloat(String setting, Float value) {
+        if (!originalVanillaSetting.containsKey(setting)) {
             originalVanillaSetting.put(setting, Global.getSettings().getFloat(setting));
         }
         Global.getSettings().setFloat(setting, value);
     }
 
-    public static float getOriginalVanillaFloat(String setting)
-    {
-        if(!originalVanillaSetting.containsKey(setting))
-        {
+    public static float getOriginalVanillaFloat(String setting) {
+        if (!originalVanillaSetting.containsKey(setting)) {
             originalVanillaSetting.put(setting, Global.getSettings().getFloat(setting));
         }
-        return (float)originalVanillaSetting.get(setting);
+        return (float) originalVanillaSetting.get(setting);
     }
-
 
     private static void transparentMarket(JSONObject settings, Logger log) {
         if (settings.optBoolean("transparentMarket", true)) {

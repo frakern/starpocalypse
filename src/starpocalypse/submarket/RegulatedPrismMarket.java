@@ -19,12 +19,11 @@ public class RegulatedPrismMarket extends PrismMarket {
     }
 
     @Override
-    public String getTooltipAppendix(CoreUIAPI ui)
-    {
-        if (!isEnabled(ui))
-        {
-            String msg = "Due to the recent punitive sanctions against its operators, " +
-                    "the fabled rare ship and weapons market has been closed.";
+    public String getTooltipAppendix(CoreUIAPI ui) {
+        if (!isEnabled(ui)) {
+            String msg =
+                "Due to recent punitive economic sanctions against its operators, " +
+                "the fabled rare ship and weapons market has been closed.";
             return msg;
         }
         return null;
@@ -34,7 +33,6 @@ public class RegulatedPrismMarket extends PrismMarket {
     public boolean isEnabled(CoreUIAPI ui) {
         if (ConfigHelper.hasNexerelin() && ConfigHelper.isDisablePrismFreeport()) {
             return false;
-
         } else {
             return true;
         }

@@ -9,7 +9,6 @@ import com.fs.starfarer.api.impl.campaign.ids.Items;
 import com.fs.starfarer.api.loading.FighterWingSpecAPI;
 import com.fs.starfarer.api.loading.HullModSpecAPI;
 import com.fs.starfarer.api.loading.WeaponSpecAPI;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -37,7 +36,7 @@ public class CargoUtils {
         if (stack.isWeaponStack()) {
             WeaponSpecAPI spec = stack.getWeaponSpecIfWeapon();
             tier = spec.getTier();
-        } else if (stack.isSpecialStack() && stack.getSpecialDataIfSpecial().getId().equals(Items.TAG_MODSPEC) ) {
+        } else if (stack.isSpecialStack() && stack.getSpecialDataIfSpecial().getId().equals(Items.TAG_MODSPEC)) {
             HullModSpecAPI spec = stack.getHullModSpecIfHullMod();
             tier = spec.getTier();
         } else if (stack.isFighterWingStack()) {
@@ -55,32 +54,51 @@ public class CargoUtils {
         return numDmods;
     }
 
-    public static void handleStingyWeapon(ShipVariantAPI variant, Random rand)
-    {
-        if(variant.hasTag("consistent_weapon_drops"))
-            return;
+    public static void handleStingyWeapon(ShipVariantAPI variant, Random rand) {
+        if (variant.hasTag("consistent_weapon_drops")) return;
 
         // Remove more weapons based on StingyRecoveriesChanceWeapons
         List<String> remove = new ArrayList<String>();
 
         for (String slotId : variant.getNonBuiltInWeaponSlots()) {
             double randResult = rand.nextFloat();
-            if (randResult > getStingyRecoveryChance(variant.getWeaponSpec(slotId).getTier()) && !variant.getWeaponSpec(slotId).hasTag("omega"))
-            {
-                log.info("Removing weapon from " + variant.getFullDesignationWithHullName() +" in slot " + slotId + ": " + variant.getWeaponSpec(slotId).getWeaponName() + " from " + variant.getHullSpec().getHullName() + " with rand " + randResult + " keep below " + getStingyRecoveryChance(variant.getWeaponSpec(slotId).getTier()));
+            if (
+                randResult > getStingyRecoveryChance(variant.getWeaponSpec(slotId).getTier()) &&
+                !variant.getWeaponSpec(slotId).hasTag("omega")
+            ) {
+                log.info(
+                    "Removing weapon from " +
+                    variant.getFullDesignationWithHullName() +
+                    " in slot " +
+                    slotId +
+                    ": " +
+                    variant.getWeaponSpec(slotId).getWeaponName() +
+                    " from " +
+                    variant.getHullSpec().getHullName() +
+                    " with rand " +
+                    randResult +
+                    " keep below " +
+                    getStingyRecoveryChance(variant.getWeaponSpec(slotId).getTier())
+                );
                 remove.add(slotId);
             }
         }
-        for (String slotId : remove)
-            variant.clearSlot(slotId);
+        for (String slotId : remove) variant.clearSlot(slotId);
         int index = 0;
         for (String id : variant.getFittedWings()) {
-            if(variant.getWing(index) != null)
-            {
+            if (variant.getWing(index) != null) {
                 double randResult = rand.nextFloat();
-                if (randResult > getStingyRecoveryChance(variant.getWing(index).getTier()))
-                {
-                    log.info("Removing wing " + variant.getWing(index).getWingName() + " from " + variant.getHullSpec().getHullName() + " with rand " + randResult + " needed to keep " + getStingyRecoveryChance(variant.getWing(index).getTier()));
+                if (randResult > getStingyRecoveryChance(variant.getWing(index).getTier())) {
+                    log.info(
+                        "Removing wing " +
+                        variant.getWing(index).getWingName() +
+                        " from " +
+                        variant.getHullSpec().getHullName() +
+                        " with rand " +
+                        randResult +
+                        " needed to keep " +
+                        getStingyRecoveryChance(variant.getWing(index).getTier())
+                    );
                     variant.setWingId(index, null);
                 }
             }
@@ -88,9 +106,8 @@ public class CargoUtils {
         }
     }
 
-    public static double getStingyRecoveryChance(ShipAPI.HullSize shipClass)
-    {
-        switch (shipClass){
+    public static double getStingyRecoveryChance(ShipAPI.HullSize shipClass) {
+        switch (shipClass) {
             case FRIGATE:
                 return ConfigHelper.getStingyRecoveriesChanceFrigate();
             case DESTROYER:
@@ -104,11 +121,9 @@ public class CargoUtils {
         }
     }
 
-    public static double getStingyRecoveryChance(int tier)
-    {
-        if(tier > 4)
-            tier = 4;
-        switch (tier){
+    public static double getStingyRecoveryChance(int tier) {
+        if (tier > 4) tier = 4;
+        switch (tier) {
             case 0:
                 return ConfigHelper.getStingyRecoveriesWeaponT0();
             case 1:
@@ -123,5 +138,4 @@ public class CargoUtils {
                 return 1.0;
         }
     }
-
 }

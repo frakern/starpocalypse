@@ -49,7 +49,7 @@ build {
 // compile time dependencies
 dependencies {
     implementation "jaghaimo:starsector-api:0.98a-RC7@starfarer.api.jar"
-    implementation "Histidine91:Nexerelin:ExerelinCore.jar"
+    implementation files('libs/ExerelinCore.jar')
 
     // game dependencies
     implementation group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.10'

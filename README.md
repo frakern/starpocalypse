@@ -2,8 +2,8 @@
 
 This mod makes the following changes to the campaign layer of Starsector:
 
-1. Weapons and combat ships are scarce and highly regulated and more expensive (2x by default). Access to these is regulated with a standing system, with the standing affected by your reputation, your best contact (contact reputation and quality) and your commission status (if possible). Buying larger hulls or high tier weapons is next to impossible without the right connections.
-    1. If you dont have a high enough standing you wont be getting combat ships and weapons equipment from them. If they hate you enough they may even not sell you civilian ships. Can be configured using the config and csv files mentioned in it.
+1. Weapons and combat ships are scarce and highly regulated and more expensive (2x by default). Access to these is regulated with a reputation system, with the reputation affected by your reputation, your best contact (contact reputation and quality) and your commission status (if possible). Buying larger hulls or high tier weapons is next to impossible without the right connections.
+    1. If you dont have a high enough reputation you wont be getting combat ships and weapons equipment from them. If they hate you enough they may even not sell you civilian ships. Can be configured using the config and csv files mentioned in it.
     2. You can only buy combat ships and weapons on the black market if your contact has a high enough importance. Can be configured in the config.
 2. There are no pristine ships, everything is d-modded. Including your starting fleet.
 3. Access to most Black Markets is impossible while not having a pirate contact at that location. Additionally, you will need to pay bribes to transact your business (in lieu of tariffs).
@@ -49,11 +49,11 @@ The list of raid-protected items (special item ids) is present in `raidProtector
 
 ### Submarket changes
 
-1. Combat ships, and weapons, LPCs, and modspecs are limited based on standing, your contacts, its tier, their stability (`militaryRegulationsStability.csv`) and your commissioned status. See config for exact values
+1. Combat ships, and weapons, LPCs, and modspecs are limited based on reputation, your contacts, its tier, their stability (`militaryRegulationsStability.csv`) and your commissioned status. See config for exact values
 2. Finally, all pristine ships are damaged by putting a random number of d-mods on them.
 
 Factions have modifiers for their willingness to sell weapons declared in the `militaryRegulationFaction.csv` file. 
-The willingness to sell given good can be modified in `militaryRegulationsSpecialStanding.csv`.
+The willingness to sell a given good can be modified in `militaryRegulationsSpecialReputation.csv`.
 Finally, exclusion lists can be applied to regulations - see `militaryRegulationsLegal.csv`.
 
 Ship damager is configurable by faction and submarket, and is applied to all ships. It is controlled by `shipDamage*.csv`.

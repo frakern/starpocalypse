@@ -1,218 +1,178 @@
 package starpocalypse.submarket;
 
+import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.econ.CommodityOnMarketAPI;
-import com.fs.starfarer.api.campaign.econ.CommoditySpecAPI;
 import com.fs.starfarer.api.campaign.econ.SubmarketAPI;
-import com.fs.starfarer.api.combat.ShipHullSpecAPI;
-import com.fs.starfarer.api.combat.ShipVariantAPI;
+import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
-import com.fs.starfarer.api.impl.campaign.ids.HullMods;
 import com.fs.starfarer.api.impl.campaign.submarkets.MilitarySubmarketPlugin;
+import com.fs.starfarer.api.loading.FighterWingSpecAPI;
+import com.fs.starfarer.api.loading.HullModSpecAPI;
+import com.fs.starfarer.api.loading.WeaponSpecAPI;
 import com.fs.starfarer.api.util.Highlights;
 import com.fs.starfarer.api.util.Misc;
-import exerelin.campaign.AllianceManager;
-import exerelin.campaign.PlayerFactionStore;
-import exerelin.utilities.NexUtilsFaction;
 import lombok.extern.log4j.Log4j;
-import starpocalypse.config.SimpleMap;
-import starpocalypse.helper.CargoUtils;
 import starpocalypse.helper.ConfigHelper;
 import starpocalypse.helper.SubmarketUtils;
 
 @Log4j
 public class RegulatedMilitaryMarket extends MilitarySubmarketPlugin {
-    private String location;
-    private int econStanding = 0;
-    private int contactStanding = 0;
+
+    private final SubmarketDelegate shared = new SubmarketDelegate(this);
 
     @Override
     public void init(SubmarketAPI submarket) {
         super.init(submarket);
-        location = SubmarketUtils.getLocation(submarket);
+        shared.location = SubmarketUtils.getLocation(submarket);
     }
 
     @Override
     public boolean isIllegalOnSubmarket(String commodityId, TransferAction action) {
-        boolean vanillaIllegal = super.isIllegalOnSubmarket(commodityId, action);
+        boolean vanillaIllegal = this.market.isIllegal(commodityId);
+        CommodityOnMarketAPI com = this.market.getCommodityData(commodityId);
+        boolean isMilitary = com.getCommodity().getTags().contains("military");
+        if (!isMilitary) {
+            return shared.isIllegalOnSubmarket(commodityId, action, vanillaIllegal);
+        } else {
+            RepLevel req = this.getRequiredLevelAssumingLegal(commodityId, action);
+            RepLevel level = this.submarket.getFaction().getRelationshipLevel(Global.getSector().getFaction("player"));
+            boolean legal = level.isAtWorst(req);
+            if (this.requiresCommission(req)) {
+                legal &= this.hasCommission();
+            }
 
-        CommoditySpecAPI commodity =  market.getCommodityData(commodityId).getCommodity();
-        if (!ConfigHelper.wantsRegulation(market.getFactionId()) || commodity.isMeta()) {
-            return vanillaIllegal;
+            return shared.isIllegalOnSubmarket(commodityId, action, !legal);
         }
-
-        if(vanillaIllegal || action == TransferAction.PLAYER_SELL)
-        {
-            return vanillaIllegal;
-        }
-
-        if (isAlwaysLegal(commodity.getName())) {
-            return false;
-        }
-        if (isAlwaysIllegal(commodity.getName())) {
-            return true;
-        }
-
-        return !StandingMarketRegulation.legalWithStanding(commodity.getName(), econStanding + contactStanding + getCommodityStandingModifier(commodityId));
     }
 
     @Override
     public boolean isIllegalOnSubmarket(CargoStackAPI stack, TransferAction action) {
-
-        if (!ConfigHelper.wantsRegulation(market.getFactionId())) {
-            return super.isIllegalOnSubmarket(stack, action);
+        if (stack.isCommodityStack()) {
+            return this.isIllegalOnSubmarket((String) stack.getData(), action);
+        } else {
+            boolean vanillaIllegal = false;
+            RepLevel req = this.getRequiredLevelAssumingLegal(stack, action);
+            if (req != null && this.requiresCommission(req) && !shared.hasCommission(this.submarket.getFaction())) {
+                vanillaIllegal = true;
+            }
+            return shared.isIllegalOnSubmarket(stack, action, vanillaIllegal);
         }
-        boolean vanillaIllegal = super.isIllegalOnSubmarket(stack, action);
-
-        if(vanillaIllegal || action == TransferAction.PLAYER_SELL)
-        {
-            return vanillaIllegal;
-        }
-
-        String stackName = stack.getDisplayName();
-        if (isAlwaysLegal(stackName)) {
-            return false;
-        }
-        if (isAlwaysIllegal(stackName)) {
-            return true;
-        }
-        if (!isSignificant(stack)) {
-            return false;
-        }
-
-        return !StandingMarketRegulation.legalWithStanding(stack, econStanding + contactStanding + (stack.isCommodityStack() ? getCommodityStandingModifier(stack.getCommodityId()) : 0));
     }
 
     @Override
     public boolean isIllegalOnSubmarket(FleetMemberAPI member, TransferAction action) {
-        if (!ConfigHelper.wantsRegulation(market.getFactionId())) {
-            return super.isIllegalOnSubmarket(member, action);
+        boolean vanillaIllegal = false;
+        RepLevel req = this.getRequiredLevelAssumingLegal(member, action);
+        if (req != null && this.requiresCommission(req) && !shared.hasCommission(this.submarket.getFaction())) {
+            vanillaIllegal = true;
         }
-
-        boolean vanillaIllegal = super.isIllegalOnSubmarket(member, action);
-
-        if(vanillaIllegal || action == TransferAction.PLAYER_SELL)
-        {
-            return vanillaIllegal;
-        }
-
-        String hullName = StandingMarketRegulation.getHullName(member);
-        if (isAlwaysLegal(hullName)) {
-            return false;
-        }
-        if (isAlwaysIllegal(hullName)) {
-            return true;
-        }
-        if (!isSignificant(member)) {
-            return false;
-        }
-        return !StandingMarketRegulation.legalWithStanding(member, econStanding + contactStanding);
+        return shared.isIllegalOnSubmarket(member, action, vanillaIllegal);
     }
 
     @Override
-    public void updateCargoPrePlayerInteraction()
-    {
-        calculateStandings();
+    public void updateCargoPrePlayerInteraction() {
+        shared.calculateReputationModifiers();
         super.updateCargoPrePlayerInteraction();
     }
 
     @Override
     public String getIllegalTransferText(CargoStackAPI stack, SubmarketPlugin.TransferAction action) {
-        int econStandingBefore = econStanding;
-        int requiredStanding = StandingMarketRegulation.getRequiredStanding(stack);
-        econStanding = requiredStanding + Math.abs(contactStanding);
-        if(super.isIllegalOnSubmarket(stack, action) && (!ConfigHelper.isMilitaryNoCommission() || super.isIllegalOnSubmarket(stack, TransferAction.PLAYER_BUY)))
-        {
-            econStanding = econStandingBefore;
-            return super.getIllegalTransferText(stack, action);
-        }
-        else
-        {
-            econStanding = econStandingBefore;
-            int standing = (econStanding + contactStanding);
-            return "Req: Standing - " + (requiredStanding - (stack.isCommodityStack() ? getCommodityStandingModifier(stack.getCommodityId()) : 0)) + " (" + standing + ")";
+        RepLevel req = this.getRequiredLevelAssumingLegal(stack, action);
+        if (req != null) {
+            int requiredReputation = shared.getRequiredReputation(stack);
+            if (this.requiresCommission(req)) {
+                return (
+                    "Req: " +
+                    this.submarket.getFaction().getDisplayName() +
+                    " - " +
+                    requiredReputation +
+                    " / 100, " +
+                    " commission"
+                );
+            } else {
+                return "Req: " + this.submarket.getFaction().getDisplayName() + " - " + requiredReputation + " / 100";
+            }
+        } else {
+            return "Illegal to trade in " + stack.getDisplayName() + " here";
         }
     }
 
     @Override
     public Highlights getIllegalTransferTextHighlights(CargoStackAPI stack, SubmarketPlugin.TransferAction action) {
-        if(super.isIllegalOnSubmarket(stack, action) && (!ConfigHelper.isMilitaryNoCommission() || super.isIllegalOnSubmarket(stack, TransferAction.PLAYER_BUY)))
-        {
-            return super.getIllegalTransferTextHighlights(stack, action);
-        }
-        else
-        {
-            Highlights h = new Highlights();
-            h.append(getIllegalTransferText(stack, action), Misc.getNegativeHighlightColor());
-            return h;
-        }
+        Highlights h = new Highlights();
+        h.append(getIllegalTransferText(stack, action), Misc.getNegativeHighlightColor());
+        return h;
     }
 
     @Override
-    public String getIllegalTransferText(FleetMemberAPI ship, SubmarketPlugin.TransferAction action) {
-        int econStandingBefore = econStanding;
-        int requiredStanding = StandingMarketRegulation.getRequiredStanding(ship);
-        econStanding = requiredStanding + Math.abs(contactStanding);
-        if(super.isIllegalOnSubmarket(ship, action) && (!ConfigHelper.isMilitaryNoCommission() || super.isIllegalOnSubmarket(ship, TransferAction.PLAYER_BUY)))
-        {
-            econStanding = econStandingBefore;
-            return super.getIllegalTransferText(ship, action);
-        }
-        else
-        {
-            econStanding = econStandingBefore;
-            int standing = (econStanding + contactStanding);
-            return "Req: Standing - " + requiredStanding + " (" + standing + ")";
+    public String getIllegalTransferText(FleetMemberAPI member, SubmarketPlugin.TransferAction action) {
+        RepLevel req = this.getRequiredLevelAssumingLegal(member, action);
+        if (req != null) {
+            String str = "";
+            int reputation = market.getFaction().getRelToPlayer().getRepInt();
+            int requiredReputation = shared.getRequiredReputation(member);
+            if (reputation < requiredReputation) {
+                str =
+                    str +
+                    "Req: " +
+                    this.submarket.getFaction().getDisplayName() +
+                    " - " +
+                    requiredReputation +
+                    " / 100";
+            }
+
+            if (this.requiresCommission(req) && !shared.hasCommission(this.submarket.getFaction())) {
+                if (!str.isEmpty()) {
+                    str = str + "\n";
+                }
+
+                str = str + "Req: " + this.submarket.getFaction().getDisplayName() + " - " + "commission";
+            }
+
+            return str;
+        } else {
+            return action == TransferAction.PLAYER_BUY ? "Illegal to buy" : "Illegal to sell";
         }
     }
+
     @Override
     public Highlights getIllegalTransferTextHighlights(FleetMemberAPI member, SubmarketPlugin.TransferAction action) {
-        if(super.isIllegalOnSubmarket(member, action) && (!ConfigHelper.isMilitaryNoCommission() || super.isIllegalOnSubmarket(member, TransferAction.PLAYER_BUY)))
-        {
-            return super.getIllegalTransferTextHighlights(member, action);
+        Highlights h = new Highlights();
+        h.append(getIllegalTransferText(member, action), Misc.getNegativeHighlightColor());
+        return h;
+    }
+
+    private RepLevel getRequiredLevelAssumingLegal(String commodityId, SubmarketPlugin.TransferAction action) {
+        if (action == TransferAction.PLAYER_SELL) {
+            return RepLevel.VENGEFUL;
+        } else {
+            int requiredReputation = shared.getRequiredReputation(commodityId);
+            return RepLevel.getLevelFor((float) Math.min(100, requiredReputation));
         }
-        else
-        {
-            Highlights h = new Highlights();
-            h.append(getIllegalTransferText(member, action), Misc.getNegativeHighlightColor());
-            return h;
+    }
+
+    private RepLevel getRequiredLevelAssumingLegal(CargoStackAPI stack, SubmarketPlugin.TransferAction action) {
+        if (stack.isWeaponStack() || stack.isModSpecStack() || stack.isFighterWingStack()) {
+            if (action == TransferAction.PLAYER_BUY) {
+                int requiredReputation = shared.getRequiredReputation(stack);
+                return RepLevel.getLevelFor((float) Math.min(100, requiredReputation));
+            }
+
+            return RepLevel.VENGEFUL;
+        } else {
+            return !stack.isCommodityStack()
+                ? null
+                : this.getRequiredLevelAssumingLegal((String) stack.getData(), action);
         }
     }
-    @Override
-    protected boolean requiresCommission(RepLevel req) {
-        return super.requiresCommission(req) && !ConfigHelper.isMilitaryNoCommission();
+
+    private RepLevel getRequiredLevelAssumingLegal(FleetMemberAPI member, SubmarketPlugin.TransferAction action) {
+        if (action == TransferAction.PLAYER_BUY) {
+            int requiredReputation = shared.getRequiredReputation(member);
+            return RepLevel.getLevelFor((float) Math.min(100, requiredReputation));
+        } else {
+            return null;
+        }
     }
-
-    private int getCommodityStandingModifier(String commodityID)
-    {
-        // Cant really get how much shortage there is relative to market size. So now it is just if there is a shortage/excess
-        int excess = Math.min(market.getCommodityData(commodityID).getExcessQuantity(), 1);
-        int shortage = Math.min(market.getCommodityData(commodityID).getDeficitQuantity(), 1);
-        return excess * ConfigHelper.getStandingBonusSurplus() + shortage * ConfigHelper.getStandingBonusShortage();
-
-    }
-
-    private void calculateStandings()
-    {
-        econStanding = StandingMarketRegulation.getEconStanding(submarket) + ConfigHelper.getFactionStandingBonus(submarket.getFaction().getId());
-        contactStanding = StandingMarketRegulation.getContactStanding(StandingMarketRegulation.getBestContactOfFaction(submarket.getFaction()));
-    }
-
-    private boolean isAlwaysIllegal(String name) {
-        return ConfigHelper.getRegulationLegal().hasNot(name);
-    }
-
-    private boolean isAlwaysLegal(String name) {
-        return ConfigHelper.getRegulationLegal().has(name);
-    }
-
-
-    private boolean isSignificant(CargoStackAPI stack) {
-        return CargoUtils.getTier(stack) > ConfigHelper.getRegulationMaxTier();
-    }
-
-    private boolean isSignificant(FleetMemberAPI member) {
-        return member.getFleetPointCost() > ConfigHelper.getRegulationMaxFP();
-    }
-
 }

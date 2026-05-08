@@ -8,6 +8,7 @@ import com.fs.starfarer.api.campaign.econ.CommoditySpecAPI;
 import com.fs.starfarer.api.campaign.econ.SubmarketAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import com.fs.starfarer.api.impl.campaign.intel.contacts.ContactIntel;
 import com.fs.starfarer.api.impl.campaign.submarkets.BlackMarketPlugin;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
@@ -17,13 +18,13 @@ import starpocalypse.helper.SubmarketUtils;
 
 public class RegulatedBlackMarket extends BlackMarketPlugin {
 
-    private String location;
     private int bestContactLevel;
+    private final SubmarketDelegate shared = new SubmarketDelegate(this);
 
     @Override
     public void init(SubmarketAPI submarket) {
         super.init(submarket);
-        location = SubmarketUtils.getLocation(submarket);
+        shared.location = SubmarketUtils.getLocation(submarket);
     }
 
     @Override
@@ -31,17 +32,15 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
         super.createTooltip(ui, tooltip, expanded);
         if (doesWantShyBlackMarket()) {
             tooltip.addPara(
-                "Due to the heavy military presence, trading on Black Market " +
-                "is only possible with the transponder turned off.",
+                "Due to strict customs enforcement by " +
+                market.getFaction().getDisplayName() +
+                " port authorities, " +
+                "trading on the Black Market is only possible with the transponder turned off.",
                 10
             );
         }
-        if(ConfigHelper.isBlackMarketRequiresContact())
-        {
-            tooltip.addPara(
-                    "You do not have any contacts that enable you to trade on the Black Market.",
-                    10
-            );
+        if (ConfigHelper.isBlackMarketRequiresContact()) {
+            tooltip.addPara("You do not have any contacts that enable you to trade on the Black Market.", 10);
         }
     }
 
@@ -52,28 +51,23 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
 
     @Override
     public boolean isEnabled(CoreUIAPI ui) {
-
         boolean result = true;
 
         if (doesWantShyBlackMarket()) {
             result &= !getTransponderState();
         }
 
-        if (ConfigHelper.isBlackMarketRequiresContact())
-        {
+        if (ConfigHelper.isBlackMarketRequiresContact()) {
             boolean hasContactHere = false;
-            for(PersonAPI person:submarket.getMarket().getPeopleCopy())
-            {
-                if(person.getFaction().getDisplayName().toLowerCase().contains("pirate"))
-                {
-                    hasContactHere |= ContactIntel.playerHasContact(person,false);
+            for (PersonAPI person : submarket.getMarket().getPeopleCopy()) {
+                if (person.getTags().contains(Tags.CONTACT_UNDERWORLD)) {
+                    hasContactHere |= ContactIntel.playerHasContact(person, false);
                 }
             }
-            result &= hasContactHere ;
+            result &= hasContactHere;
         }
 
-        if(ConfigHelper.hasNexerelin())
-        {
+        if (ConfigHelper.hasNexerelin()) {
             result |= market.hasCondition("nex_rebellion_condition");
         }
 
@@ -97,31 +91,26 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
 
     @Override
     public boolean isIllegalOnSubmarket(String commodityId, TransferAction action) {
-
         if (!ConfigHelper.isFreePortBlackMarketRequiresContact() && market.isFreePort()) {
             return false;
         }
 
         if (ConfigHelper.wantsRegulation(market.getFactionId())) {
             CommoditySpecAPI commodity = market.getCommodityData(commodityId).getCommodity();
-            if (isAlwaysLegal(commodity.getName())) {
+            if (shared.isAlwaysLegal(commodity.getName())) {
                 return false;
             }
         }
         return super.isIllegalOnSubmarket(commodityId, action);
     }
 
-    public String getIllegalTransferText(CargoStackAPI stack, SubmarketPlugin.TransferAction action)
-    {
+    public String getIllegalTransferText(CargoStackAPI stack, SubmarketPlugin.TransferAction action) {
         int bestContactLevelBefore = bestContactLevel;
         bestContactLevel = Integer.MAX_VALUE;
-        if(super.isIllegalOnSubmarket(stack, action))
-        {
+        if (super.isIllegalOnSubmarket(stack, action)) {
             bestContactLevel = bestContactLevelBefore;
             return super.getIllegalTransferText(stack, action);
-        }
-        else
-        {
+        } else {
             bestContactLevel = bestContactLevelBefore;
             return "Req: Underworld Contact - " + getContactLevelText(getContactLevelFor(stack));
         }
@@ -129,7 +118,6 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
 
     @Override
     public boolean isIllegalOnSubmarket(CargoStackAPI stack, TransferAction action) {
-
         boolean vanillaIllegal = super.isIllegalOnSubmarket(stack, action);
         if (!ConfigHelper.wantsRegulation(market.getFactionId())) {
             return vanillaIllegal;
@@ -140,27 +128,24 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
         }
 
         String stackName = stack.getDisplayName();
-        if (isAlwaysLegal(stackName)) {
+        if (shared.isAlwaysLegal(stackName)) {
             return false;
         }
 
-        if(vanillaIllegal)
-            return true;
+        if (vanillaIllegal) return true;
 
-        if (isInsignificant(stack)) {
+        if (!shared.isSignificant(stack)) {
             return false;
         }
 
-        if(ConfigHelper.isBlackMarketGoodStuffRequiresContact())
-        {
+        if (ConfigHelper.isBlackMarketGoodStuffRequiresContact()) {
             return bestContactLevel < getContactLevelFor(stack);
         }
 
         return false;
     }
 
-    private int getContactLevelFor(CargoStackAPI stack)
-    {
+    private int getContactLevelFor(CargoStackAPI stack) {
         int tier = CargoUtils.getTier(stack);
         return switch (tier) {
             case (0) -> ConfigHelper.getBlackMarketWeaponT0();
@@ -172,17 +157,13 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
         };
     }
 
-    public String getIllegalTransferText(FleetMemberAPI member, SubmarketPlugin.TransferAction action)
-    {
+    public String getIllegalTransferText(FleetMemberAPI member, SubmarketPlugin.TransferAction action) {
         int bestContactLevelBefore = bestContactLevel;
         bestContactLevel = Integer.MAX_VALUE;
-        if(super.isIllegalOnSubmarket(member, action))
-        {
+        if (super.isIllegalOnSubmarket(member, action)) {
             bestContactLevel = bestContactLevelBefore;
             return super.getIllegalTransferText(member, action);
-        }
-        else
-        {
+        } else {
             bestContactLevel = bestContactLevelBefore;
             return "Req: Underworld Contact - " + getContactLevelText(getContactLevelFor(member));
         }
@@ -200,86 +181,65 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
             return false;
         }
 
-        String hullName = StandingMarketRegulation.getHullName(member);
-        if (isAlwaysLegal(hullName)) {
+        String hullName = shared.getHullName(member);
+        if (shared.isAlwaysLegal(hullName)) {
             return false;
         }
 
-        if(vanillaIllegal)
-            return true;
+        if (vanillaIllegal) return true;
 
-
-        if (isInsignificant(member)) {
+        if (!shared.isSignificant(member)) {
             return false;
         }
 
-        if(ConfigHelper.isBlackMarketGoodStuffRequiresContact())
-        {
+        if (ConfigHelper.isBlackMarketGoodStuffRequiresContact()) {
             return bestContactLevel < getContactLevelFor(member);
         }
         return false;
     }
 
-    private int getContactLevelFor(FleetMemberAPI member)
-    {
-        if(StandingMarketRegulation.isCivilian(member.getVariant()))
-        {
+    private int getContactLevelFor(FleetMemberAPI member) {
+        if (shared.isCivilian(member.getVariant())) {
             return ConfigHelper.getBlackMarketShipCivilian();
-        }
-        else if(member.isFrigate())
-        {
+        } else if (member.isFrigate()) {
             return ConfigHelper.getBlackMarketShipFrigate();
-        }
-        else if(member.isDestroyer())
-        {
+        } else if (member.isDestroyer()) {
             return ConfigHelper.getBlackMarketShipDestroyer();
-        }
-        else if(member.isCruiser())
-        {
+        } else if (member.isCruiser()) {
             return ConfigHelper.getBlackMarketShipCruiser();
-        }
-        else if(member.isCapital())
-        {
+        } else if (member.isCapital()) {
             return ConfigHelper.getBlackMarketShipCapital();
         }
         return 0;
     }
 
     @Override
-    public void updateCargoPrePlayerInteraction()
-    {
+    public void updateCargoPrePlayerInteraction() {
         super.updateCargoPrePlayerInteraction();
-        if(ConfigHelper.isBlackMarketGoodStuffRequiresContact())
-        {
+        if (ConfigHelper.isBlackMarketGoodStuffRequiresContact()) {
             getBestContact();
         }
     }
 
-
-    private void getBestContact()
-    {
+    private void getBestContact() {
         bestContactLevel = 0;
-        for(PersonAPI person:submarket.getMarket().getPeopleCopy())
-        {
-            if(person.hasTag("underworld"))
-            {
-                if(ContactIntel.playerHasContact(person,false)) {
-
-                    switch (person.getImportance().getDisplayName())
-                    {
-                        case("Very Low"):
+        for (PersonAPI person : submarket.getMarket().getPeopleCopy()) {
+            if (person.hasTag("underworld")) {
+                if (ContactIntel.playerHasContact(person, false)) {
+                    switch (person.getImportance().getDisplayName()) {
+                        case ("Very Low"):
                             bestContactLevel = Math.max(1, bestContactLevel);
                             break;
-                        case("Low"):
+                        case ("Low"):
                             bestContactLevel = Math.max(2, bestContactLevel);
                             break;
-                        case("Medium"):
+                        case ("Medium"):
                             bestContactLevel = Math.max(3, bestContactLevel);
                             break;
-                        case("High"):
+                        case ("High"):
                             bestContactLevel = Math.max(4, bestContactLevel);
                             break;
-                        case("Very High"):
+                        case ("Very High"):
                             bestContactLevel = Math.max(5, bestContactLevel);
                             break;
                         default:
@@ -291,8 +251,7 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
         }
     }
 
-    private String getContactLevelText(int level)
-    {
+    private String getContactLevelText(int level) {
         return switch (level) {
             case (0) -> "None";
             case (1) -> "Very Low";
@@ -302,19 +261,6 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
             case (5) -> "Very High";
             default -> "Boss";
         };
-    }
-
-
-    private boolean isAlwaysLegal(String name) {
-        return ConfigHelper.getRegulationLegal().has(name);
-    }
-
-    private boolean isInsignificant(CargoStackAPI stack) {
-        return CargoUtils.getTier(stack) <= ConfigHelper.getRegulationMaxTier();
-    }
-
-    private boolean isInsignificant(FleetMemberAPI member) {
-        return member.getFleetPointCost() <= ConfigHelper.getRegulationMaxFP();
     }
 
     public String getTariffTextOverride() {

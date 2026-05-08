@@ -47,7 +47,9 @@ public class SubmarketUtils {
             log.debug("Skipping already regulated submarket " + oldSubmarket.getNameOneLine());
             return;
         }
-        log.debug("Replacing submarket " + oldSubmarketId + " with " + newSubmarketId + " on market " + market.getName());
+        log.debug(
+            "Replacing submarket " + oldSubmarketId + " with " + newSubmarketId + " on market " + market.getName()
+        );
         market.removeSubmarket(oldSubmarketId);
         market.addSubmarket(newSubmarketId);
         SubmarketAPI newSubmarket = market.getSubmarket(newSubmarketId);

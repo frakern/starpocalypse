@@ -9,8 +9,8 @@ import com.fs.starfarer.api.fleet.MutableFleetStatsAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import lombok.extern.log4j.Log4j;
-import starpocalypse.salvage.DerelictModifyingScript;
 import starpocalypse.salvage.BattleSalvageListener;
+import starpocalypse.salvage.DerelictModifyingScript;
 
 @Log4j
 public class DropTableUtils {
@@ -32,8 +32,7 @@ public class DropTableUtils {
     }
 
     public static void makeCombatRecoveryRequireStoryPoint() {
-        if(!Global.getSector().getListenerManager().hasListenerOfClass(BattleSalvageListener.class))
-        {
+        if (!Global.getSector().getListenerManager().hasListenerOfClass(BattleSalvageListener.class)) {
             Global.getSector().getListenerManager().addListener(new BattleSalvageListener(true), true);
         }
     }

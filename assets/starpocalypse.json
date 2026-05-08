@@ -1,100 +1,105 @@
 {
     ## D-MODS FOR ALL
-    # Damage pristine ships that the player can buy.
+    # Damage ships that the player can buy.
     "addDmodsToShipsInSubmarkets": true,
-    # Damage pristine ships in player's starting fleet.
+    # Damage ships in player's starting fleet.
     "addDmodsToStartingFleet": true,
     # Configure min and max of d-mods each pristine ship should receive. Ships with less d-mods are ignored.
     # Used by both options above. Minimum is always at least 1, and maximum at most 5.
     "minimumDmods": 1,
-    "maximumDmods": 3,
+    "maximumDmods": 4,
 
-    ## MILITARY REGULATIONS
-    # Buying military wares Open Market is illegal for common folk. Selling to approved vendors is allowed. Items are not removed. Just because you cant buy a tank does not mean that none are sold.
-    # - Legal list is applied to make item or ship always legal (or illegal, if !negated),
+
+    ## MARKET REGULATIONS
+    # Buying non-civilian weapons/ships on the Open Market is illegal without the right connections. Selling to approved vendors is allowed. Items are not removed from the market.
+    # - Legal list (militaryRegulationLegal.csv) is applied to make items or ships always legal (or illegal, if !negated),
     # - All civ-grade or civ-hint ships are always legal.,
-    # The standing system is a bit complicated. Basically sum up all influences and check if the value is larger than standingMinimumSelling. Special rules can be found in starpocalypse/militaryRegulation[mechanic].csv
-    # If it is not they will not sell to you. They will buy though.
-    "militaryRegulations": true, # Vanilla: false
+    # Regulated items and ships are offered for sale on the Open and Military markets based on your reputation with the faction and are adjusted up or down based on other factors like contacts or market stability.
+    # Basically sum up all influences and check if the value is larger than reputation required to buy. Special rules can be found in data/starpocalypse/militaryRegulation[mechanic].csv
+    "marketRegulations": true, # Vanilla: false
 
-    # Whether the military market can be fully accessed without commission. Only active if regulation is true.
-    "militaryNoCommission": true,
+    # Whether free ports regulate their open markets. false removes all the following regulations on free port open markets.
+    "freePortOpenMarketRegulations": false, # Vanilla: false
 
-    # Whether free ports regulate their open markets. false removes all the following military regulations on free port open markets.
-    "freePortOpenMarketRegulations": true, # Vanilla: false
+    # Low stability increases legal items. Values can be changed in militaryRegulationStability.csv
+    "reputationBonusAtLowStability": true,
 
-    # LPC, weapon, and modspec tier and combat ship FP at which they are still legal.
+    # Reputation bonus or malus based on commodity surplus/shortages.
+    "reputationBonusSurplus": 15,
+    "reputationBonusShortage": -15,
+
+    # Bonus from reputation with active contact in faction multiplied by this factor. Set to 0 to turn off.
+    "reputationContactFactor": 0.5,
+
+    # Contact importance applies flat bonus to reputation.
+    "reputationContactBonusNoContact": 0,
+    "reputationContactBonusVeryLow": 5,
+    "reputationContactBonusLow": 10,
+    "reputationContactBonusMedium": 35,
+    "reputationContactBonusHigh": 50,
+    "reputationContactBonusVeryHigh": 75,
+
+    # Reputation bonus from holding a commision.
+    "reputationCommissionBonus": 75,
+
+    # Base reputation required to buy basic commodities (except whitelisted goods in militaryRegulationLegal.csv).
+    # Applied as a modifier to all calculations.
+    "reputationMinimumSelling": -25,
+
+    # LPC, weapon, and modspec tier and combat ship FP at which they are always legal irregardless of reputation.
+    # Takes precedence over any of the settings below.
     "regulationMaxLegalTier": -1, # easy mode: 1
     "regulationMaxLegalFP": 0, # easy mode: 5
 
-    #Low stability increases legal items. Can be changed in militaryRegulationStability.csv
-    "standingBonusAtLowStability": true,
+    # Reputation required to buy weapons by tier. Set to unreachable value (e.g. 1000) always remove.
+    "reputationWeaponT0" : 40,
+    "reputationWeaponT1" : 75,
+    "reputationWeaponT2": 125,
+    "reputationWeaponT3": 175,
+    "reputationWeaponT4": 225, # There are no T4 weapons in the basegame. Any mod adding items a tier above 3 will be treated as this
 
-    # Minimum standing required to buy stuff. Just because a faction does not sell stuff to you does not mean that they aint buying.
-    "standingMinimumSelling": -25,
-
-    # If they have a surplus they will sell to more people. If they need it themself the export may be restricted.
-    "standingBonusSurplus": 15,
-    "standingBonusShortage": -15,
-
-    # Add Faction reputation to standing with this factor
-    "standingFactionFactor": 1,
-
-    # Add contact reputation to standing with this factor.
-    "standingContactFactor": 0.5,
-
-    # Contact level applies bonus to standing.
-    "standingContactBonusNoContact": 0,
-    "standingContactBonusVeryLow": 5,
-    "standingContactBonusLow": 10,
-    "standingContactBonusMedium": 35,
-    "standingContactBonusHigh": 50,
-    "standingContactBonusVeryHigh": 75,
-
-    # Commission standing bonus:
-    "standingCommissionBonus": 75,
-
-    # Weapon tier standing cutoffs. Set to unreachable value (e.g. 1000) always remove.
-    "standingWeaponT0" : 40,
-    "standingWeaponT1" : 75,
-    "standingWeaponT2": 125,
-    "standingWeaponT3": 175,
-    "standingWeaponT4": 225, # There are no T4 weapons in the basegame. Any mod adding items a tier above 3 will be treated as this
-
-    # Apply a logarthmic scale to ship standing required by fleet points.
+    # Reputation required to buy ships.
+    "reputationShipCivilian": 0,
+    # Apply a logarthmic scale to reputation required to buy shiped based on fleet points.
     # Ranges from 80 at 4fp to 125 at 8fp to 175 at 18fp and to 200 at 28.
     # If false, will use the fixed values below.
-    "standingShipLogarthmic": true,
+    "reputationShipLogarthmic": true,
     # Ship size tier cutoff. Set to unreachable value (e.g. 1000) always remove.
-    "standingShipCivilian": 0,
-    "standingShipFrigate": 75,
-    "standingShipDestroyer": 125,
-    "standingShipCruiser": 175,
-    "standingShipCapital": 200,
+    "reputationShipFrigate": 75,
+    "reputationShipDestroyer": 125,
+    "reputationShipCruiser": 175,
+    "reputationShipCapital": 200,
+
 
     ## Cost changes
-
     "costMultiplierWeapon": 2, # Vanilla 1
     "costMultiplierShips": 2, # Vanilla 1
     "costMultiplierSellerProfitMargin": 0.5, # Sets profit margin for Markets. Basically how much of the value the player looses by selling. -1 means vanilla values are used. Max value: 1 (You sell everything for 0) Min value: 0 (Sell price = buy price)
     "costMultiplierOverrideDmods": 0.5, # Override for hullWithDModsSellPriceMult. Larger values result in a smaller sell/buy value loss caused by D-mods. Vanilla 0.3
+    "applyBuySellCostMultToQuest":true, # Apply cost changes to quests (bar events)
 
 
-
-## Black Market changes
-    # Suspicion level will grow even with transponder off. It is still useful to sell illegal wares.
-    "transparentMarket": true,
+    ## Black Market changes
+    # If true, suspicion level will grow even with transponder off. It is still useful to sell illegal wares.
+    "transparentMarket": true, # vanilla: false
     # Setting this to 0 essentially disables the feature. Setting this to 1 makes it behave as if the transponder was on
     # for suspicion calculations. Setting it above 1 will cause a penalty for trading with transponder off.
-    "transparentMarketMult": 0.5,# vanilla: 0
-    # Accessing Black Market is only possible with transponder turned off.
-    "shyBlackMarket": false,
+    "transparentMarketMult": 0.5, # vanilla: 0
+
+    # If true, accessing Black Market is only possible with transponder turned off.
+    "shyBlackMarket": true, # vanilla: false
+
     # Black Market handling fee (bribe) as a fraction of the Open Market tariff. If tariff is 30%, Black Market bribe will be 15%.
     "blackMarketFenceCut": 0.5,# vanilla: 0
-    # Black market access requires a pirate contact at that location.
-    "blackMarketRequiresContact": true, # vanilla: false If Nexerelin is present: No contact will be required if the planet is in rebellion.
-    "blackMarketGoodStuffRequiresContact": true, # vanilla: false If true Not every contact can get you the good stuff (weapons/ships).
-    # At least this importance is required of the blackMarket contact to enable you buying this
+
+    # Black market access requires a underworld contact at that location.
+    # (If Nexerelin is present: No contact will be required if the planet is in rebellion)
+    "blackMarketRequiresContact": false, # vanilla: false
+    # If false black markets in free ports will ignore these contact rules.
+    "freePortBlackMarketRequiresContact": false, # Vanilla: false
+    # If true not every contact can get you the good stuff (weapons/ships). Controlled by further options below.
+    "blackMarketGoodStuffRequiresContact": true, # vanilla: false
+    # A underworld contact of at least this importance is required to allow buying weapons/ships off the black market.
     # 0: No Contact required
     # 1: Very Low
     # 2: Low
@@ -102,8 +107,8 @@
     # 4: High
     # 5: Very High
     # 6: Never
-    "blackMarketWeaponT0" : 1,
-    "blackMarketWeaponT1" : 2,
+    "blackMarketWeaponT0": 1,
+    "blackMarketWeaponT1": 2,
     "blackMarketWeaponT2": 3,
     "blackMarketWeaponT3": 4,
     "blackMarketWeaponT4": 5,
@@ -112,7 +117,7 @@
     "blackMarketShipDestroyer": 4,
     "blackMarketShipCruiser": 5,
     "blackMarketShipCapital": 6,
-    "freePortBlackMarketRequiresContact": true, # Vanilla: false If false black markets in free ports will ignore the above rules.
+
 
     ## BETTER MARKET DEFENCES
     # Add a station to non-hidden markets based on size where one does not already exist.
@@ -130,12 +135,11 @@
     # Add a Patrol HQ to all non-hidden markets.
     "addPatrolHqs": false, # Vanilla: false
 
-    ## Pirates and Luddic Path get eradicated too often. Lets change that.
-
     # My pirates starved to death as they could not acquire food after their planet that contained their farms was captured. This gives them a leg up regarding accesability.
     "pirateMegaport": true, # Vanilla: false
     # One can never trust another pirate. So invest in bigger guns. There is a reason the hegemony didnt wipe them out yet.
     "pirateHeavyBatteries": true, # Vanilla: false
+
 
     ## REPUTATION CHANGES
     # After winning an engagement, the enemies of the beaten fleet will have a slightly better reputation of you.
@@ -143,16 +147,17 @@
     "combatAdjustedReputation": false, # Vanilla: false
     # Raiding for special items instantly ruins player reputation with the owner of the item.
     "hostilityForSpecialItemRaid": true, # Vanilla: false
-    
+
+
     ## OTHER CHANGES
     # Do not drop blueprint packages. Player will have to collect blueprints one by one.
-    "blueprintPackageNoDrop": true, # Vanilla: false
+    "blueprintPackageNoDrop": false, # Vanilla: false
 
     # Remove Nexerelin High-End Seller from Prism Freeport.
     "removeHighEndSeller": false,
 
     # Number of s-mods available to player (without skill).
-    "maxPermaMods": 1, # vanilla: 2
+    "maxPermaMods": 2, # vanilla: 2
 
     # Always require story points to recover ships
     # (both derelict ships found across the sector, and post battle recoveries).
@@ -164,7 +169,7 @@
     # 1 = all ships. 2 = destroyer + cruiser + capital. 3 = cruiser + capital. 4 = capital only.
     "stingyRecoveriesCombatPlayerShipsSize": 1,
 
-    #Chance for a recoverable ship to be recoverable without storypoint (0 = always require story point)
+    # Chance for a recoverable ship to be recoverable without storypoint (0 = always require story point)
     "stingyRecoveriesChanceFrigate": 0.4, # Vanilla: 1.0
     "stingyRecoveriesChanceDestroyer": 0.3, # Vanilla: 1.0
     "stingyRecoveriesChanceCruiser": 0.2, # Vanilla: 1.0
@@ -181,9 +186,6 @@
     # Make hull restoration not make all after battle recoveries into normal ones. See https://fractalsoftworks.com/forum/index.php?topic=31987.0
     "stingyNerfHullRestoration":true,
 
-    # Reduce quantity of salvaged items.
+    # Reduce quantity of salvaged goods.
     "salvageMultiplier": -0.25, # vanilla: 0,
-
-    #Quest Changes
-    "applyBuySellCostMultToQuest":true #Otherwise those military surplus could be very cheap
 }
