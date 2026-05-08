@@ -4,21 +4,24 @@ plugins {
     id 'java'
 }
 
+// project level config
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+wrapper {
+    gradleVersion = '7.3'  // Java: Gradle; 17: 7.3; 18: 7.5; 19: 7.6; 20: 8.1
+    distributionType = Wrapper.DistributionType.BIN
+}
+
 repositories {
     mavenCentral()
     ivy {
         url 'https://github.com/'
         patternLayout {
             artifact '/[organization]/[module]/releases/download/[revision]/[ext]'
-        }
-        metadataSources {
-            artifact()
-        }
-    }
-    ivy {
-        url 'https://github.com/'
-        patternLayout {
-            artifact '/[organization]/[module]/raw/master/jars/[revision]'
+            artifact '/[organization]/[module]/raw/[revision]/jars/[ext]'
         }
         metadataSources {
             artifact()
@@ -26,10 +29,26 @@ repositories {
     }
 }
 
-// project level config
-java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+// add zipped configuration
+configurations {
+    zipped
+}
+
+// install dependencies from zipped releases
+tasks.register('installDependencies', Sync) {
+    def extractDir = "${buildDir}/libs"
+
+    ext.extractedJars = fileTree(extractDir) {
+        include "**/*.jar"
+        exclude "starpocalypse.jar"
+        builtBy "installDependencies"
+    }
+
+    dependsOn configurations.zipped
+    from {
+        configurations.zipped.collect { zipTree(it) }
+    }
+    into extractDir
 }
 
 // where to find sources
@@ -49,7 +68,8 @@ build {
 // compile time dependencies
 dependencies {
     implementation "jaghaimo:starsector-api:0.98a-RC7@starfarer.api.jar"
-    implementation files('libs/ExerelinCore.jar')
+    zipped "Histidine91:Nexerelin:v0.12.1e@Nexerelin_0.12.1e.zip"
+    implementation files({ tasks.installDependencies.extractedJars })
 
     // game dependencies
     implementation group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.10'
