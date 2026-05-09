@@ -35,12 +35,12 @@ public class RegulatedBlackMarket extends BlackMarketPlugin {
                 "Due to strict customs enforcement by " +
                 market.getFaction().getDisplayName() +
                 " port authorities, " +
-                "trading on the Black Market is only possible with the transponder turned off.",
+                "trading on the black market is only possible with the transponder turned off.",
                 10
             );
         }
         if (ConfigHelper.isBlackMarketRequiresContact()) {
-            tooltip.addPara("You do not have any contacts that enable you to trade on the Black Market.", 10);
+            tooltip.addPara("You do not have any contacts that enable you to trade on the black market.", 10);
         }
     }
 

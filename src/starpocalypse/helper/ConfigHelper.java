@@ -28,6 +28,9 @@ public class ConfigHelper {
     private static boolean freePortOpenMarketRegulations = true;
 
     @Getter
+    private static boolean militaryNoCommission = false;
+
+    @Getter
     private static float regulationMaxTier = 0;
 
     @Getter
@@ -150,7 +153,7 @@ public class ConfigHelper {
     private static int reputationWeaponT4 = 0;
 
     @Getter
-    private static boolean reputationShipLogarthmic = true;
+    private static boolean reputationShipLogarithmic = true;
 
     @Getter
     private static int reputationShipCivilian = 0;
@@ -283,6 +286,7 @@ public class ConfigHelper {
         maxDmods = clamp(settings.optInt("maximumDmods", 4), minDmods, 5);
         regulation = settings.optBoolean("marketRegulations", true);
         freePortOpenMarketRegulations = settings.optBoolean("freePortOpenMarketRegulations", true);
+        militaryNoCommission = settings.optBoolean("militaryNoCommission", false);
         regulationMaxFP = settings.optInt("regulationMaxLegalFP", 0);
         regulationMaxTier = settings.optInt("regulationMaxLegalTier", 0);
         shyBlackMarket = settings.optBoolean("shyBlackMarket", true);
@@ -323,7 +327,7 @@ public class ConfigHelper {
         reputationWeaponT3 = settings.optInt("reputationWeaponT3", 0);
         reputationWeaponT4 = settings.optInt("reputationWeaponT4", 0);
 
-        reputationShipLogarthmic = settings.optBoolean("reputationShipLogarthmic", true);
+        reputationShipLogarithmic = settings.optBoolean("reputationShipLogarithmic", true);
         reputationShipCivilian = settings.optInt("reputationShipCivilian", 0);
         reputationShipFrigate = settings.optInt("reputationShipFrigate", 0);
         reputationShipDestroyer = settings.optInt("reputationShipDestroyer", 0);

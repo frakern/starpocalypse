@@ -1,8 +1,8 @@
 faction,reputationModifier
 all, 0
-pirates, 50
-luddic_path, 35
+pirates, 100
+luddic_path, 75
 tritachyon, 15
-hegemony, -10
 sindrian_diktat, -20
+independent, 10
 !player, 0

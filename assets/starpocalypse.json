@@ -1,9 +1,9 @@
 {
     ## D-MODS FOR ALL
     # Damage ships that the player can buy.
-    "addDmodsToShipsInSubmarkets": true,
+    "addDmodsToShipsInSubmarkets": true, # Vanilla: false
     # Damage ships in player's starting fleet.
-    "addDmodsToStartingFleet": true,
+    "addDmodsToStartingFleet": true, # Vanilla: false
     # Configure min and max of d-mods each pristine ship should receive. Ships with less d-mods are ignored.
     # Used by both options above. Minimum is always at least 1, and maximum at most 5.
     "minimumDmods": 1,
@@ -11,7 +11,7 @@
 
 
     ## MARKET REGULATIONS
-    # Buying non-civilian weapons/ships on the Open Market is illegal without the right connections. Selling to approved vendors is allowed. Items are not removed from the market.
+    # Buying non-civilian weapons/ships on the open market is illegal without the right connections. Selling to approved vendors is allowed. Items are not removed from the market.
     # - Legal list (militaryRegulationLegal.csv) is applied to make items or ships always legal (or illegal, if !negated),
     # - All civ-grade or civ-hint ships are always legal.,
     # Regulated items and ships are offered for sale on the Open and Military markets based on your reputation with the faction and are adjusted up or down based on other factors like contacts or market stability.
@@ -20,6 +20,9 @@
 
     # Whether free ports regulate their open markets. false removes all the following regulations on free port open markets.
     "freePortOpenMarketRegulations": false, # Vanilla: false
+
+    # Whether the military market can be fully accessed without commission. Only active if regulation is true.
+    "militaryNoCommission": true, # Vanilla: false
 
     # Low stability increases legal items. Values can be changed in militaryRegulationStability.csv
     "reputationBonusAtLowStability": true,
@@ -33,14 +36,14 @@
 
     # Contact importance applies flat bonus to reputation.
     "reputationContactBonusNoContact": 0,
-    "reputationContactBonusVeryLow": 5,
-    "reputationContactBonusLow": 10,
-    "reputationContactBonusMedium": 35,
-    "reputationContactBonusHigh": 50,
-    "reputationContactBonusVeryHigh": 75,
+    "reputationContactBonusVeryLow": 10,
+    "reputationContactBonusLow": 20,
+    "reputationContactBonusMedium": 30,
+    "reputationContactBonusHigh": 45,
+    "reputationContactBonusVeryHigh": 65,
 
     # Reputation bonus from holding a commision.
-    "reputationCommissionBonus": 75,
+    "reputationCommissionBonus": 65,
 
     # Base reputation required to buy basic commodities (except whitelisted goods in militaryRegulationLegal.csv).
     # Applied as a modifier to all calculations.
@@ -60,10 +63,10 @@
 
     # Reputation required to buy ships.
     "reputationShipCivilian": 0,
-    # Apply a logarthmic scale to reputation required to buy shiped based on fleet points.
+    # Apply a logarithmic scale to reputation required to buy shiped based on fleet points.
     # Ranges from 80 at 4fp to 125 at 8fp to 175 at 18fp and to 200 at 28.
     # If false, will use the fixed values below.
-    "reputationShipLogarthmic": true,
+    "reputationShipLogarithmic": true,
     # Ship size tier cutoff. Set to unreachable value (e.g. 1000) always remove.
     "reputationShipFrigate": 75,
     "reputationShipDestroyer": 125,
@@ -71,7 +74,7 @@
     "reputationShipCapital": 200,
 
 
-    ## Cost changes
+    ## COST CHANGES
     "costMultiplierWeapon": 2, # Vanilla 1
     "costMultiplierShips": 2, # Vanilla 1
     "costMultiplierSellerProfitMargin": 0.5, # Sets profit margin for Markets. Basically how much of the value the player looses by selling. -1 means vanilla values are used. Max value: 1 (You sell everything for 0) Min value: 0 (Sell price = buy price)
@@ -79,17 +82,17 @@
     "applyBuySellCostMultToQuest":true, # Apply cost changes to quests (bar events)
 
 
-    ## Black Market changes
+    ## BLACK MARKET CHANGES
     # If true, suspicion level will grow even with transponder off. It is still useful to sell illegal wares.
     "transparentMarket": true, # vanilla: false
     # Setting this to 0 essentially disables the feature. Setting this to 1 makes it behave as if the transponder was on
     # for suspicion calculations. Setting it above 1 will cause a penalty for trading with transponder off.
     "transparentMarketMult": 0.5, # vanilla: 0
 
-    # If true, accessing Black Market is only possible with transponder turned off.
+    # If true, accessing black market is only possible with transponder turned off.
     "shyBlackMarket": true, # vanilla: false
 
-    # Black Market handling fee (bribe) as a fraction of the Open Market tariff. If tariff is 30%, Black Market bribe will be 15%.
+    # Black market handling fee (bribe) as a fraction of the open market tariff. If tariff is 30%, black market bribe will be 15%.
     "blackMarketFenceCut": 0.5,# vanilla: 0
 
     # Black market access requires a underworld contact at that location.
@@ -107,16 +110,16 @@
     # 4: High
     # 5: Very High
     # 6: Never
-    "blackMarketWeaponT0": 1,
-    "blackMarketWeaponT1": 2,
-    "blackMarketWeaponT2": 3,
-    "blackMarketWeaponT3": 4,
-    "blackMarketWeaponT4": 5,
+    "blackMarketWeaponT0": 0,
+    "blackMarketWeaponT1": 1,
+    "blackMarketWeaponT2": 2,
+    "blackMarketWeaponT3": 3,
+    "blackMarketWeaponT4": 4,
     "blackMarketShipCivilian": 0,
-    "blackMarketShipFrigate": 3,
-    "blackMarketShipDestroyer": 4,
-    "blackMarketShipCruiser": 5,
-    "blackMarketShipCapital": 6,
+    "blackMarketShipFrigate": 2,
+    "blackMarketShipDestroyer": 3,
+    "blackMarketShipCruiser": 4,
+    "blackMarketShipCapital": 5,
 
 
     ## BETTER MARKET DEFENCES
@@ -133,10 +136,10 @@
     # At this size and above, all Ground Defenses will be upgraded to Heavy Batteries.
     "sizeHeavyBatteries": 5,
     # Add a Patrol HQ to all non-hidden markets.
-    "addPatrolHqs": false, # Vanilla: false
+    "addPatrolHqs": true, # Vanilla: false
 
     # My pirates starved to death as they could not acquire food after their planet that contained their farms was captured. This gives them a leg up regarding accesability.
-    "pirateMegaport": true, # Vanilla: false
+    "pirateMegaport": false, # Vanilla: false
     # One can never trust another pirate. So invest in bigger guns. There is a reason the hegemony didnt wipe them out yet.
     "pirateHeavyBatteries": true, # Vanilla: false
 
@@ -144,7 +147,7 @@
     ## REPUTATION CHANGES
     # After winning an engagement, the enemies of the beaten fleet will have a slightly better reputation of you.
     # Their allies will dislike you slightly more, though.
-    "combatAdjustedReputation": false, # Vanilla: false
+    "combatAdjustedReputation": true, # Vanilla: false
     # Raiding for special items instantly ruins player reputation with the owner of the item.
     "hostilityForSpecialItemRaid": true, # Vanilla: false
 
@@ -159,7 +162,7 @@
     # Number of s-mods available to player (without skill).
     "maxPermaMods": 2, # vanilla: 2
 
-    # Always require story points to recover ships
+    # Require story points to recover ships
     # (both derelict ships found across the sector, and post battle recoveries).
     "stingyRecoveriesDerelicts": true, # Vanilla: false
     "stingyRecoveriesCombat": true, # Vanilla: false
@@ -170,10 +173,10 @@
     "stingyRecoveriesCombatPlayerShipsSize": 1,
 
     # Chance for a recoverable ship to be recoverable without storypoint (0 = always require story point)
-    "stingyRecoveriesChanceFrigate": 0.4, # Vanilla: 1.0
-    "stingyRecoveriesChanceDestroyer": 0.3, # Vanilla: 1.0
-    "stingyRecoveriesChanceCruiser": 0.2, # Vanilla: 1.0
-    "stingyRecoveriesChanceCapital": 0.1, # Vanilla: 1.0
+    "stingyRecoveriesChanceFrigate": 0.5, # Vanilla: 1.0
+    "stingyRecoveriesChanceDestroyer": 0.4, # Vanilla: 1.0
+    "stingyRecoveriesChanceCruiser": 0.3, # Vanilla: 1.0
+    "stingyRecoveriesChanceCapital": 0.2, # Vanilla: 1.0
 
     # Multiplier to weapon salvage chance. As weapons can not be slavaged with a story point, they can not be recovered instead. Does not affect [super redacted] weapons, as their suppy is quiet limited
     # Higher tier weapons are more powerfull (and assumed to be more delicate, making them easier to damage in battle)

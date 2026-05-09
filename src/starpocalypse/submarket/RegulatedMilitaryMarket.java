@@ -175,4 +175,29 @@ public class RegulatedMilitaryMarket extends MilitarySubmarketPlugin {
             return null;
         }
     }
+
+    @Override
+    protected boolean requiresCommission(RepLevel req) {
+        return super.requiresCommission(req) && !ConfigHelper.isMilitaryNoCommission();
+    }
+
+    @Override
+    public boolean isEnabled(CoreUIAPI ui) {
+        if (ConfigHelper.isMilitaryNoCommission()) {
+            return ui.getTradeMode() != CampaignUIAPI.CoreUITradeMode.SNEAK;
+        }
+        else {
+            return super.isEnabled(ui);
+        }
+    }
+
+    @Override
+    public String getTooltipAppendix(CoreUIAPI ui) {
+        if (ConfigHelper.isMilitaryNoCommission()) {
+            return ui.getTradeMode() == CampaignUIAPI.CoreUITradeMode.SNEAK ? "Requires: proper docking authorization" : null;
+        }
+        else {
+            return super.getTooltipAppendix(ui);
+        }
+    }
 }

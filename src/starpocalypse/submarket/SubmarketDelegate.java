@@ -46,7 +46,7 @@ public class SubmarketDelegate {
         if (
             ConfigHelper.isReputationBonusAtLowStability() &&
             ConfigHelper.getReputationStability().containsKey(stabilityKey) &&
-            !market.getPlugin().isBlackMarket()
+            !submarketPlugin.isBlackMarket()
         ) {
             marketModifier += Integer.parseInt(ConfigHelper.getReputationStability().get(stabilityKey));
         }
@@ -201,7 +201,7 @@ public class SubmarketDelegate {
         }
 
         if (
-            submarketPlugin.getSubmarket().getName().equals("Open Market") &&
+            submarketPlugin.isOpenMarket() &&
             !ConfigHelper.isFreePortOpenMarketRegulations() &&
             submarketPlugin.getMarket().isFreePort()
         ) {
@@ -228,7 +228,7 @@ public class SubmarketDelegate {
         int requiredReputation = 0;
         String itemKey = stack.getDisplayName();
         if (ConfigHelper.getReputationIndividual().containsKey(itemKey)) {
-            return Integer.parseInt(ConfigHelper.getReputationIndividual().get(itemKey));
+            requiredReputation += Integer.parseInt(ConfigHelper.getReputationIndividual().get(itemKey));
         } else {
             int tier = CargoUtils.getTier(stack);
 
@@ -266,8 +266,8 @@ public class SubmarketDelegate {
         int requiredReputation = 0;
         String itemKey = getHullName(member);
         if (ConfigHelper.getReputationIndividual().containsKey(itemKey)) {
-            return Integer.parseInt(ConfigHelper.getReputationIndividual().get(itemKey));
-        } else if (ConfigHelper.isReputationShipLogarthmic()) {
+            requiredReputation += Integer.parseInt(ConfigHelper.getReputationIndividual().get(itemKey));
+        } else if (ConfigHelper.isReputationShipLogarithmic()) {
             if (isCivilian(member.getVariant())) {
                 requiredReputation += ConfigHelper.getReputationShipCivilian();
             } else {
@@ -322,7 +322,7 @@ public class SubmarketDelegate {
     public int getRequiredReputation(String commodityName) {
         int requiredReputation = 0;
         if (ConfigHelper.getReputationIndividual().containsKey(commodityName)) {
-            return Integer.parseInt(ConfigHelper.getReputationIndividual().get(commodityName));
+            requiredReputation += Integer.parseInt(ConfigHelper.getReputationIndividual().get(commodityName));
         }
 
         requiredReputation += ConfigHelper.getReputationMinimumSelling();

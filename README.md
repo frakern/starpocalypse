@@ -3,7 +3,7 @@
 This mod makes the following changes to the campaign layer of Starsector:
 
 1. Weapons and combat ships are scarce and more expensive (2x by default). Access to these is regulated with a reputation system. The reputation needed to buy being affected by market stability, your best active contact in the faction (contact reputation and level), and your commission status (if possible). Buying larger hulls or high tier weapons is next to impossible without the right connections. (Thanks to @ThomasRahm for developing this system)
-2. There are no pristine ships, everything is d-modded. Including your starting fleet. Severity of the d-mods is configurable.
+2. There are no easy to acquire pristine ships, everything is d-modded. Including your starting fleet. Severity of the d-mods is configurable.
 3. Access to the black market is more restricted and only available with the transponder off. Access to higher tier weapons and larger ships is only available with an underworld contact. Additionally, you will need to pay bribes to transact your business (in lieu of tariffs).
 4. Markets are more secure. All core markets have Ground Defences and Patrol HQ with larger size markets all receiving stations.
 5. Your actions have consequences. When defeating a fleet, your reputation with other factions changes as well. Enemies of your enemy start to like you a bit, while their friends, less.
@@ -21,11 +21,11 @@ Mods can apply changes and merges to default values by shipping the same folder 
 
 ### Submarket changes
 
-1. Combat ships, and weapons, LPCs, and modspecs on the open and military market are limited based on reputation, your contacts, its tier, their stability (`militaryRegulationsStability.csv`) and your commissioned status. See config for exact values.
-2. The reputation level needed to buy larger hulls or high tier weapons may seem unattainable but will be brought down by factors like having a commission and a good relationship with a powerful contact. (Or find a way to reduce the market's stability)
+1. Access to the military market no longer requires a commission, but combat ships, and weapons, LPCs, and modspecs on the open and military market are limited based on reputation, your contacts, its tier, their stability (`militaryRegulationsStability.csv`) and your commissioned status. See config for exact values.
+2. The reputation level needed to buy larger hulls or high tier weapons may initially seem impossibly high, but it can be brought down to attainable levels by factors like having a commission and a good relationship with a high importance contact. (Or find a way to reduce the market's stability)
 3. If you don't have high enough reputation you will not be able to buy combat ships and weapons from the open and military market. If they hate you enough they may not even sell you civilian ships or commodities (except fuel, supplies, and crew which are always available). Can be configured using the config and csv files.
 4. Markets with a free port allow unregulated access to the open market. (this can be turned off in the settings for extra challenge)
-5. Finally, all pristine ships are damaged by putting a random number of d-mods on them.
+5. Finally, all pristine ships on the open and black markets are damaged by putting a random number of d-mods on them. Military market ships are untouched but are harder to access.
 
 Factions have modifiers for their willingness to sell declared in the `militaryRegulationFaction.csv` file. 
 Fixed values for certain goods, weapons, and ships are configured in `militaryRegulationsSpecialReputation.csv`.
@@ -80,5 +80,4 @@ Weapon salvage rates from battles and derelict ships was reduced to 25%. Value i
 4. Change number of allowed s-mods you can build in without a skill.
 
 ## Known Issues
-Sometimes the derelict modifying script is too slow, and one can get a ship/weapons before it ran. I currently have no way to prevent that, though in normal gameplay this should very rarely happen.
-costMultiplierBuilding is not working and will be removed in the next release. The modified setting is applied before the game is loaded, so modifying it does nothing. 
+Sometimes the derelict modifying script is too slow, and one can get a ship/weapons before it ran. I currently have no way to prevent that, though in normal gameplay this should very rarely happen. The modified setting is applied before the game is loaded, so modifying it does nothing. 
