@@ -2,7 +2,7 @@
 
 This mod makes the following changes to the campaign layer of Starsector:
 
-* Weapons and combat ships are scarce and more expensive (2x by default). Access to these is regulated with a reputation system. The reputation needed to buy being affected by market stability, your best active contact in the faction (contact reputation and level), and your commission status (if possible). Buying larger hulls or high tier weapons is next to impossible without the right connections. (Thanks to @ThomasRahm for developing this system)
+* Weapons and combat ships are scarce and more expensive (2x by default). Access is regulated with a reputation system. The reputation needed to buy being affected by market stability, your best active contact in the faction (contact reputation and level), and your commission status (if possible). Buying larger hulls or high tier weapons is next to impossible without the right connections. (Thanks to @ThomasRahm for developing this system)
 * There are no easy to acquire pristine ships, everything is d-modded. Including your starting fleet. Severity of the d-mods is configurable.
 * Access to the black market is more restricted and only available with the transponder off. Access to higher tier weapons and larger ships is only available with an underworld contact. Additionally, you will need to pay bribes to transact your business (in lieu of tariffs).
 * Markets are more secure. All core markets have Ground Defences and Patrol HQ with larger size markets all receiving stations.
